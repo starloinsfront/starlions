@@ -3,7 +3,7 @@ FROM node:20.11-alpine as dependencies
 WORKDIR /app
 RUN npm install -g pnpm
 COPY package*.json ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # Билдим приложение
 FROM node:20.11-alpine as builder
