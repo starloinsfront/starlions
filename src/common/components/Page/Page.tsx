@@ -1,11 +1,7 @@
 "use client"
 
-import './page.css';
+import "./page.css"
 
 export const Page = () => {
-
-  return (
-     <h1>StarLions Frontend Project</h1>
-  );
-
-};
+  return <h1>StarLions Frontend Project</h1>
+}

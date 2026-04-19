@@ -1,5 +1,5 @@
-import { Page } from "@/common/components/Page/Page";
+import { Page } from "@/common/components/Page/Page"
 
 export const App = () => {
-  return <Page />;
-};
+  return <Page />
+}
