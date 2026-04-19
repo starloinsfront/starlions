@@ -1,20 +1,20 @@
-import { useState } from "react";
+import { useState } from "react"
 
-import { authApi } from "@/features/auth/api/authApi";
-import type { LoginArgs } from "@/features/auth/api/authApi.types";
+import { authApi } from "@/features/auth/api/authApi"
+import type { LoginArgs } from "@/features/auth/api/authApi.types"
 
 export const useLogin = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const login = async (data: LoginArgs) => {
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      return await authApi.login(data);
+      return await authApi.login(data)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
-  return { isLoading, login };
-};
+  return { isLoading, login }
+}

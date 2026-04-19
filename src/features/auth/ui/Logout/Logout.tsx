@@ -1,11 +1,11 @@
 type Props = {
-  onClick?: () => void;
-};
+  onClick?: () => void
+}
 
 export const Logout = ({ onClick }: Props) => {
   return (
     <button type="button" onClick={onClick}>
       Logout
     </button>
-  );
-};
+  )
+}

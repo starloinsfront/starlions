@@ -1,12 +1,11 @@
 {
-  "extends": ["stylelint-config-standard"],
+  "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
+  "plugins": ["stylelint-order"],
   "rules": {
-    "alpha-value-notation": null,
-    "color-function-alias-notation": null,
-    "color-function-notation": null,
-    "color-hex-length": null,
-    "custom-property-empty-line-before": null,
-    "media-feature-range-notation": null,
-    "selector-class-pattern": null
+    "order/order": ["custom-properties", "declarations"],
+    "order/properties-alphabetical-order": true,
+    "selector-class-pattern": null,
+    "color-hex-length": "short",
+    "declaration-empty-line-before": null
   }
 }
