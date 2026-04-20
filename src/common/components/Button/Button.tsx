@@ -1,24 +1,22 @@
 import { ComponentPropsWithoutRef, ReactNode } from 'react';
 import s from './Button.module.css';
 
-// Обновляем список вариантов под макет
+
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'link';
 
-interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
+type Props =  {
   variant?: ButtonVariant;
   children: ReactNode;
-  fullWidth?: boolean;
-}
+} & ComponentPropsWithoutRef<'button'>
 
 export const Button = ({
                          variant = 'primary',
-                         fullWidth,
                          children,
                          className,
                          ...rest
-                       }: ButtonProps) => {
+                       }: Props) => {
 
-  const classNames = `${s.button} ${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className || ''}`;
+  const classNames = `${s.button} ${s[variant]} ${className || ''}`;
 
   return (
     <button className={classNames} {...rest}>
