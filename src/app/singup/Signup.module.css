@@ -6,8 +6,8 @@
   align-items: center;
   padding-top: 30px;
   gap: 30px;
-  background-color: #171717;
-  border: 1px solid #333333;
+  background-color: var(--dark-500);
+  border: 1px solid var(--dark-300);
 }
 
 .registration_page {
