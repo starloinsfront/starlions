@@ -1,0 +1,44 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-labelledby="title desc" role="img">
+  <title id="title">Звёздный Лев Программист</title>
+  <desc id="desc">Минималистичный логотип: голова льва с звёздами и элементами кода</desc>
+
+  <!-- Фон (опционально, для preview) -->
+  <rect width="400" height="400" fill="#0a0a2e"/>
+
+  <!-- Голова льва (круг) -->
+  <circle cx="200" cy="200" r="120" fill="#f4c430" stroke="#d4a017" stroke-width="20"/>
+
+  <!-- Грива (стилизованные лучи/звёздный ореол) -->
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#ffaa00" stroke-width="40" stroke-opacity="0.7"/>
+
+  <!-- Уши льва -->
+  <path d="M100 120 Q70 80 90 50" fill="#f4c430" stroke="#d4a017" stroke-width="15"/>
+  <path d="M300 120 Q330 80 310 50" fill="#f4c430" stroke="#d4a017" stroke-width="15"/>
+
+  <!-- Морда и нос -->
+  <ellipse cx="200" cy="220" rx="60" ry="50" fill="#e6b800"/>
+  <ellipse cx="200" cy="200" rx="20" ry="15" fill="#2c3e50"/> <!-- нос -->
+
+  <!-- Глаза -->
+  <circle cx="160" cy="180" r="15" fill="#2c3e50"/>
+  <circle cx="240" cy="180" r="15" fill="#2c3e50"/>
+  <!-- Блик в глазах -->
+  <circle cx="165" cy="175" r="5" fill="#ffffff"/>
+
+  <!-- Звёзды вокруг головы -->
+  <!-- Большая звезда на лбу -->
+  <polygon points="200,90 210,120 245,120 217,140 225,170 200,155 175,170 183,140 155,120 190,120" fill="#a0d8ff" stroke="#ffffff" stroke-width="4"/>
+
+  <!-- Маленькие звёзды -->
+  <polygon points="80,100 85,115 70,120 88,122 85,135 95,125" fill="#a0d8ff"/>
+  <polygon points="320,90 325,105 310,110 328,112 325,125 335,115" fill="#a0d8ff"/>
+  <polygon points="120,300 130,310 110,315 135,317 125,330" fill="#a0d8ff" opacity="0.8"/>
+  <polygon points="280,290 290,300 270,305 295,307 285,320" fill="#a0d8ff" opacity="0.8"/>
+
+  <!-- Элемент программиста: скобки кода внизу -->
+  <text x="140" y="340" font-family="monospace" font-size="45" font-weight="bold" fill="#00ffcc" letter-spacing="-5">&lt;/&gt;</text>
+
+  <!-- Лёгкая текстура кода в гриве (опционально простые линии) -->
+  <line x1="90" y1="140" x2="110" y2="170" stroke="#2c3e50" stroke-width="4" opacity="0.4"/>
+  <line x1="290" y1="140" x2="270" y2="170" stroke="#2c3e50" stroke-width="4" opacity="0.4"/>
+</svg>
