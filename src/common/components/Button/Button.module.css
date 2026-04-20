@@ -1,0 +1,108 @@
+.button {
+  padding: 12px 24px;
+  border-radius: 2px;
+  font-family: sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+  border: none;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* Disabled*/
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================= */
+/* 1. PRIMARY */
+.primary {
+  background-color: var(--accent-500);
+  color: var(--light-100);
+}
+
+.primary:hover:not(:disabled) {
+  background-color: var(--accent-100); /* Hover */
+}
+
+.primary:active:not(:disabled) {
+  background-color: var(--accent-700); /* Active */
+}
+
+.primary:focus:not(:disabled) {
+  /* Голубой аутлайн с отступом */
+  background-color: var(--accent-500); /* Focus */
+}
+
+/* ========================================= */
+/* 2. SECONDARY (Серая, залитая) */
+.secondary {
+  background-color: var(--dark-300); /* Default */
+  color: var(--light-100);
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: var(--dark-100); /* Hover */
+}
+
+.secondary:active:not(:disabled) {
+  background-color: var(--dark-500); /* Active */
+}
+
+.secondary:focus:not(:disabled) {
+  background-color: var(--dark-300);  /* Focus */
+}
+
+/* ========================================= */
+/* 3. OUTLINE */
+.outline {
+  background-color: transparent;
+  border: 1px solid var(--accent-500); /* Default */
+  color: var(--accent-500);
+}
+
+.outline:hover:not(:disabled) {
+  border-color: var(--accent-100); /* Hover */
+  color: var(--accent-100);
+}
+
+.outline:active:not(:disabled) {
+  border-color: var(--accent-700); /* Active */
+  color: var(--accent-700);
+}
+
+.outline:focus:not(:disabled) {
+  border-color: var(--accent-700); /* Focus */
+  color: var(--accent-700);
+}
+
+/* ========================================= */
+/* 4. LINK */
+.link {
+  background-color: transparent;
+  padding: 0;
+  color: var(--accent-500); /* Default */
+  border: none;
+}
+
+.link:hover:not(:disabled) {
+  color: var(--accent-100); /* Hover */
+}
+
+.link:active:not(:disabled) {
+  color: var(--accent-700); /* Active */
+}
+
+.link:focus:not(:disabled) {
+  border: 2px solid var(--accent-700);
+}
