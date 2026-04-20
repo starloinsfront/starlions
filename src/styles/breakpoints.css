@@ -1,9 +1,12 @@
-:root {
-  /* Breakpoints для медиа-запросов */
-  --breakpoint-small-mobile: 320px;
-  --breakpoint-mobile: 576px;
-  --breakpoint-tablet: 768px;
-  --breakpoint-laptop: 992px;
-  --breakpoint-desktop: 1200px;
-  --breakpoint-large-desktop: 1400px;
-}
+/* noinspection CssInvalidAtRule,PostCssCustomMedia */
+@custom-media --small-mobile (width >= 320px);
+@custom-media --mobile (width >= 576px);
+@custom-media --tablet (width >= 768px);
+@custom-media --laptop (width >= 992px);
+@custom-media --desktop (width >= 1200px);
+@custom-media --large-desktop (width >= 1400px);
+@custom-media --small-mobile-only (width < 576px);
+@custom-media --mobile-only (576px <= width < 768px);
+@custom-media --tablet-only (768px <= width < 992px);
+@custom-media --laptop-only (992px <= width < 1200px);
+@custom-media --desktop-only (1200px <= width < 1400px);
