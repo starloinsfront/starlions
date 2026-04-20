@@ -1,3 +1,5 @@
+@import url("../styles/breakpoints.css");
+
 :root {
   --background: var(--light-100);
   --foreground: var(--dark-500);
