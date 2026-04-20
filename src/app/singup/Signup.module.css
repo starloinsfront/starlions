@@ -1,0 +1,35 @@
+.signup_container {
+  width: 378px;
+  height: 648px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+  gap: 30px;
+  background-color: #171717;
+  border: 1px solid #333333;
+}
+
+.registration_page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.consent_container {
+  display: flex;
+  gap: 5px;
+}
+
+.auth_providers {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 30px;
+}
+
+.consert_text {
+  font-size: 12px;
+}
