@@ -12,7 +12,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  font-family: var(--font-geist-sans, Arial, sans-serif);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
   justify-content: center;
 }
 
@@ -105,7 +105,8 @@ a.secondary {
   }
 }
 
-@media (width <= 600px) {
+/* noinspection CssInvalidMediaFeature */
+@media (--small-mobile-only) {
   .main {
     padding: 48px 24px;
   }
