@@ -1,16 +1,19 @@
-import type { Preview } from "@storybook/nextjs-vite";
-import "../src/styles/colorPalitre.css";
+import type { Preview } from "@storybook/nextjs-vite"
+/* Fonts (Fontsource Inter) */
+import "@fontsource/inter/400.css"
+import "@fontsource/inter/600.css"
+import "@fontsource/inter/700.css"
+
+import "../src/app/globals.css"
 
 const preview: Preview = {
   decorators: [
     (Story) => (
-      <div style={{
-        backgroundColor: '#0D0D0D',
-        padding: '3rem',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
+      <div
+        style={{
+          fontFamily: "Inter, sans-serif",
+        }}
+      >
         <Story />
       </div>
     ),
@@ -25,6 +28,6 @@ const preview: Preview = {
       ],
     },
   },
-};
+}
 
-export default preview;
+export default preview
