@@ -1,0 +1,24 @@
+:root {
+  /* globals */
+  --font-family-primary: 'Inter', sans-serif;
+
+  /* font-sizes */
+  --font-size-xs: 12px; /* small_text, small_link */
+  --font-size-s: 14px; /* regular_text_14, bold_text_14 */
+  --font-size-m: 16px; /* regular_text_16, bold_text_16 */
+  --font-size-l: 18px; /* H2 */
+  --font-size-xl: 20px; /* H1 */
+  --font-size-xxl: 26px; /* Large */
+
+  /* line-heights */
+  --line-height-s: 16px;       /* Для 12px текста */
+  --line-height-m: 24px;       /* Стандарт для 14px-16px */
+  --line-height-l: 30px;       /* Для средних заголовков */
+  --line-height-xl: 36px;      /* Для крупных заголовков */
+
+  /* font-weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semi-bold: 600;
+  --font-weight-bold: 700;
+}
