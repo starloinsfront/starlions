@@ -1,29 +1,27 @@
 .button {
-  padding: 6px 24px;
-  border-radius: 2px;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  cursor: pointer;
-  transition: 0.1s ease-in-out;
-  border: none;
-  outline: none;
-  display: inline-flex;
   align-items: center;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semi-bold);
   justify-content: center;
+  line-height: var(--line-height-m);
+  outline: none;
+  padding: 6px 24px;
+  transition: 0.1s ease-in-out;
+
 }
 
-.fullWidth {
-  width: 100%;
-}
-
-/* Disabled*/
+/* Disabled */
 .button:disabled {
-  opacity: 0.5;
   cursor: not-allowed;
+  opacity: 0.5;
+
 }
 
-/* ========================================= */
 /* 1. PRIMARY */
 .primary {
   background-color: var(--accent-500);
@@ -43,7 +41,6 @@
   background-color: var(--accent-500); /* Focus */
 }
 
-/* ========================================= */
 /* 2. SECONDARY (Серая, залитая) */
 .secondary {
   background-color: var(--dark-300); /* Default */
@@ -62,7 +59,6 @@
   background-color: var(--dark-300);  /* Focus */
 }
 
-/* ========================================= */
 /* 3. OUTLINE */
 .outline {
   background-color: transparent;
@@ -85,13 +81,12 @@
   color: var(--accent-700);
 }
 
-/* ========================================= */
 /* 4. LINK */
 .link {
   background-color: transparent;
-  padding: 0;
-  color: var(--accent-500); /* Default */
   border: none;
+  color: var(--accent-500); /* Default */
+  padding: 0;
 }
 
 .link:hover:not(:disabled) {
