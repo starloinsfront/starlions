@@ -1,7 +1,4 @@
 :root {
-  /* globals */
-  --font-family-primary: 'Inter', sans-serif;
-
   /* font-sizes */
   --font-size-xs: 12px; /* small_text, small_link */
   --font-size-s: 14px; /* regular_text_14, bold_text_14 */
@@ -21,4 +18,103 @@
   --font-weight-medium: 500;
   --font-weight-semi-bold: 600;
   --font-weight-bold: 700;
+}
+
+/* --- Section classes --- */
+
+.large {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-xl);
+}
+
+.h1 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-xl);
+}
+
+.h2 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+}
+
+.h3 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-m);
+}
+
+.regularText16 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.boldText16 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+}
+
+.regularText14 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.mediumText14 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-m);
+}
+
+.boldText14 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+}
+
+.smallText {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-s);
+}
+
+.semiBoldSmallText {
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-s);
+}
+
+.regularLink {
+  color: var(--accent-500);
+  cursor: pointer;
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+  text-decoration: underline;
+}
+
+.smallLink {
+  color: var(--accent-500);
+  cursor: pointer;
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-s);
+  text-decoration: underline;
 }
