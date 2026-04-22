@@ -1,35 +1,73 @@
-.signup_container {
-  width: 378px;
-  height: 648px;
-  display: flex;
-  flex-direction: column;
+/* stylelint-disable selector-class-pattern */
+.signupContainer {
   align-items: center;
-  padding-top: 30px;
-  gap: 30px;
   background-color: var(--dark-500);
   border: 1px solid var(--dark-300);
-}
-
-.registration_page {
-  width: 100%;
-  height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  height: 648px;
+  padding-top: 30px;
+  width: 378px;
 }
 
-.consent_container {
+.registrationPage {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  width: 100%;
+}
+
+.consentContainer {
   display: flex;
   gap: 5px;
 }
 
-.auth_providers {
+.authProviders {
   display: flex;
-  width: 100%;
-  justify-content: center;
   gap: 30px;
+  justify-content: center;
+  width: 100%;
 }
 
-.consert_text {
+.signupForm {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 20px;
+  width: calc(100% - 48px);
+}
+
+.regItem {
+  width: 100%;
+}
+
+.submitButton {
+  width: 100%;
+}
+
+.consentText {
+  color: var(--light-100);
   font-size: 12px;
 }
+
+.authText {
+  font-size: 16px;
+  color: var(--light-100);
+}
+
+.authLink {
+  font-size: 16px;
+  color: var(--accent-500);
+}
+
+.singUpTitle {
+  color: var(--light-100);
+  font-size: 20px;
+  line-height: 36px;
+  font-weight: 700;
+}
+
+/* stylelint-enable selector-class-pattern */
