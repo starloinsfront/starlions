@@ -1,0 +1,31 @@
+.iconButton {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  padding: 12px 16px;
+  transition: background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.iconButton:hover {
+  color: var(--accent-100);
+}
+
+.iconButton:focus-visible {
+  outline: 2px solid var(--accent-100);
+  outline-offset: 2px;
+}
+
+.active {
+  color: var(--icon-button-active-color);
+}
+
+.icon {
+  flex-shrink: 0;
+}
