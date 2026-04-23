@@ -31,6 +31,10 @@
   width: 100%;
 }
 
+.authIcon {
+  color: var(--light-100);
+}
+
 .signupForm {
   align-items: center;
   display: flex;
@@ -54,20 +58,25 @@
 }
 
 .authText {
-  font-size: 16px;
   color: var(--light-100);
+  font-size: 16px;
 }
 
 .authLink {
-  font-size: 16px;
   color: var(--accent-500);
+  font-size: 16px;
 }
 
 .singUpTitle {
   color: var(--light-100);
   font-size: 20px;
-  line-height: 36px;
   font-weight: 700;
+  line-height: 36px;
+}
+
+.regLink {
+  text-decoration: underline;
+  color: var(--accent-500);
 }
 
 /* stylelint-enable selector-class-pattern */
