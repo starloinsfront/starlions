@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react"
 
 import { Icon } from "@/common/components/Icon/Icon"
@@ -28,9 +29,7 @@ export const IconButton = ({
   type = "button",
   ...props
 }: Props) => {
-  const buttonClassName = [s.iconButton, isActive ? s.active : "", className]
-    .filter(Boolean)
-    .join(" ")
+  const buttonClassName = clsx(s.iconButton, { [s.active]: isActive }, className)
   const resolvedIconName = isActive && activeIconName ? activeIconName : iconName
   const activeColor = color ?? "var(--accent-500)"
   const buttonStyle = {

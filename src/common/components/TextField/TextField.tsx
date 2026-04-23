@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { ComponentPropsWithoutRef, ReactNode, useId, useState } from "react"
 import s from "./TextField.module.css"
 
@@ -27,8 +28,8 @@ export const TextField = ({
   const isPassword = type === "password"
   const inputType = isPassword && showPassword ? "text" : type
 
-  const containerClasses = `${s.inputContainer} ${errorMessage ? s.error : ""} ${containerClassName || ""}`
-  const inputClasses = `${s.input} ${iconStart ? s.withIconStart : ""} ${iconEnd || isPassword ? s.withIconEnd : ""} ${className || ""}`
+  const containerClasses = clsx(s.inputContainer, { [s.error]: errorMessage }, containerClassName)
+  const inputClasses = clsx(s.input, { [s.withIconStart]: iconStart, [s.withIconEnd]: iconEnd || isPassword }, className)
 
   return (
     <div className={containerClasses}>
