@@ -1,3 +1,4 @@
+import { Icon } from "../Icon/Icon"
 import { NavLink } from "./NavLink/NavLink"
 import { sidebarSections } from "./sidebar.data"
 import styles from "./Sidebar.module.css"
@@ -12,7 +13,8 @@ export const Sidebar = () => {
           {main?.map((link) => (
             <li key={link.href}>
               <NavLink href={link.href}>
-                {link.icon} {link.title}
+                <Icon name={link.icon} />
+                {link.title}
               </NavLink>
             </li>
           ))}
@@ -23,7 +25,8 @@ export const Sidebar = () => {
           {secondary?.map((link, index) => (
             <li key={index}>
               <NavLink href={link.href}>
-                {link.icon} {link.title}
+                <Icon name={link.icon} />
+                {link.title}
               </NavLink>
             </li>
           ))}

@@ -1,7 +1,9 @@
+import { IconName } from "../Icon/Icon"
+
 export type SidebarLink = {
   title: string
   href: string
-  icon: string
+  icon: IconName
   disabled?: boolean
 }
 

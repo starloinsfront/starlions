@@ -17,10 +17,18 @@
   flex-direction: column;
 }
 
+.sidebarSection li:not(:first-child) {
+  margin-top: 24px;
+}
+
 .sidebarSection + .sidebarSection {
   margin-top: 60px;
 }
 
 .logoutSection {
   margin-top: auto;
+  padding-top: 60px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
