@@ -1,8 +1,9 @@
 import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react"
 
-import { Icon, type IconName } from "@/common/components/Icon/Icon"
+import { Icon } from "@/common/components/Icon/Icon"
 
 import s from "./IconButton.module.css"
+import { IconName } from "@/common/components/Icon/IconNameType"
 
 type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
   activeIconName?: IconName
