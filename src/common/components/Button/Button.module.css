@@ -15,6 +15,10 @@
 
 }
 
+.fullWidth {
+  width: 100%;
+}
+
 /* Disabled */
 .button:disabled {
   cursor: not-allowed;
