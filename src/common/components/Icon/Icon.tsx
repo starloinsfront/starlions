@@ -1,12 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react"
-
-export type IconName =
-  | "addFilled"
-  | "addOutline"
-  | "homeFilled"
-  | "homeOutline"
-  | "personFilled"
-  | "personOutline"
+import { IconName } from "@/common/components/Icon/IconNameType"
 
 type Props = Omit<ComponentPropsWithoutRef<"svg">, "children"> & {
   name: IconName
