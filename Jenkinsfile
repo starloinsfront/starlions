@@ -6,7 +6,7 @@ pipeline {
         ENV_TYPE = "production"
         PORT = 4289
         NAMESPACE = "starlionstech-org"
-        REGISTRY_HOSTNAME = "starlionstech"
+        REGISTRY_HOSTNAME = "starlionsfront"
         REGISTRY = "registry.hub.docker.com"
         PROJECT = "starlions-front"
         DEPLOYMENT_NAME = "starlions-front-deployment"

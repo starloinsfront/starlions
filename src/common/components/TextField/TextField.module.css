@@ -1,0 +1,117 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--light-900);
+  line-height: 1;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 12px;
+  width: 100%;
+
+  background-color: transparent;
+  border: 1px solid var(--dark-100);
+  border-radius: 2px;
+  color: var(--light-100);
+  font-size: 16px;
+  font-weight: 400;
+  height: 36px;
+  line-height: 24px;
+  padding: 0 12px;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: var(--light-900);
+  opacity: 1;
+}
+
+/* --- СОСТОЯНИЯ (STATES) --- */
+
+/* Hover */
+.input:hover:not(:disabled, :focus) {
+  border-color: var(--light-700);
+}
+
+/* Active / Focus */
+.input:active:not(:disabled) {
+  border-color: var(--light-100);
+  outline: none;
+  border-color: var(--light-100);
+}
+
+
+.input:focus {
+  border-color: var(--accent-300);
+}
+
+/* Error State */
+.error .input {
+  border-color: var(--danger-500);
+}
+
+.errorText {
+  color: var(--danger-300);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Disabled */
+.input:disabled {
+  border-color: var(--dark-300);
+  color: var(--dark-100);
+  cursor: not-allowed;
+}
+
+.input:disabled::placeholder {
+  color: var(--dark-100);
+}
+
+/* --- ICONS --- */
+
+.iconStart, .iconEnd {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--light-100);
+  pointer-events: none;
+}
+
+.iconStart {
+  left: 12px;
+}
+
+.iconEnd {
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.withIconStart {
+  padding-left: 36px;
+}
+
+.withIconEnd {
+  padding-right: 36px;
+}
