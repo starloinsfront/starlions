@@ -1,11 +1,11 @@
-const postcssConfig = {
-  plugins: [
-    async () => {
-      const { default: postcssCustomMedia } = await import("postcss-custom-media")
-      return postcssCustomMedia()
-    },
-    "autoprefixer",
-  ],
-}
+import postcssCustomMedia from "postcss-custom-media";
+import autoprefixer from "autoprefixer";
 
-export default postcssConfig
+const postcssConfig = {
+  plugins: {
+    "postcss-custom-media": postcssCustomMedia(),
+    autoprefixer: autoprefixer(),
+  },
+};
+
+export default postcssConfig;
