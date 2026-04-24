@@ -8,8 +8,9 @@
 .label {
   color: var(--light-900);
   font-size: var(--font-size-s);
-  line-height: 1;
+  line-height: var(--line-height-m);
 }
+
 
 .inputWrapper {
   align-items: center;
@@ -35,10 +36,41 @@
 
 .input::placeholder {
   color: var(--light-900);
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
   opacity: 1;
 }
 
+/* Error State */
+.error .input {
+  border-color: var(--danger-500);
+}
+
+.errorText {
+  color: var(--danger-300);
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
+  margin-top: 4px;
+}
+
+.error .input:hover:not(:disabled, :focus) {
+  border-color: var(--danger-500);
+}
+
+
 /* --- СОСТОЯНИЯ (STATES) --- */
+.input:focus {
+  border-color: var(--accent-300);
+}
+
+/* Disabled */
+.input:disabled {
+  border-color: var(--dark-300);
+  color: var(--dark-100);
+  cursor: not-allowed;
+}
 
 /* Hover */
 .input:hover:not(:disabled, :focus) {
@@ -51,29 +83,6 @@
   outline: none;
 }
 
-
-.input:focus {
-  border-color: var(--accent-300);
-}
-
-/* Error State */
-.error .input {
-  border-color: var(--danger-500);
-}
-
-.errorText {
-  color: var(--danger-300);
-  font-size: var(--font-size-xs);
-  margin-top: 4px;
-}
-
-/* Disabled */
-.input:disabled {
-  border-color: var(--dark-300);
-  color: var(--dark-100);
-  cursor: not-allowed;
-}
-
 .input:disabled::placeholder {
   color: var(--dark-100);
 }
@@ -82,17 +91,18 @@
 
 .iconStart, .iconEnd {
   align-items: center;
-  color: var(--light-100);
+  color: var(--light-900);
   display: flex;
+  height: 20px;
   justify-content: center;
   pointer-events: none;
   position: absolute;
+  width: 20px;
 }
 
 .iconStart {
-  left: 8px;
+  left: 12px;
 }
-
 
 .iconEnd {
   background: none;
@@ -100,7 +110,7 @@
   cursor: pointer;
   padding: 0;
   pointer-events: auto;
-  right: 8px;
+  right: 12px;
 }
 
 .withIconStart {

@@ -40,9 +40,18 @@ export const Outline: Story = {
   },
 }
 
+export const FullWidth: Story = {
+  args: {
+    variant: "primary",
+    fullWidth: true,
+    children: "Full Width Button",
+  },
+}
+
 export const Link: Story = {
   args: {
     variant: "link",
+    asChild: true,
     children: <a href="/sign-up">Sign Up</a>,
   },
 }
