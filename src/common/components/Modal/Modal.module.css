@@ -1,0 +1,104 @@
+button,
+fieldset,
+input {
+  all: unset;
+}
+
+.Overlay {
+  background-color: var(--dark-700);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.Content {
+  background-color: var(--dark-300);
+  border: 1px solid var(--dark-100);
+  box-shadow:
+    hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-height: 85vh;
+  margin: 20px;
+  overflow: hidden;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.Content:focus {
+  outline: none;
+}
+
+.sm {
+  max-width: 378px;
+}
+
+.md {
+  max-width: 492px;
+}
+
+.lg {
+  max-width: 644px;
+}
+
+.Header {
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--dark-100);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Title {
+  margin: 0;
+  font-weight: 700;
+  color: var(--light-100);
+  font-size: 20px;
+}
+
+.IconButton {
+  all: unset;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--light-100);
+  background-color: transparent;
+  cursor: pointer;
+}
+.IconButton:hover {
+  background-color: var(--dark-100);
+}
+.MainContent {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 24px;
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

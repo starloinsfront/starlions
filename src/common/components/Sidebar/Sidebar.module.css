@@ -1,0 +1,37 @@
+.sidebar {
+  max-width: 220px;
+  width: 100%;
+  min-height: 0;
+  border-right: 1px solid var(--dark-100);
+  grid-area: sidebar;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 72px 0 36px 60px;
+}
+
+.sidebarSection {
+  display: flex;
+  flex-direction: column;
+}
+.sidebarSection ul {
+  list-style: none;
+}
+
+.sidebarSection li:not(:first-child) {
+  margin-top: 24px;
+}
+
+.sidebarSection + .sidebarSection {
+  margin-top: 60px;
+}
+
+.logoutSection {
+  margin-top: auto;
+  padding-top: 60px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}

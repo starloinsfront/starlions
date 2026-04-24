@@ -1,0 +1,32 @@
+.header {
+  grid-area: header;
+  position: sticky;
+  top: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  border-bottom: 1px solid var(--dark-100);
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--light-100);
+}
+
+.inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+}
