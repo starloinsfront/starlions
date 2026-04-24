@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { Button } from "./Button"
+import { Icon } from "@/common/components/Icon/Icon"
 
 const meta = {
   title: "Components/Button",
@@ -37,6 +38,14 @@ export const Outline: Story = {
   args: {
     variant: "outline",
     children: "Outline Button",
+  },
+}
+
+export const LanguageSwitcher: Story = {
+  args: {
+    variant: "secondary",
+    iconStart: <Icon name="flagRussiaFilled" />,
+    children: "Russian",
   },
 }
 

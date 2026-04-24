@@ -10,6 +10,7 @@ type Props = {
   variant?: ButtonVariant
   children: ReactNode
   fullWidth?: boolean
+  iconStart?: ReactNode
 } & ComponentPropsWithoutRef<"button">
 
 export const Button = ({
@@ -18,13 +19,15 @@ export const Button = ({
   children,
   className,
   fullWidth,
+  iconStart,
   ...rest
 }: Props) => {
-  const classNames = clsx(s.button, s[variant], { [s.fullWidth]: fullWidth }, className)
+  const classNames = clsx(s.button, s[variant], { [s.fullWidth]: fullWidth, [s.languageSwitcher]: !!iconStart }, className)
   const Component = asChild ? Slot : "button"
 
   return (
     <Component className={classNames} {...rest}>
+      {iconStart && <span className={s.iconStart}>{iconStart}</span>}
       {children}
     </Component>
   )
