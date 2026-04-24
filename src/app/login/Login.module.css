@@ -5,7 +5,7 @@
   border: 1px solid var(--dark-300);
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 25px;
   height: 504px;
   padding-top: 30px;
   width: 378px;
@@ -26,11 +26,15 @@
   width: 100%;
 }
 
+.authIcon {
+  color: var(--light-100);
+}
+
 .loginForm {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
   width: calc(100% - 48px);
 }
 
@@ -45,16 +49,18 @@
 .forgotPassword {
   text-align: right;
   width: 100%;
+  font-size: var(--font-size-s);
+  color: var(--light-900);
 }
 
 .authText {
-  font-size: 16px;
   color: var(--light-100);
+  font-size: 16px;
 }
 
 .authLink {
-  font-size: 16px;
   color: var(--accent-500);
+  font-size: 16px;
 }
 
 /* stylelint-enable selector-class-pattern */
