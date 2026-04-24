@@ -1,40 +1,76 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import { fn } from "storybook/test"
+import { Icon } from "@/common/components/Icon/Icon"
 import { TextField } from "./TextField"
 
 const meta = {
   title: "Components/TextField",
   component: TextField,
   tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
+  args: {
+    onChange: fn(),
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 320 }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof TextField>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Обычный инпут
 export const Default: Story = {
   args: {
     label: "Email",
-    placeholder: "Enter your email...",
+    placeholder: "Enter your email",
+    type: "email",
   },
 }
 
-// Инпут с ошибкой
-export const WithError: Story = {
+export const Password: Story = {
   args: {
     label: "Password",
-    errorMessage: "Error text",
+    placeholder: "Enter your password",
     type: "password",
-    value: "wrong-password",
   },
 }
 
-// Инпут поиска (с иконкой)
-export const Search: Story = {
+export const WithError: Story = {
   args: {
-    placeholder: "Search...",
-    type: "search",
-    // Здесь можно передать иконку, когда добавишь их в проект
-    iconStart: null,
-    iconEnd: null,
+    label: "Email",
+    placeholder: "Enter your email",
+    type: "email",
+    value: "wrong-email",
+    errorMessage: "Invalid email address",
+  },
+}
+
+export const Disabled: Story = {
+  args: {
+    label: "Email",
+    placeholder: "Enter your email",
+    type: "email",
+    disabled: true,
+  },
+}
+
+export const WithIconStart: Story = {
+  args: {
+    placeholder: "Search",
+    iconStart: <Icon name="searchOutline" />,
+  },
+}
+
+export const WithIconEnd: Story = {
+  args: {
+    label: "Username",
+    placeholder: "Enter username",
+    iconEnd: <Icon name="personOutline" />,
   },
 }

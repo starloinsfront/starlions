@@ -90,7 +90,6 @@
   background-color: transparent;
   border: none;
   color: var(--accent-500); /* Default */
-  padding: 0;
 }
 
 .link:hover:not(:disabled) {
@@ -101,6 +100,6 @@
   color: var(--accent-700); /* Active */
 }
 
-.link:focus:not(:disabled) {
+.link:focus-visible:not(:disabled) {
   border: 2px solid var(--accent-700);
 }

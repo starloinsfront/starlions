@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { ComponentPropsWithoutRef, ReactNode, useId, useState } from "react"
 import s from "./TextField.module.css"
+import { Icon } from "@/common/components/Icon/Icon"
 
 export type Props = {
   label?: string
@@ -29,7 +30,11 @@ export const TextField = ({
   const inputType = isPassword && showPassword ? "text" : type
 
   const containerClasses = clsx(s.inputContainer, { [s.error]: errorMessage }, containerClassName)
-  const inputClasses = clsx(s.input, { [s.withIconStart]: iconStart, [s.withIconEnd]: iconEnd || isPassword }, className)
+  const inputClasses = clsx(
+    s.input,
+    { [s.withIconStart]: iconStart, [s.withIconEnd]: iconEnd || isPassword },
+    className,
+  )
 
   return (
     <div className={containerClasses}>
@@ -50,7 +55,7 @@ export const TextField = ({
             className={s.iconEnd}
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? "👁️" : "🕶️"}
+            {showPassword ? <Icon name="eyeOffOutline" /> : <Icon name="eyeOutline" />}
           </button>
         ) : (
           iconEnd && <span className={s.iconEnd}>{iconEnd}</span>
