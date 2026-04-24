@@ -54,24 +54,24 @@
 
 .consentText {
   color: var(--light-100);
-  font-size: 12px;
+  font-size: var(--font-size-xs);
 }
 
 .authText {
   color: var(--light-100);
-  font-size: 16px;
+  font-size: var(--font-size-m);
 }
 
 .authLink {
   color: var(--accent-500);
-  font-size: 16px;
+  font-size: var(--font-size-m);
 }
 
 .singUpTitle {
   color: var(--light-100);
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 36px;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-xl);
 }
 
 .regLink {

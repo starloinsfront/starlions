@@ -10,6 +10,7 @@
     }
   ],
   "rules": {
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9-]*$",
     "order/order": ["custom-properties", "declarations"],
     "order/properties-alphabetical-order": true,
     "color-hex-length": "long",

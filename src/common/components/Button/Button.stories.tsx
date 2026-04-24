@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { Button } from "./Button"
+import { Icon } from "@/common/components/Icon/Icon"
 
 const meta = {
   title: "Components/Button",
   component: Button,
-  parameters: {
-    layout: "centered", // Отрисует кнопку ровно по центру экрана
-  },
   tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
   argTypes: {
-    // Настройка удобных переключателей для Storybook
     variant: {
       options: ["primary", "secondary", "outline", "link"],
       control: { type: "select" },
@@ -23,7 +23,7 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
   args: {
     variant: "primary",
-    children: "Primary Next Button",
+    children: "Primary Button",
   },
 }
 
@@ -41,9 +41,26 @@ export const Outline: Story = {
   },
 }
 
+export const LanguageSwitcher: Story = {
+  args: {
+    variant: "secondary",
+    iconStart: <Icon name="flagRussiaFilled" />,
+    children: "Russian",
+  },
+}
+
+export const FullWidth: Story = {
+  args: {
+    variant: "primary",
+    fullWidth: true,
+    children: "Full Width Button",
+  },
+}
+
 export const Link: Story = {
   args: {
     variant: "link",
-    children: "Link Button",
+    asChild: true,
+    children: <a href="/sign-up">Sign Up</a>,
   },
 }

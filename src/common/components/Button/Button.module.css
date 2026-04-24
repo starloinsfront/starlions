@@ -7,12 +7,18 @@
   font-family: inherit;
   font-size: var(--font-size-m);
   font-weight: var(--font-weight-semi-bold);
+  gap: 10px;
   justify-content: center;
   line-height: var(--line-height-m);
   outline: none;
   padding: 6px 24px;
   transition: 0.1s ease-in-out;
+}
 
+.iconStart {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
 }
 
 .fullWidth {
@@ -90,7 +96,6 @@
   background-color: transparent;
   border: none;
   color: var(--accent-500); /* Default */
-  padding: 0;
 }
 
 .link:hover:not(:disabled) {
@@ -101,6 +106,11 @@
   color: var(--accent-700); /* Active */
 }
 
-.link:focus:not(:disabled) {
+.link:focus-visible:not(:disabled) {
   border: 2px solid var(--accent-700);
+}
+
+/* 5. LANGUAGE SWITCHER */
+.languageSwitcher {
+  padding: 6px 12px;
 }
