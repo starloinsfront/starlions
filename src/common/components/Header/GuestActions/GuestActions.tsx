@@ -1,14 +1,16 @@
 import { Button } from "../../Button/Button"
 import { LanguageSelect } from "../LanguageSelect/LanguageSelect"
-import s from "./GuestActions.module.css"
+import styles from "./GuestActions.module.css"
 
 export function GuestActions() {
   return (
     <>
       <LanguageSelect />
-      <div className={s.linkBox}>
-        <Button variant="link">Log in</Button>
-        <Button>Sign up</Button>
+      <div className={styles.linkBox}>
+        <Button variant="link" className={styles.linkBtn}>
+          Log in
+        </Button>
+        <Button className={styles.linkBtn}>Sign up</Button>
       </div>
     </>
   )

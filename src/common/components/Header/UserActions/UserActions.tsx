@@ -1,3 +1,4 @@
+import { Icon } from "../../Icon/Icon"
 import { LanguageSelect } from "../LanguageSelect/LanguageSelect"
 import s from "./UserActions.module.css"
 
@@ -5,7 +6,8 @@ export function UserActions() {
   return (
     <>
       <button className={s.iconButton}>
-        🔔<span>1</span>
+        <Icon name="bookmarkOutline" />
+        <span>1</span>
       </button>
       <LanguageSelect />
     </>

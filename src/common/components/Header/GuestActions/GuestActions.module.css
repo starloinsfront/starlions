@@ -3,3 +3,9 @@
   display: flex;
   gap: 24px;
 }
+
+.linkBtn {
+  width: 100px;
+  height: 36px;
+  padding: 6px 5px;
+}

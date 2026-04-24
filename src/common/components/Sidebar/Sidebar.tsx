@@ -1,4 +1,5 @@
 import { Icon } from "../Icon/Icon"
+import { IconButton } from "../IconButton/IconButton"
 import { NavLink } from "./NavLink/NavLink"
 import { sidebarSections } from "./sidebar.data"
 import styles from "./Sidebar.module.css"
@@ -33,7 +34,7 @@ export const Sidebar = () => {
         </ul>
       </nav>
       <div className={styles.logoutSection}>
-        <button>Logout</button>
+        <IconButton iconName="logOutOutline">Logout</IconButton>
       </div>
     </aside>
   )
