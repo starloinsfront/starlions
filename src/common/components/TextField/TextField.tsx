@@ -1,5 +1,6 @@
 import {ComponentPropsWithoutRef, ReactNode, useId, useState} from "react"
 import s from "./TextField.module.css"
+import { Icon } from "@/common/components/Icon/Icon"
 
 export type Props = {
   label?: string
@@ -10,16 +11,16 @@ export type Props = {
 } & ComponentPropsWithoutRef<"input">
 
 export const TextField = ({
-                            label,
-                            errorMessage,
-                            iconStart,
-                            iconEnd,
-                            className,
-                            containerClassName,
-                            type,
-                            id,
-                            ...rest
-                          }: Props) => {
+  label,
+  errorMessage,
+  iconStart,
+  iconEnd,
+  className,
+  containerClassName,
+  type,
+  id,
+  ...rest
+}: Props) => {
   const [showPassword, setShowPassword] = useState(false)
   const generatedId = useId()
   const finalId = id || generatedId
@@ -54,10 +55,9 @@ export const TextField = ({
         ) : (
           iconEnd && <span className={s.iconEnd}>{iconEnd}</span>
         )}
-
       </div>
-      {errorMessage && <span className={s.errorText}>{errorMessage}</span>}
 
+      {errorMessage && <span className={s.errorText}>{errorMessage}</span>}
     </div>
   )
 }
