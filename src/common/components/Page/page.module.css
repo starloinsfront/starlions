@@ -1,7 +1,5 @@
 .page {
-  background: radial-gradient(circle at top left, rgb(57 125 246 / 18%), transparent 28%),
-    radial-gradient(circle at top right, rgb(255 255 255 / 5%), transparent 24%),
-    linear-gradient(180deg, var(--dark-900) 0%, var(--dark-700) 100%);
+  background-color: var(--dark-700);
   color: var(--light-100);
   min-height: 100vh;
 }
