@@ -1,20 +1,10 @@
 .navLink {
-  font-family: Inter, sans-serif;
-  font-weight: 500;
-  font-style: Medium;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 0%;
-
-  display: flex;
   align-items: center;
-  gap: 12px;
-
   border-radius: 4px;
-
   color: var(--light-100);
+  display: flex;
+  gap: 12px;
   text-decoration: none;
-
   transition:
     color 0.2s ease,
     background-color 0.2s ease,
