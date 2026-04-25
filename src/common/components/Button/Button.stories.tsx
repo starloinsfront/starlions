@@ -9,9 +9,12 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    children: "Button",
+  },
   argTypes: {
     variant: {
-      options: ["primary", "secondary", "outline", "link"],
+      options: ["primary", "secondary", "outline", "link", "languageSwitcher"],
       control: { type: "select" },
     },
   },
@@ -41,14 +44,6 @@ export const Outline: Story = {
   },
 }
 
-export const LanguageSwitcher: Story = {
-  args: {
-    variant: "secondary",
-    iconStart: <Icon name="flagRussiaFilled" />,
-    children: "Russian",
-  },
-}
-
 export const FullWidth: Story = {
   args: {
     variant: "primary",
@@ -58,9 +53,18 @@ export const FullWidth: Story = {
 }
 
 export const Link: Story = {
-  args: {
-    variant: "link",
-    asChild: true,
-    children: <a href="/sign-up">Sign Up</a>,
-  },
+  render: () => (
+    <Button asChild variant="link">
+      <a href="/sign-up">Sign Up</a>
+    </Button>
+  ),
+}
+
+export const LanguageSwitcher: Story = {
+  render: () => (
+    <Button variant="languageSwitcher">
+      <Icon name="flagRussiaFilled" />
+      Russian
+    </Button>
+  ),
 }

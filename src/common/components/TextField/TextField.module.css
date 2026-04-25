@@ -1,39 +1,29 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  width: 100%;
   font-family: sans-serif;
   position: relative;
+  width: 100%;
 }
 
 .label {
-  font-size: 14px;
   color: var(--light-900);
-  line-height: 1;
 }
 
 .inputWrapper {
-  position: relative;
-  display: flex;
   align-items: center;
+  display: flex;
+  position: relative;
   width: 100%;
 }
 
 .input {
-  box-sizing: border-box;
-  height: 36px;
-  padding: 0 12px;
-  width: 100%;
-
   background-color: transparent;
   border: 1px solid var(--dark-100);
   border-radius: 2px;
+  box-sizing: border-box;
   color: var(--light-100);
-  font-size: 16px;
-  font-weight: 400;
   height: 36px;
-  line-height: 24px;
   padding: 0 12px;
   transition: all 0.2s ease-in-out;
   width: 100%;
@@ -46,34 +36,9 @@
 
 /* --- СОСТОЯНИЯ (STATES) --- */
 
-/* Hover */
-.input:hover:not(:disabled, :focus) {
-  border-color: var(--light-700);
-}
-
-/* Active / Focus */
-.input:active:not(:disabled) {
-  border-color: var(--light-100);
-  outline: none;
-  border-color: var(--light-100);
-}
-
-
+/* Focus */
 .input:focus {
   border-color: var(--accent-300);
-}
-
-/* Error State */
-.error .input {
-  border-color: var(--danger-500);
-}
-
-.errorText {
-  color: var(--danger-300);
-  font-size: 12px;
-  margin-top: 4px;
-  position: absolute;
-  bottom: -23px;
 }
 
 /* Disabled */
@@ -87,15 +52,43 @@
   color: var(--dark-100);
 }
 
+/* Error */
+.error .input {
+  border-color: var(--danger-500);
+}
+
+.errorText {
+  bottom: -23px;
+  color: var(--danger-300);
+  position: absolute;
+}
+
+/* Hover */
+.input:hover:not(:disabled, :focus) {
+  border-color: var(--light-700);
+}
+
+/* Active */
+.input:active:not(:disabled) {
+  border-color: var(--light-100);
+  outline: none;
+}
+
+/* Error + Hover */
+.error .input:hover:not(:disabled, :focus) {
+  border-color: var(--danger-500);
+}
+
 /* --- ICONS --- */
 
-.iconStart, .iconEnd {
-  position: absolute;
-  display: flex;
+.iconStart,
+.iconEnd {
   align-items: center;
-  justify-content: center;
   color: var(--light-100);
+  display: flex;
+  justify-content: center;
   pointer-events: none;
+  position: absolute;
 }
 
 .iconStart {
@@ -103,12 +96,12 @@
 }
 
 .iconEnd {
-  right: 12px;
   background: none;
   border: none;
-  padding: 0;
   cursor: pointer;
+  padding: 0;
   pointer-events: auto;
+  right: 12px;
 }
 
 .withIconStart {

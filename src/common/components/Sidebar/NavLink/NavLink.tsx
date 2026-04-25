@@ -30,6 +30,7 @@ export const NavLink = ({
 
   const linkClassName = clsx(
     styles.navLink,
+    "mediumText14",
     isActive && styles.active,
     disabled && styles.disabled,
     className,
