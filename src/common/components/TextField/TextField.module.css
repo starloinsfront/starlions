@@ -4,6 +4,7 @@
   gap: 8px;
   width: 100%;
   font-family: sans-serif;
+  position: relative;
 }
 
 .label {
@@ -17,6 +18,7 @@
   display: flex;
   align-items: center;
   width: 100%;
+
 }
 
 .input {
@@ -67,10 +69,13 @@
   border-color: var(--danger-500);
 }
 
+
 .errorText {
   color: var(--danger-300);
   font-size: 12px;
   margin-top: 4px;
+  position: absolute;
+  bottom: -25px;
 }
 
 /* Disabled */
