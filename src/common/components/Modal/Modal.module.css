@@ -4,18 +4,19 @@ input {
   all: unset;
 }
 
-.Overlay {
-  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+.overlay {
+  animation: overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   background-color: var(--dark-700);
   inset: 0;
   position: fixed;
 }
 
-.Content {
-  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+.content {
+  animation: content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   background-color: var(--dark-300);
   border: 1px solid var(--dark-100);
-  box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px,
+  box-shadow:
+    hsl(206deg 22% 7% / 35%) 0 10px 38px -10px,
     hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
   left: 50%;
   margin: 20px;
@@ -27,7 +28,7 @@ input {
   width: 100%;
 }
 
-.Content:focus {
+.content:focus {
   outline: none;
 }
 
@@ -43,7 +44,7 @@ input {
   max-width: 644px;
 }
 
-.Header {
+.header {
   align-items: center;
   border-bottom: 1px solid var(--dark-100);
   box-sizing: border-box;
@@ -54,14 +55,12 @@ input {
   width: 100%;
 }
 
-.Title {
+.title {
   color: var(--light-100);
-  font-size: 20px;
-  font-weight: 700;
   margin: 0;
 }
 
-.IconButton {
+.iconButton {
   align-items: center;
   all: unset;
   background-color: transparent;
@@ -74,17 +73,17 @@ input {
   width: 25px;
 }
 
-.IconButton:hover {
+.iconButton:hover {
   background-color: var(--dark-100);
 }
 
-.MainContent {
+.mainContent {
   box-sizing: border-box;
   padding: 0 24px;
   width: 100%;
 }
 
-@keyframes overlayShow {
+@keyframes overlay-show {
   from {
     opacity: 0;
   }
@@ -94,7 +93,7 @@ input {
   }
 }
 
-@keyframes contentShow {
+@keyframes content-show {
   from {
     opacity: 0;
     transform: translate(-50%, -48%) scale(0.96);
