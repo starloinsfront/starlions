@@ -83,22 +83,36 @@
 }
 
 .grid {
+  align-items: start;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .card {
+  align-self: start;
   background: linear-gradient(180deg, rgb(255 255 255 / 3%), rgb(255 255 255 / 1%));
   border: 1px solid rgb(255 255 255 / 8%);
   border-radius: 1px;
   overflow: hidden;
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+.cardExpanded {
+  transform: translateY(0);
 }
 
 .media {
   aspect-ratio: 1;
   overflow: hidden;
   position: relative;
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+.cardExpanded .media {
+  width: 100%;
 }
 
 .slide {
@@ -111,6 +125,11 @@
   padding: 18px;
   position: absolute;
   text-transform: uppercase;
+  transition: transform 0.3s ease;
+}
+
+.cardExpanded .slide {
+  transform: scale(1.02);
 }
 
 .slide::before {
@@ -201,6 +220,7 @@
   display: grid;
   gap: 12px;
   padding: 12px;
+  transition: padding 0.3s ease;
 }
 
 .cardMeta {
@@ -248,18 +268,40 @@
 }
 
 .cardDescription {
+  align-items: flex-start;
+  display: grid;
+  gap: 6px;
+}
+
+.descriptionText {
   -webkit-box-orient: vertical;
   color: var(--light-700);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   line-height: 1.6;
+  margin: 0;
+  max-height: calc(1.6em * 2);
   overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.cardExpanded .descriptionText {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  max-height: 20em;
+  overflow: visible;
 }
 
 .showMore {
+  background: none;
+  border: none;
   color: var(--accent-300);
+  cursor: pointer;
   font-weight: var(--font-weight-semi-bold);
+  padding: 0;
+  text-align: left;
   text-decoration: none;
 }
 
