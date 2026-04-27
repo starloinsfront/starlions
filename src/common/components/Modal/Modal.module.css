@@ -1,0 +1,106 @@
+button,
+fieldset,
+input {
+  all: unset;
+}
+
+.overlay {
+  animation: overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--dark-700);
+  inset: 0;
+  position: fixed;
+}
+
+.content {
+  animation: content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--dark-300);
+  border: 1px solid var(--dark-100);
+  box-shadow:
+    hsl(206deg 22% 7% / 35%) 0 10px 38px -10px,
+    hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
+  left: 50%;
+  margin: 20px;
+  max-height: 85vh;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.content:focus {
+  outline: none;
+}
+
+.sm {
+  max-width: 378px;
+}
+
+.md {
+  max-width: 492px;
+}
+
+.lg {
+  max-width: 644px;
+}
+
+.header {
+  align-items: center;
+  border-bottom: 1px solid var(--dark-100);
+  box-sizing: border-box;
+  display: flex;
+  height: 60px;
+  justify-content: space-between;
+  padding: 0 24px;
+  width: 100%;
+}
+
+.title {
+  color: var(--light-100);
+  margin: 0;
+}
+
+.iconButton {
+  align-items: center;
+  all: unset;
+  background-color: transparent;
+  border-radius: 100%;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  height: 25px;
+  justify-content: center;
+  width: 25px;
+}
+
+.iconButton:hover {
+  background-color: var(--dark-100);
+}
+
+.mainContent {
+  box-sizing: border-box;
+  padding: 0 24px;
+  width: 100%;
+}
+
+@keyframes overlay-show {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes content-show {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

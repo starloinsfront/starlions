@@ -10,6 +10,7 @@
     }
   ],
   "rules": {
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9-]*$",
     "order/order": ["custom-properties", "declarations"],
     "order/properties-alphabetical-order": true,
     "color-hex-length": "long",
@@ -17,6 +18,6 @@
     "@stylistic/indentation": 2,
     "@stylistic/declaration-block-trailing-semicolon": "always",
     "@stylistic/block-opening-brace-space-before": "always",
-    "@stylistic/declaration-colon-space-after": "always"
+    "@stylistic/declaration-colon-space-after": "always-single-line"
   }
 }

@@ -1,29 +1,21 @@
 import Link from "next/link"
-import { Button } from "@/common/components/Button/Button"
+import { GuestActions } from "./GuestActions/GuestActions"
 import s from "./Header.module.css"
+import { UserActions } from "./UserActions/UserActions"
 
-export const Header = () => {
+type Props = {
+  isAuth?: boolean
+}
+
+export function Header({ isAuth = false }: Props) {
   return (
     <header className={s.header}>
       <div className={s.inner}>
-        <Link className={s.logo} href="/">
-          Inctagram
+        <Link href="/" className={s.logo}>
+          Starlions
         </Link>
 
-        <div className={s.controls}>
-          {/* todo: For now, the mute will be the reused select.*/}
-          <Button className={s.signup} variant="secondary">
-            Language
-          </Button>
-          <nav aria-label="Authentication" className={s.auth}>
-            <Link className={s.login} href="/login">
-              Log in
-            </Link>
-            <Button className={s.signup} variant="primary">
-              Sign up
-            </Button>
-          </nav>
-        </div>
+        <div className={s.right}>{isAuth ? <UserActions /> : <GuestActions />}</div>
       </div>
     </header>
   )

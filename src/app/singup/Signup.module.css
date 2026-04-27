@@ -31,6 +31,10 @@
   width: 100%;
 }
 
+.authIcon {
+  color: var(--light-100);
+}
+
 .signupForm {
   align-items: center;
   display: flex;
@@ -50,24 +54,29 @@
 
 .consentText {
   color: var(--light-100);
-  font-size: 12px;
+  font-size: var(--font-size-xs);
 }
 
 .authText {
-  font-size: 16px;
   color: var(--light-100);
+  font-size: var(--font-size-m);
 }
 
 .authLink {
-  font-size: 16px;
   color: var(--accent-500);
+  font-size: var(--font-size-m);
 }
 
 .singUpTitle {
   color: var(--light-100);
-  font-size: 20px;
-  line-height: 36px;
-  font-weight: 700;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-xl);
+}
+
+.regLink {
+  text-decoration: underline;
+  color: var(--accent-500);
 }
 
 /* stylelint-enable selector-class-pattern */

@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { ComponentPropsWithoutRef, ReactNode, useId, useState } from "react"
 import s from "./TextField.module.css"
 
@@ -27,13 +28,10 @@ export const TextField = ({
   const isPassword = type === "password"
   const inputType = isPassword && showPassword ? "text" : type
 
-  const containerClasses = `${s.inputContainer} ${errorMessage ? s.error : ""} ${containerClassName || ""}`
-  const inputClasses = `${s.input} ${iconStart ? s.withIconStart : ""} ${iconEnd || isPassword ? s.withIconEnd : ""} ${className || ""}`
-
   return (
-    <div className={containerClasses}>
+    <div className={clsx(s.inputContainer, { [s.error]: errorMessage }, containerClassName)}>
       {label && (
-        <label htmlFor={finalId} className={s.label}>
+        <label htmlFor={finalId} className={clsx(s.label, "regularText14")}>
           {label}
         </label>
       )}
@@ -41,7 +39,15 @@ export const TextField = ({
       <div className={s.inputWrapper}>
         {iconStart && <span className={s.iconStart}>{iconStart}</span>}
 
-        <input id={finalId} type={inputType} className={inputClasses} {...rest} />
+        <input
+          id={finalId}
+          type={inputType}
+          className={clsx(s.input, "regularText16", {
+            [s.withIconStart]: iconStart,
+            [s.withIconEnd]: iconEnd || isPassword,
+          }, className)}
+          {...rest}
+        />
 
         {isPassword ? (
           <button
@@ -56,7 +62,9 @@ export const TextField = ({
         )}
       </div>
 
-      {errorMessage && <span className={s.errorText}>{errorMessage}</span>}
+      {errorMessage && (
+        <span className={clsx(s.errorText, "regularText14")}>{errorMessage}</span>
+      )}
     </div>
   )
 }
