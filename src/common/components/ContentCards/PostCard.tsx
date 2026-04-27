@@ -65,16 +65,17 @@ export const PostCard = ({ avatar, description, images, time, username }: Omit<P
 
           <div className={s.userMeta}>
             <strong className={s.userName}>{username}</strong>
-            <span className={s.time}>{time}</span>
           </div>
         </div>
-
-        <p className={s.cardDescription}>
-          {description}{" "}
-          <Link className={s.showMore} href="/">
-            Show more
-          </Link>
-        </p>
+        <div className={s.cardMeta}>
+          <span className={s.time}>{time}</span>
+          <p className={s.cardDescription}>
+            {description}{" "}
+            <Link className={s.showMore} href="/">
+              Show more
+            </Link>
+          </p>
+        </div>
       </div>
     </article>
   )

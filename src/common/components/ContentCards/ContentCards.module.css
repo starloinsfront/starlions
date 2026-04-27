@@ -199,8 +199,13 @@
 
 .content {
   display: grid;
-  gap: 16px;
-  padding: 18px;
+  gap: 12px;
+  padding: 12px;
+}
+
+.cardMeta {
+  display: grid;
+  gap: 3px;
 }
 
 .user {
