@@ -11,6 +11,7 @@ export const Header = () => {
         </Link>
 
         <div className={s.controls}>
+          {/* todo: For now, the mute will be the reused select.*/}
           <Button className={s.signup} variant="secondary">
             Language
           </Button>
