@@ -1,5 +1,6 @@
 import "./page.css"
+import { Header } from "@/common/components/Header/Header"
 
 export const Page = () => {
-  return <h1>StarLions Frontend Project</h1>
+  return <Header />
 }
