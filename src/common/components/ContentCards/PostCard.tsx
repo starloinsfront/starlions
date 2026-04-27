@@ -2,17 +2,18 @@ import { Post } from "@/common/components/ContentCards/PostImageType"
 import { type CSSProperties, useState } from "react"
 import s from "@/common/components/ContentCards/ContentCards.module.css"
 import { Icon } from "@/common/components/Icon/Icon"
-import Link from "next/link"
 
 export const PostCard = ({ avatar, description, images, time, username }: Omit<Post, "id">) => {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const goToSlide = (index: number) => setActiveIndex(index)
   const showPrev = () => setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
   const showNext = () => setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+  const toggleExpanded = () => setIsExpanded((prev) => !prev)
 
   return (
-    <article className={s.card}>
+    <article className={`${s.card} ${isExpanded ? s.cardExpanded : ""}`}>
       <div className={s.media}>
         <div
           className={s.slide}
@@ -65,16 +66,17 @@ export const PostCard = ({ avatar, description, images, time, username }: Omit<P
 
           <div className={s.userMeta}>
             <strong className={s.userName}>{username}</strong>
-            <span className={s.time}>{time}</span>
           </div>
         </div>
-
-        <p className={s.cardDescription}>
-          {description}{" "}
-          <Link className={s.showMore} href="/">
-            Show more
-          </Link>
-        </p>
+        <div className={s.cardMeta}>
+          <span className={s.time}>{time}</span>
+          <div className={s.cardDescription}>
+            <p className={s.descriptionText}>{description}</p>
+            <button className={s.showMore} onClick={toggleExpanded} type="button">
+              {isExpanded ? "Hide" : "Show more"}
+            </button>
+          </div>
+        </div>
       </div>
     </article>
   )
