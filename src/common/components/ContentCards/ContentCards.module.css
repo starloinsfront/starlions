@@ -91,7 +91,7 @@
 .card {
   background: linear-gradient(180deg, rgb(255 255 255 / 3%), rgb(255 255 255 / 1%));
   border: 1px solid rgb(255 255 255 / 8%);
-  border-radius: 18px;
+  border-radius: 1px;
   overflow: hidden;
 }
 
@@ -128,26 +128,34 @@
 
 .navButton {
   align-items: center;
-  background: rgb(0 0 0 / 45%);
+  background: rgb(51 51 51 / 50%);
   border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: 999px;
+  border-radius: 2px;
   color: var(--light-100);
   cursor: pointer;
   display: inline-flex;
-  height: 36px;
+  height: 24px;
   justify-content: center;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   transition: background-color 0.2s ease,
     border-color 0.2s ease;
-  width: 36px;
+  width: 24px;
   z-index: 1;
 }
 
 .navButton:hover {
   background: rgb(57 125 246 / 70%);
   border-color: transparent;
+}
+
+.navIconLeft {
+  transform: rotate(90deg);
+}
+
+.navIconRight {
+  transform: rotate(-90deg);
 }
 
 .navPrev {
@@ -169,7 +177,7 @@
 }
 
 .dot {
-  background: rgb(255 255 255 / 45%);
+  background: var(--light-100);
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -182,7 +190,7 @@
 
 .dot:hover,
 .dot[aria-current="true"] {
-  background: var(--light-100);
+  background: var(--accent-500);
   transform: scale(1.25);
 }
 
