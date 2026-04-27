@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import { ComponentPropsWithoutRef, ReactNode, useId, useState } from "react"
+import { Icon } from "@/common/components/Icon/Icon"
 import s from "./TextField.module.css"
 
 export type Props = {
@@ -42,10 +43,15 @@ export const TextField = ({
         <input
           id={finalId}
           type={inputType}
-          className={clsx(s.input, "regularText16", {
-            [s.withIconStart]: iconStart,
-            [s.withIconEnd]: iconEnd || isPassword,
-          }, className)}
+          className={clsx(
+            s.input,
+            "regularText16",
+            {
+              [s.withIconStart]: iconStart,
+              [s.withIconEnd]: iconEnd || isPassword,
+            },
+            className,
+          )}
           {...rest}
         />
 
@@ -55,16 +61,14 @@ export const TextField = ({
             className={s.iconEnd}
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? "👁️" : "🕶️"}
+            <Icon name={showPassword ? "eyeOffOutline" : "eyeOutline"} />
           </button>
         ) : (
           iconEnd && <span className={s.iconEnd}>{iconEnd}</span>
         )}
       </div>
 
-      {errorMessage && (
-        <span className={clsx(s.errorText, "regularText14")}>{errorMessage}</span>
-      )}
+      {errorMessage && <span className={clsx(s.errorText, "regularText14")}>{errorMessage}</span>}
     </div>
   )
 }
