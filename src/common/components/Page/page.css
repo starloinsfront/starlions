@@ -66,3 +66,10 @@
 .storybook-page .tip-wrapper svg path {
   fill: #1ea7fd;
 }
+
+.page-content-container {
+  margin: 0 auto;
+  max-width: 75.9375%;
+  padding-top: 24px;
+  width: 100%;
+}
