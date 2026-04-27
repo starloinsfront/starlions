@@ -92,9 +92,14 @@
 
 /* Disabled */
 .input:disabled {
-  border-color: var(--dark-300);
+  border-color: var(--dark-100);
   color: var(--dark-100);
   cursor: not-allowed;
+}
+
+.inputWrapper:has(.input:disabled) .iconStart,
+.inputWrapper:has(.input:disabled) .iconEnd {
+  color: var(--dark-100);
 }
 
 .input:disabled::placeholder {
@@ -107,9 +112,8 @@
 }
 
 .errorText {
-  bottom: -23px;
   color: var(--danger-300);
-  position: absolute;
+  line-height: var(--line-height-sm);
 }
 
 /* Hover */
