@@ -1,58 +1,53 @@
 .wrapper {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 6px;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .label {
-  font-size: 14px;
   color: var(--light-100);
+  font-size: 14px;
 }
 
 .trigger {
-  width: 100%;
-  box-sizing: border-box;
-  height: 36px;
-  padding: 6px 12px;
-
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
+  background-color: transparent;
   border: 1px solid var(--dark-100);
   border-radius: 2px;
-  background-color: transparent;
-
+  box-sizing: border-box;
   color: var(--light-100);
-  font-size: 16px;
-  text-align: left;
-  font-family: Inter, sans-serif;
-  font-weight: var(--font-weight-regular);
-
   cursor: pointer;
-
+  display: flex;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: var(--font-weight-regular);
+  gap: 12px;
+  height: 36px;
+  justify-content: space-between;
+  padding: 6px 12px;
+  text-align: left;
   transition:
     border-color 0.2s ease,
     color 0.2s ease,
     background-color 0.2s ease,
     outline-color 0.2s ease;
+  width: 100%;
 }
 
 .trigger[data-placeholder] {
   color: var(--light-900);
 }
 
-.trigger:hover:not([data-disabled]) {
-  border-color: var(--light-900);
-}
-
 .trigger:focus-visible {
+  border-color: var(--accent-500);
   outline: 1px solid var(--accent-500);
   outline-offset: 0;
-  border-color: var(--accent-500);
+}
+
+.trigger:hover:not([data-disabled]) {
+  border-color: var(--light-900);
 }
 
 .trigger[data-state="open"] {
@@ -60,44 +55,48 @@
 }
 
 .trigger[data-disabled] {
-  color: var(--dark-100);
   border-color: var(--dark-300);
+  color: var(--dark-100);
   cursor: not-allowed;
 }
 
 .value {
   min-width: 0;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .icon {
-  display: flex;
   align-items: center;
-  justify-content: center;
   color: inherit;
+  display: flex;
   flex-shrink: 0;
+  justify-content: center;
 }
 
 .icon svg {
   transition: transform 0.2s ease;
 }
+
+.itemContent svg {
+  display: block;
+  flex-shrink: 0;
+}
+
 .trigger[data-state="open"] .icon svg {
   transform: rotate(180deg);
 }
 
 .content {
-  width: var(--radix-select-trigger-width);
-  max-height: 220px;
-  overflow: hidden;
-
+  background-color: var(--dark-500);
   border: 1px solid var(--light-100);
   border-radius: 2px;
-  background-color: var(--dark-500);
-  color: var(--light-100);
-
   box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
+  color: var(--light-100);
+  max-height: 220px;
+  overflow: hidden;
+  width: var(--radix-select-trigger-width);
   z-index: 50;
 }
 
@@ -106,18 +105,16 @@
 }
 
 .item {
-  min-height: 32px;
-  padding: 6px 12px;
-
-  display: flex;
   align-items: center;
-
-  font-size: 16px;
-  font-weight: var(--font-weight-regular);
   color: var(--light-100);
   cursor: pointer;
-  user-select: none;
+  display: flex;
+  font-size: 16px;
+  font-weight: var(--font-weight-regular);
+  min-height: 32px;
   outline: none;
+  padding: 6px 12px;
+  user-select: none;
 }
 
 .item[data-highlighted] {
@@ -135,14 +132,9 @@
 }
 
 .itemContent {
-  display: flex;
   align-items: center;
+  display: flex;
   gap: 8px;
-}
-
-.itemContent svg {
-  display: block;
-  flex-shrink: 0;
 }
 
 .error {
@@ -150,12 +142,12 @@
 }
 
 .error:focus-visible {
-  outline-color: var(--danger-500);
   border-color: var(--danger-500);
+  outline-color: var(--danger-500);
 }
 
 .errorText {
+  color: var(--danger-500);
   font-size: 12px;
   line-height: 1.2;
-  color: var(--danger-500);
 }

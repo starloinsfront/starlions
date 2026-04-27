@@ -2,3 +2,45 @@
 @import url("../styles/typography.css");
 @import url("../styles/breakpoints.css");
 @import url("../styles/boilerplate.css");
+
+.content {
+  display: grid;
+  grid-template: auto minmax(0, 1fr) / 1fr;
+  grid-template-areas:
+    "header"
+    "mainContent";
+  height: 100dvh;
+  overflow: hidden;
+  width: 100%;
+}
+
+.header {
+  grid-area: header;
+}
+
+.mainContent {
+  display: flex;
+  gap: 24px;
+  grid-area: mainContent;
+  min-height: 0;
+  min-width: 0;
+}
+
+.main {
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 0 60px;
+}
+
+@media (width <= 992px) {
+  .main {
+    padding: 0 30px;
+  }
+}
+
+@media (width <= 768px) {
+  .main {
+    padding: 0 15px;
+  }
+}

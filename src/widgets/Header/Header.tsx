@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { GuestActions } from "./GuestActions/GuestActions"
-import s from "./Header.module.css"
+import styles from "./Header.module.css"
 import { UserActions } from "./UserActions/UserActions"
 
 type Props = {
@@ -9,13 +9,13 @@ type Props = {
 
 export function Header({ isAuth = false }: Props) {
   return (
-    <header className={s.header}>
-      <div className={s.inner}>
-        <Link href="/" className={s.logo}>
+    <header className={styles.header}>
+      <div className={styles.inner}>
+        <Link href="/" className={styles.logo}>
           Starlions
         </Link>
 
-        <div className={s.right}>{isAuth ? <UserActions /> : <GuestActions />}</div>
+        <div className={styles.right}>{isAuth ? <UserActions /> : <GuestActions />}</div>
       </div>
     </header>
   )

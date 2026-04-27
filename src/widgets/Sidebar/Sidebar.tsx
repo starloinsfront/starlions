@@ -1,5 +1,5 @@
 import { Logout } from "@/features/auth/ui/Logout/Logout"
-import { Icon } from "../Icon/Icon"
+import { Icon } from "../../common/components/Icon/Icon"
 import { NavLink } from "./NavLink/NavLink"
 import { sidebarSections } from "./sidebar.data"
 import styles from "./Sidebar.module.css"
