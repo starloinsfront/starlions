@@ -1,4 +1,4 @@
-import { Icon } from "../../Icon/Icon"
+import { Icon } from "../../../common/components/Icon/Icon"
 import { LanguageSelect } from "../LanguageSelect/LanguageSelect"
 import s from "./UserActions.module.css"
 
