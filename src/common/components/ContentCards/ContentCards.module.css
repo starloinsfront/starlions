@@ -167,10 +167,13 @@
 }
 
 .dots {
+  background-color: color-mix(in srgb, var(--dark-300) 50%, transparent);
+  border-radius: 2px;
   bottom: 14px;
   display: flex;
   gap: 8px;
   left: 50%;
+  padding: 3px 8px;
   position: absolute;
   transform: translateX(-50%);
   z-index: 1;
