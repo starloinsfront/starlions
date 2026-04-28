@@ -1,0 +1,7 @@
+.navIconLeft {
+  transform: rotate(90deg);
+}
+
+.navIconRight {
+  transform: rotate(-90deg);
+}
