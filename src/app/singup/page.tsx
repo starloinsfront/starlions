@@ -9,56 +9,75 @@ import {useState} from "react";
 import {useForm} from "react-hook-form";
 import {RegisterFormData, registerSchema} from "@/app/singup/register.schema";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {useRegisterMutation} from "@/features/auth/api/authApi";
 
 
 export default function Home() {
-  const router = useRouter()
-  const [serverError, setServerError] = useState<string | null>(null)
+  const router = useRouter();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+
+  // ✅ Используем хук RTK Query
+  const [registerUser, {isLoading, error: apiError}] = useRegisterMutation();
 
   const {
     register,
     handleSubmit,
     formState: {errors, isValid},
     reset,
-    watch,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    mode: "onChange", // валидация при каждом изменении
+    mode: "onChange",
     defaultValues: {
-      agreeToTerms: false,
+      isTermsAccepted: false,  // ← было agreeToTerms
     },
   });
 
   const onSubmit = async (data: RegisterFormData) => {
-    setServerError(null);
     setSuccessMessage(null);
-    setIsLoading(true);
 
     try {
-      // TODO: заменить на реальный API когда появится бекенд
-      // const response = await fetch('/api/auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(data),
-      // });
+      // Отправляем запрос через RTK Query
+      await registerUser({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        passwordConfirmation: data.passwordConfirmation,
+        isTermsAccepted: data.isTermsAccepted,
+      }).unwrap();
 
-      // Временный мок (удали когда появится бекенд)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Имитация ошибки "пользователь уже существует"
-      // throw new Error('User with this email is already registered');
-
-
+      // Если дошли сюда — успех
       setSuccessMessage(`We have sent a link to confirm your email to ${data.email}`);
       reset();
-    } catch (error: any) {
-      setServerError(error.message || "Something went wrong");
-    } finally {
-      setIsLoading(false);
+    } catch (err) {
+      // Ошибка обрабатывается автоматически через apiError
+      console.error('Registration failed:', err);
     }
   };
+
+  // Получаем текст ошибки из RTK Query
+  const getErrorMessage = () => {
+    if (!apiError) return null;
+
+    const err = apiError as any;
+
+    if (err?.status === 400) {
+      if (err?.data?.message?.includes('email')) {
+        return 'User with this email is already registered';
+      }
+      if (err?.data?.message?.includes('username')) {
+        return 'User with this username is already registered';
+      }
+      return err?.data?.message || 'Registration failed';
+    }
+
+    if (err?.status === 429) {
+      return 'Too many attempts. Please try again later.';
+    }
+
+    return 'Something went wrong. Please try again.';
+  };
+
+  const serverError = getErrorMessage();
 
   return (
     <section className={s.registrationPage}>
@@ -102,12 +121,15 @@ export default function Home() {
             placeholder={"Password confirmation"}
             autoComplete={"new-password"}
             type={"password"}
-            errorMessage={errors.confirmPassword?.message}
-            {...register("confirmPassword")}
+            errorMessage={errors.passwordConfirmation?.message}  // ← было confirmPassword
+            {...register("passwordConfirmation")}
           />
           <div className={s.consentContainer}>
-            <input type={"checkbox"} id="termsCheckbox"
-                   {...register("agreeToTerms")}/>
+            <input
+              type="checkbox"
+              id="termsCheckbox"
+              {...register("isTermsAccepted")} // ← было agreeToTerms
+            />
             <p className={s.consentText}>I agree to the
               <Link className={s.regLink} href='/termsofservice'> Terms of Service</Link> and
               <Link className={s.regLink} href='/privacypolicy'> Privacy Policy</Link>
