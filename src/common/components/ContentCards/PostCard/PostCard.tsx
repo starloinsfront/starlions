@@ -6,7 +6,7 @@ import { PostCardMedia } from "./PostCardMedia"
 import { PostCardProps } from "./PostCard.types"
 import { usePostCarousel } from "./usePostCarousel"
 
-export const PostCard = ({ avatar, description, images, time, username }: PostCardProps) => {
+export const PostCard = ({ avatar, description, id, images, time, username }: PostCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { activeIndex, goToSlide, showNext, showPrev } = usePostCarousel(images)
   const toggleExpanded = () => setIsExpanded((prev) => !prev)
@@ -17,6 +17,7 @@ export const PostCard = ({ avatar, description, images, time, username }: PostCa
         activeIndex={activeIndex}
         goToSlide={goToSlide}
         images={images}
+        postId={id}
         showNext={showNext}
         showPrev={showPrev}
       />
