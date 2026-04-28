@@ -70,6 +70,6 @@
 .page-content-container {
   margin: 0 auto;
   max-width: 972px;
-  padding-top: 24px;
+  padding: 24px 24px 0;
   width: 100%;
 }

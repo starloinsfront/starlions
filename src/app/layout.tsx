@@ -23,12 +23,13 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   const isAuth = true
+  const appShellClassName = `${styles.appShell} ${!isAuth ? styles.appShellWithoutSidebar : ""}`
 
   return (
     <html lang="en" className={inter.variable}>
       <body>
         <Header isAuth={isAuth} />
-        <div className={styles.appShell}>
+        <div className={appShellClassName}>
           {isAuth && <Sidebar />}
           <main className={styles.appContent}>{children}</main>
         </div>
