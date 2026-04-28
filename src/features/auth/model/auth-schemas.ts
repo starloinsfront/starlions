@@ -1,6 +1,10 @@
 import * as z from "zod"
 
-export const emailSchema = z.string().min(1, "Email is required").email("Invalid email")
+export const emailSchema = z
+  .string()
+  .trim()
+  .min(1, { error: "Email is required" })
+  .pipe(z.email({ error: "Invalid email" }))
 
 export const passwordSchema = z
   .string()

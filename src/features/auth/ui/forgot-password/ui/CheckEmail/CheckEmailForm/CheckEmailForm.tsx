@@ -1,26 +1,21 @@
 "use client"
 
-import { TextField } from "@/common/components/TextField/TextField"
-import styles from "./ForgotPasswordForm.module.css"
-import { clsx } from "clsx"
 import { Button } from "@/common/components/Button/Button"
-import Link from "next/link"
-import { ROUTES } from "@/common/constants/route"
 import { Modal } from "@/common/components/Modal/Modal"
+import { TextField } from "@/common/components/TextField/TextField"
+import { ROUTES } from "@/common/constants/route"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { clsx } from "clsx"
+import Link from "next/link"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { emailSchema } from "@/features/auth/model/auth-schemas"
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { redirect } from "next/navigation"
+import styles from "./CheckEmailForm.module.css"
+import {
+  ForgotPasswordFormValues,
+  forgotPasswordSchema,
+} from "../../ForgotPasswordForm/ForgotPasswordForm"
 
-export const forgotPasswordSchema = z.object({
-  email: emailSchema,
-})
-
-export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>
-
-export const ForgotPasswordForm = () => {
+export const CheckEmailForm = () => {
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState("")
 
@@ -43,11 +38,6 @@ export const ForgotPasswordForm = () => {
     setOpen(true)
   }
 
-  const handleOkClick = () => {
-    setOpen(false)
-    redirect(ROUTES.emailCheck)
-  }
-
   return (
     <div className={styles.formContainer}>
       <h2 className={clsx("h1", styles.title)}>Forgot Password</h2>
@@ -64,9 +54,12 @@ export const ForgotPasswordForm = () => {
         <p className={clsx("regularText14", styles.description)}>
           Enter your email address and we will send you further instructions
         </p>
+        <p className={clsx("regularText14", styles.twoDescription)}>
+          The link has been sent by email. If you don’t receive an email send link again
+        </p>
         <div className={styles.box}>
           <Button className={styles.sendButton} type="submit" disabled={!isValid || isSubmitting}>
-            Send link
+            Send Link Again
           </Button>
           <Button variant="link" className={styles.sendButton} asChild>
             <Link href={ROUTES.signIn}>Back to Sign In</Link>
@@ -78,9 +71,7 @@ export const ForgotPasswordForm = () => {
           <p className={clsx("regularText16", styles.modalDescription)}>
             We have sent a link to confirm your email to {email}
           </p>
-          <Button type="button" onClick={handleOkClick}>
-            OK
-          </Button>
+          <Button onClick={() => setOpen(false)}>OK</Button>
         </div>
       </Modal>
     </div>
