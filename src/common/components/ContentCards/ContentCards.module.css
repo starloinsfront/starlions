@@ -1,6 +1,7 @@
 .section {
   display: grid;
   gap: 28px;
+  width: 100%;
 }
 
 .hero {
@@ -85,7 +86,7 @@
 .grid {
   align-items: start;
   display: grid;
-  gap: 20px;
+  gap: 12px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
@@ -104,7 +105,6 @@
 }
 
 .media {
-  /* border: 2px solid red; */
   height: 240px;
   overflow: hidden;
   position: relative;
@@ -326,7 +326,7 @@
 
 @media (width <= 640px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .card {
