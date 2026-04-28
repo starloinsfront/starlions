@@ -9,7 +9,7 @@ export const ContentCards = () => {
     <section className={s.section}>
       <div className={s.grid}>
         {posts.map(({ id, ...post }) => (
-          <PostCard key={id} {...post} />
+          <PostCard key={id} id={id} {...post} />
         ))}
       </div>
     </section>

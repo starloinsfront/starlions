@@ -1,3 +1,3 @@
 import { Post } from "../PostImageType"
 
-export type PostCardProps = Omit<Post, "id">
+export type PostCardProps = Post

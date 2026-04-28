@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { type CSSProperties } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
 import s from "../ContentCards.module.css"
@@ -7,6 +8,7 @@ type Props = {
   activeIndex: number
   goToSlide: (index: number) => void
   images: PostImage[]
+  postId: number
   showNext: () => void
   showPrev: () => void
 }
@@ -15,17 +17,20 @@ export const PostCardMedia = ({
   activeIndex,
   goToSlide,
   images,
+  postId,
   showNext,
   showPrev,
 }: Props) => {
   return (
     <div className={s.media}>
-      <div
+      <Link
+        aria-label={`Open post ${postId}: ${images[activeIndex].label}`}
         className={s.slide}
+        href={`/post/${postId}`}
         style={{ "--slide-background": images[activeIndex].background } as CSSProperties}
       >
         <span className={s.slideLabel}>{images[activeIndex].label}</span>
-      </div>
+      </Link>
 
       {images.length > 1 && (
         <>
