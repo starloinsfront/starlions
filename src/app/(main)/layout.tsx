@@ -2,11 +2,12 @@ import { isAuthenticated } from "@/common/utils/isAuth"
 import "../globals.css"
 import { Header } from "@/widgets/Header/Header"
 import { Sidebar } from "@/widgets/Sidebar/Sidebar"
+import { ReactNode } from "react"
 
 export default function MainLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
   const isAuth = isAuthenticated()
 

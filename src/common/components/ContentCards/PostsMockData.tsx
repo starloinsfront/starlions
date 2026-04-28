@@ -20,7 +20,7 @@ export const posts: Post[] = [
     avatar: "DR",
     time: "1 hour ago",
     description:
-      "A sharper profile card, a cleaner onboarding and the kind of contrast that keeps a dark UI feeling premium. We cut several decorative elements that looked impressive in isolation but slowed the first scan of the screen. The new layout gives more space to names, key actions and status indicators without feeling empty. I also reworked the spacing system so the card feels more deliberate on both desktop and mobile. It is a small update visually, but the whole product now reads faster.",
+      "A sharper profile card, a cleaner onboarding and the kind of contrast that keeps a dark UI feeling premium. We cut several decorative elements that looked impressive in isolation but slowed the first scan of the screen.",
     images: [
       { label: "Design Review", background: "linear-gradient(135deg, #0f1729 0%, #397df6 100%)" },
       { label: "UI Sprint", background: "linear-gradient(135deg, #332f55 0%, #090909 100%)" },

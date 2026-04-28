@@ -1,4 +1,4 @@
-import s from "./ContentCards.module.css"
+import s from "../ContentCards.module.css"
 
 type Props = {
   description: string
