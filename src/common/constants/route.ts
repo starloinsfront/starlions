@@ -11,8 +11,11 @@ export const ROUTES = {
 
   signIn: "/login",
   signUp: "/signup",
-  forgotPassword: "/forgotpassword",
-  privacyPolicy: "/privacypolicy",
+  forgotPassword: "/forgot-password",
+  emailCheck: "/forgot-password/email-check",
+  createNewPassword: "/create-new-password",
+  recoveryLinkExpired: "/recovery-link-expired",
   settings: "/settings",
+  privacyPolicy: "/privacypolicy",
   termsOfService: "/termsofservice",
 } as const

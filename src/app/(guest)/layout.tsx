@@ -3,7 +3,7 @@ import "../globals.css"
 import { isAuthenticated } from "@/common/utils/isAuth"
 import { redirect } from "next/navigation"
 
-export default function RootLayout({
+export default function GuestLayout({
   children,
 }: Readonly<{
   children: React.ReactNode

@@ -1,5 +1,5 @@
 export function isAuthenticated() {
-  const isAuth = true
+  const isAuth = false
 
   return isAuth
 }
