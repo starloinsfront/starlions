@@ -1,15 +1,15 @@
 .PrivasyPolicyPage {
-  margin-top: 50px;
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-top: 50px;
 }
 
 .container {
-  width: 958px;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 50px;
+  justify-content: center;
+  width: 958px;
 }

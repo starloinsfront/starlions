@@ -1,4 +1,4 @@
-import { IconName } from "../../common/components/Icon/IconNameType"
+import { IconName } from "@/common/components/Icon/IconNameType"
 
 export type SidebarLink = {
   title: string

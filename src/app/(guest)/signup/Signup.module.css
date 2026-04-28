@@ -75,8 +75,8 @@
 }
 
 .regLink {
-  text-decoration: underline;
   color: var(--accent-500);
+  text-decoration: underline;
 }
 
 /* stylelint-enable selector-class-pattern */

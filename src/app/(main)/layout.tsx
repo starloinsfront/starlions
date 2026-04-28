@@ -1,7 +1,7 @@
 import { isAuthenticated } from "@/common/utils/isAuth"
 import "../globals.css"
-import { Header } from "../../widgets/Header/Header"
-import { Sidebar } from "../../widgets/Sidebar/Sidebar"
+import { Header } from "@/widgets/Header/Header"
+import { Sidebar } from "@/widgets/Sidebar/Sidebar"
 
 export default function RootLayout({
   children,

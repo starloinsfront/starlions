@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Button } from "../../../common/components/Button/Button"
+import { Button } from "@/common/components/Button/Button"
 import { LanguageSelect } from "../LanguageSelect/LanguageSelect"
 import styles from "./GuestActions.module.css"
 import { ROUTES } from "@/common/constants/route"

@@ -104,20 +104,23 @@
 }
 
 .media {
-  aspect-ratio: 1;
+  /* border: 2px solid red; */
+  height: 240px;
   overflow: hidden;
   position: relative;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, height 0.3s ease;
   width: 100%;
 }
 
 .cardExpanded .media {
+  height: 130px;
   width: 100%;
 }
 
 .slide {
   align-items: flex-end;
   color: var(--light-300);
+  cursor: pointer;
   display: flex;
   font-size: var(--font-size-s);
   inset: 0;
@@ -290,7 +293,7 @@
   display: block;
   -webkit-line-clamp: unset;
   line-clamp: unset;
-  max-height: 20em;
+  max-height: none;
   overflow: visible;
 }
 
