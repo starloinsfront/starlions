@@ -5,6 +5,8 @@ type Props = Omit<ComponentPropsWithoutRef<"svg">, "children"> & {
   name: IconName
 }
 
+const SPRITE_VERSION = "2026-04-28"
+
 export const Icon = ({ name, width = 24, height = 24, className, ...props }: Props) => {
   return (
     <svg
@@ -15,7 +17,7 @@ export const Icon = ({ name, width = 24, height = 24, className, ...props }: Pro
       width={width}
       {...props}
     >
-      <use href={`/icons/sprite.svg#${name}`} />
+      <use href={`/icons/sprite.svg?v=${SPRITE_VERSION}#${name}`} />
     </svg>
   )
 }
