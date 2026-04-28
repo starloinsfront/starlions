@@ -1,9 +1,6 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { Header } from "@/common/components/Header/Header"
 import "./globals.css"
-import { Sidebar } from "@/common/components/Sidebar/Sidebar"
-import styles from "./layout.module.css"
 import { ReactNode } from "react"
 
 const inter = Inter({
@@ -22,18 +19,9 @@ export default function RootLayout({
 }: Readonly<{
   children: ReactNode
 }>) {
-  const isAuth = true
-  const appShellClassName = `${styles.appShell} ${!isAuth ? styles.appShellWithoutSidebar : ""}`
-
   return (
     <html lang="en" className={inter.variable}>
-      <body>
-        <Header isAuth={isAuth} />
-        <div className={appShellClassName}>
-          {isAuth && <Sidebar />}
-          <main className={styles.appContent}>{children}</main>
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
