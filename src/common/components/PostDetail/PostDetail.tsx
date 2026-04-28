@@ -1,8 +1,8 @@
 "use client"
 
-import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { Carousel } from "@/common/components/Carousel/Carousel"
+import cardSliderStyles from "@/common/components/ContentCards/ContentCards.module.css"
 import { Icon } from "@/common/components/Icon/Icon"
 import s from "./PostDetail.module.css"
 import { PostDetailData } from "./PostDetail.types"
@@ -13,15 +13,6 @@ type Props = {
 
 export const PostDetail = ({ post }: Props) => {
   const router = useRouter()
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  const showPrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? post.images.length - 1 : prev - 1))
-  }
-
-  const showNext = () => {
-    setActiveIndex((prev) => (prev === post.images.length - 1 ? 0 : prev + 1))
-  }
 
   const handleClose = () => {
     if (window.history.length > 1) {
@@ -45,62 +36,21 @@ export const PostDetail = ({ post }: Props) => {
 
       <article className={s.modal}>
         <div className={s.mediaSection}>
-          {/*todo: сделать 1 слайдер. маленьуий - уже готовый (стили)*/}
-          <div className={s.mediaFrame}>
-            <Image
-              alt={post.images[activeIndex].label}
-              className={s.mediaImage}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 70vw"
-              src={post.images[activeIndex].src}
-            />
-          </div>
-
-          {post.images.length > 1 && (
-            <>
-              <button
-                aria-label="Previous image"
-                className={`${s.mediaArrow} ${s.mediaArrowPrev}`}
-                onClick={showPrev}
-                type="button"
-              >
-                <Icon
-                  className={s.mediaArrowIconLeft}
-                  height={24}
-                  name="arrowIosDownOutline"
-                  width={24}
-                />
-              </button>
-
-              <button
-                aria-label="Next image"
-                className={`${s.mediaArrow} ${s.mediaArrowNext}`}
-                onClick={showNext}
-                type="button"
-              >
-                <Icon
-                  className={s.mediaArrowIconRight}
-                  height={24}
-                  name="arrowIosDownOutline"
-                  width={24}
-                />
-              </button>
-
-              <div className={s.mediaDots}>
-                {post.images.map((image, index) => (
-                  <button
-                    aria-current={activeIndex === index}
-                    aria-label={`Open ${image.label}`}
-                    className={s.mediaDot}
-                    key={image.id}
-                    onClick={() => setActiveIndex(index)}
-                    type="button"
-                  />
-                ))}
-              </div>
-            </>
-          )}
+          <Carousel
+            classNames={{
+              dot: cardSliderStyles.dot,
+              dots: cardSliderStyles.dots,
+              navButton: cardSliderStyles.navButton,
+              navNext: cardSliderStyles.navNext,
+              navPrev: cardSliderStyles.navPrev,
+              root: s.mediaCarousel,
+              slide: s.mediaSlide,
+            }}
+            imageClassName={s.mediaImage}
+            imageSizes="(max-width: 1024px) 100vw, 70vw"
+            slides={post.images}
+            variant="detail"
+          />
         </div>
 
         <aside className={s.sidebar}>
