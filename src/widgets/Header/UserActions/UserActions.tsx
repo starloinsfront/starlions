@@ -6,7 +6,7 @@ export function UserActions() {
   return (
     <>
       <button className={s.iconButton}>
-        <Icon name="bookmarkOutline" />
+        <Icon name="bellOutline" width={18} hanging={20} />
         <span>1</span>
       </button>
       <LanguageSelect />
