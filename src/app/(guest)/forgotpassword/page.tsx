@@ -1,3 +1,5 @@
+import { ForgotPassword } from "@/features/auth/ui/forgot-password/ui/ForgotPassword"
+
 export default function Home() {
-  return <div>forgotpassword</div>
+  return <ForgotPassword />
 }
