@@ -4,7 +4,7 @@ import { Sidebar } from "@/widgets/Sidebar/Sidebar"
 import { isAuthenticated } from "@/common/utils/isAuth"
 import { redirect } from "next/navigation"
 
-export default function RootLayout({
+export default function ProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode

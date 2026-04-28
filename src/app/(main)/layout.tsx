@@ -3,7 +3,7 @@ import "../globals.css"
 import { Header } from "@/widgets/Header/Header"
 import { Sidebar } from "@/widgets/Sidebar/Sidebar"
 
-export default function RootLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
