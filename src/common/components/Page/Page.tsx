@@ -4,9 +4,11 @@ import { RegisteredUsers } from "@/common/components/RegisteredUsers/RegisteredU
 
 export const Page = () => {
   return (
-    <div className="page-content-container">
-      <RegisteredUsers />
-      <ContentCards />
-    </div>
+    <>
+      <div className="page-content-container">
+        <RegisteredUsers />
+        <ContentCards />
+      </div>
+    </>
   )
 }

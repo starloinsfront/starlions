@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { CustomSelect } from "../../CustomSelect/CustomSelect"
-import { SelectOption } from "../../CustomSelect/customSelect.types"
+import { CustomSelect } from "@/common/components/CustomSelect/CustomSelect"
+import { SelectOption } from "@/common/components/CustomSelect/customSelect.types"
 import styles from "./LanguageSelect.module.css"
 
 export const LanguageSelect = () => {

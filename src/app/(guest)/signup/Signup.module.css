@@ -1,22 +1,27 @@
 /* stylelint-disable selector-class-pattern */
-.loginContainer {
+.signupContainer {
   align-items: center;
   background-color: var(--dark-500);
   border: 1px solid var(--dark-300);
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  height: 504px;
+  gap: 10px;
+  height: 648px;
   padding-top: 30px;
   width: 378px;
 }
 
-.loginPage {
+.registrationPage {
   align-items: center;
   display: flex;
   height: 100vh;
   justify-content: center;
   width: 100%;
+}
+
+.consentContainer {
+  display: flex;
+  gap: 5px;
 }
 
 .authProviders {
@@ -30,11 +35,12 @@
   color: var(--light-100);
 }
 
-.loginForm {
+.signupForm {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
+  margin-top: 20px;
   width: calc(100% - 48px);
 }
 
@@ -46,11 +52,9 @@
   width: 100%;
 }
 
-.forgotPassword {
-  text-align: right;
-  width: 100%;
-  font-size: var(--font-size-s);
-  color: var(--light-900);
+.consentText {
+  color: var(--light-100);
+  font-size: var(--font-size-xs);
 }
 
 .authText {
@@ -61,6 +65,18 @@
 .authLink {
   color: var(--accent-500);
   font-size: var(--font-size-m);
+}
+
+.singUpTitle {
+  color: var(--light-100);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-xl);
+}
+
+.regLink {
+  color: var(--accent-500);
+  text-decoration: underline;
 }
 
 /* stylelint-enable selector-class-pattern */

@@ -1,26 +1,25 @@
 "use client"
 import s from "./Signup.module.css"
 import Link from "next/link"
-import {Button} from "@/common/components/Button/Button"
-import {Icon} from "@/common/components/Icon/Icon"
-import {TextField} from "@/common/components/TextField/TextField"
-import {useRouter} from "next/navigation";
-import {useState} from "react";
-import {useForm} from "react-hook-form";
-import {RegisterFormData, registerSchema} from "@/app/singup/register.schema";
-import {zodResolver} from "@hookform/resolvers/zod";
-
+import { Button } from "@/common/components/Button/Button"
+import { Icon } from "@/common/components/Icon/Icon"
+import { TextField } from "@/common/components/TextField/TextField"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { RegisterFormData, registerSchema } from "@/app/(guest)/signup/register.schema"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export default function Home() {
   const router = useRouter()
   const [serverError, setServerError] = useState<string | null>(null)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
     reset,
     watch,
   } = useForm<RegisterFormData>({
@@ -29,12 +28,12 @@ export default function Home() {
     defaultValues: {
       agreeToTerms: false,
     },
-  });
+  })
 
   const onSubmit = async (data: RegisterFormData) => {
-    setServerError(null);
-    setSuccessMessage(null);
-    setIsLoading(true);
+    setServerError(null)
+    setSuccessMessage(null)
+    setIsLoading(true)
 
     try {
       // TODO: заменить на реальный API когда появится бекенд
@@ -45,28 +44,27 @@ export default function Home() {
       // });
 
       // Временный мок (удали когда появится бекенд)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
       // Имитация ошибки "пользователь уже существует"
       // throw new Error('User with this email is already registered');
 
-
-      setSuccessMessage(`We have sent a link to confirm your email to ${data.email}`);
-      reset();
+      setSuccessMessage(`We have sent a link to confirm your email to ${data.email}`)
+      reset()
     } catch (error: any) {
-      setServerError(error.message || "Something went wrong");
+      setServerError(error.message || "Something went wrong")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <section className={s.registrationPage}>
       <div className={s.signupContainer}>
         <h1 className={s.singUpTitle}>Sign up</h1>
         <div className={s.authProviders}>
-          <Icon className={s.authIcon} height={36} name={"googleFilled"} width={36}/>
-          <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36}/>
+          <Icon className={s.authIcon} height={36} name={"googleFilled"} width={36} />
+          <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36} />
         </div>
         <form className={s.signupForm} onSubmit={handleSubmit(onSubmit)}>
           <TextField
@@ -106,11 +104,18 @@ export default function Home() {
             {...register("confirmPassword")}
           />
           <div className={s.consentContainer}>
-            <input type={"checkbox"} id="termsCheckbox"
-                   {...register("agreeToTerms")}/>
-            <p className={s.consentText}>I agree to the
-              <Link className={s.regLink} href='/termsofservice'> Terms of Service</Link> and
-              <Link className={s.regLink} href='/privacypolicy'> Privacy Policy</Link>
+            <input type={"checkbox"} id="termsCheckbox" {...register("agreeToTerms")} />
+            <p className={s.consentText}>
+              I agree to the
+              <Link className={s.regLink} href="/termsofservice">
+                {" "}
+                Terms of Service
+              </Link>{" "}
+              and
+              <Link className={s.regLink} href="/privacypolicy">
+                {" "}
+                Privacy Policy
+              </Link>
             </p>
           </div>
           <Button className={s.submitButton} type={"submit"} disabled={!isValid || isLoading}>

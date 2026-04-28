@@ -34,3 +34,15 @@
   margin-top: auto;
   padding-top: 60px;
 }
+
+@media (width <= 992px) {
+  .sidebar {
+    padding: 72px 0 36px 30px;
+  }
+}
+
+@media (width <= 768px) {
+  .sidebar {
+    padding: 72px 0 36px 15px;
+  }
+}
