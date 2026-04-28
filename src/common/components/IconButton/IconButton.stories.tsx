@@ -14,6 +14,7 @@ const iconConfigs: Array<{
   { iconName: "arrowForwardOutline", label: "Arrow Forward" },
   { activeIconName: "addFilled", iconName: "addOutline", label: "Add" },
   { iconName: "arrowIosDownOutline", label: "Arrow IOS Down" },
+  { activeIconName: "bellFilled", iconName: "bellOutline", label: "Bell" },
   { activeIconName: "bookmarkFilled", iconName: "bookmarkOutline", label: "Bookmark" },
   { activeIconName: "calendarFilled", iconName: "calendarOutline", label: "Calendar" },
   {
