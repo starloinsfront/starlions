@@ -104,8 +104,8 @@
 }
 
 .media {
-  aspect-ratio: 1;
-  height: auto;
+  /* border: 2px solid red; */
+  height: 240px;
   overflow: hidden;
   position: relative;
   transition: transform 0.3s ease, height 0.3s ease;
@@ -113,8 +113,7 @@
 }
 
 .cardExpanded .media {
-  aspect-ratio: auto;
-  height: 120px;
+  height: 130px;
   width: 100%;
 }
 

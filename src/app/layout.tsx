@@ -1,6 +1,10 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import { Header } from "@/common/components/Header/Header"
 import "./globals.css"
+import { Sidebar } from "@/common/components/Sidebar/Sidebar"
+import styles from "./layout.module.css"
+import { ReactNode } from "react"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -16,11 +20,19 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
+  const isAuth = true
+
   return (
     <html lang="en" className={inter.variable}>
-      <body>{children}</body>
+      <body>
+        <Header isAuth={isAuth} />
+        <div className={styles.appShell}>
+          {isAuth && <Sidebar />}
+          <main className={styles.appContent}>{children}</main>
+        </div>
+      </body>
     </html>
   )
 }
