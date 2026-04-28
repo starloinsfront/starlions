@@ -68,8 +68,9 @@
 }
 
 .page-content-container {
-  margin: 0 auto;
-  max-width: 972px;
-  padding: 24px 24px 0;
+  display: grid;
+  gap: 32px;
+  max-width: none;
+  padding: 0;
   width: 100%;
 }

@@ -21,7 +21,9 @@ export default function RootLayout({
   ) : (
     <div className="content">
       <Header isAuth={isAuth} />
-      <main className="main">{children}</main>
+      <div className="mainContent mainContentWithoutSidebar">
+        <main className="main">{children}</main>
+      </div>
     </div>
   )
 }
