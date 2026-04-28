@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { PostImage } from "./PostImageType"
+import { PostImage } from "../PostImageType"
 
 export const usePostCarousel = (images: PostImage[]) => {
   const [activeIndex, setActiveIndex] = useState(0)

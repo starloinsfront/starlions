@@ -2,7 +2,7 @@
 
 import s from "./ContentCards.module.css"
 import { posts } from "@/common/components/ContentCards/PostsMockData"
-import { PostCard } from "@/common/components/ContentCards/PostCard"
+import { PostCard } from "@/common/components/ContentCards/PostCard/PostCard"
 
 export const ContentCards = () => {
   return (

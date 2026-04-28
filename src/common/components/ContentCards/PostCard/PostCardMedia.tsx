@@ -1,7 +1,7 @@
 import { type CSSProperties } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
-import s from "./ContentCards.module.css"
-import { PostImage } from "./PostImageType"
+import s from "../ContentCards.module.css"
+import { PostImage } from "../PostImageType"
 
 type Props = {
   activeIndex: number
