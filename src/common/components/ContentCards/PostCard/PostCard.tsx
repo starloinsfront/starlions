@@ -4,22 +4,14 @@ import { PostCardAuthor } from "./PostCardAuthor"
 import { PostCardDescription } from "./PostCardDescription"
 import { PostCardMedia } from "./PostCardMedia"
 import { PostCardProps } from "./PostCard.types"
-import { usePostCarousel } from "./usePostCarousel"
 
-export const PostCard = ({ avatar, description, images, time, username }: PostCardProps) => {
+export const PostCard = ({ avatar, description, id, images, time, username }: PostCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const { activeIndex, goToSlide, showNext, showPrev } = usePostCarousel(images)
   const toggleExpanded = () => setIsExpanded((prev) => !prev)
 
   return (
     <article className={`${s.card} ${isExpanded ? s.cardExpanded : ""}`}>
-      <PostCardMedia
-        activeIndex={activeIndex}
-        goToSlide={goToSlide}
-        images={images}
-        showNext={showNext}
-        showPrev={showPrev}
-      />
+      <PostCardMedia images={images} postId={id} />
 
       <div className={s.content}>
         <PostCardAuthor avatar={avatar} username={username} />
