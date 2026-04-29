@@ -1,11 +1,15 @@
+"use client"
+
 import { Logout } from "@/features/auth/ui/Logout/Logout"
 import { Icon } from "@/common/components/Icon/Icon"
 import { NavLink } from "./NavLink/NavLink"
 import { sidebarSections } from "./sidebar.data"
 import styles from "./Sidebar.module.css"
+import { useLogout } from "@/features/auth/lib/useLogout"
 
 export const Sidebar = () => {
   const { main, secondary } = sidebarSections
+  const { logout } = useLogout()
 
   return (
     <aside className={styles.sidebar}>
@@ -34,7 +38,7 @@ export const Sidebar = () => {
         </ul>
       </nav>
       <div className={styles.logoutSection}>
-        <Logout />
+        <Logout onClick={logout} />
       </div>
     </aside>
   )
