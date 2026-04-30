@@ -73,16 +73,18 @@ export const ForgotPasswordForm = () => {
           </Button>
         </div>
       </form>
-      <Modal modalTitle="Email sent" onClose={() => setOpen(false)} open={open} size="sm">
-        <div className={styles.dialog}>
-          <p className={clsx("regularText16", styles.modalDescription)}>
-            We have sent a link to confirm your email to {email}
-          </p>
-          <Button type="button" onClick={handleOkClick}>
-            OK
-          </Button>
-        </div>
-      </Modal>
+      {open && (
+        <Modal modalTitle="Email sent" onClose={() => setOpen(false)} open={open} size="sm">
+          <div className={styles.dialog}>
+            <p className={clsx("regularText16", styles.modalDescription)}>
+              We have sent a link to confirm your email to {email}
+            </p>
+            <Button type="button" onClick={handleOkClick}>
+              OK
+            </Button>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }
