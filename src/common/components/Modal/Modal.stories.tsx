@@ -62,7 +62,6 @@ function ModalPreview({ renderContent, ...args }: ModalPreviewProps) {
 }
 
 export const Default: Story = {
-args: {},
   render: (args) => (
     <ModalPreview
       {...args}
