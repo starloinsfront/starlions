@@ -2,3 +2,66 @@
 @import url("../styles/typography.css");
 @import url("../styles/breakpoints.css");
 @import url("../styles/boilerplate.css");
+
+.content {
+  display: grid;
+  grid-template: auto minmax(0, 1fr) / 1fr;
+  grid-template-areas:
+    "header"
+    "mainContent";
+  height: 100dvh;
+  overflow: hidden;
+  width: 100%;
+}
+
+.header {
+  grid-area: header;
+}
+
+.mainContent {
+  display: grid;
+  grid-area: mainContent;
+  grid-template-columns: 250px minmax(0, 1fr);
+  min-height: 0;
+  min-width: 0;
+}
+
+.mainContentWithoutSidebar {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+
+.main {
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.mainContentWithoutSidebar .main {
+  width: min(100%, 1020px);
+}
+
+@media (width <= 992px) {
+  .mainContent {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .mainContentWithoutSidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .main {
+    padding: 24px;
+  }
+}
+
+@media (width <= 768px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+
+  .main {
+    padding: 16px;
+  }
+}

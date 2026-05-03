@@ -1,8 +1,8 @@
 .storybook-page {
   color: #333333;
   font-family: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 24px;
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
   margin: 0 auto;
   max-width: 600px;
   padding: 48px 20px;
@@ -11,7 +11,7 @@
 .storybook-page h2 {
   display: inline-block;
   font-size: 32px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   line-height: 1;
   margin: 0 0 4px;
   vertical-align: top;
@@ -40,7 +40,7 @@
   color: #357a14;
   display: inline-block;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   line-height: 12px;
   margin-right: 10px;
   padding: 4px 12px;
@@ -65,4 +65,12 @@
 
 .storybook-page .tip-wrapper svg path {
   fill: #1ea7fd;
+}
+
+.page-content-container {
+  display: grid;
+  gap: 32px;
+  max-width: none;
+  padding: 0;
+  width: 100%;
 }

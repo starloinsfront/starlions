@@ -1,0 +1,11 @@
+.linkBox {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.linkBtn {
+  height: 36px;
+  padding: 6px 5px;
+  width: 100px;
+}

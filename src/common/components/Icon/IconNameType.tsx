@@ -4,6 +4,8 @@ export type IconName =
   | "arrowBackOutline"
   | "arrowForwardOutline"
   | "arrowIosDownOutline"
+  | "bellFilled"
+  | "bellOutline"
   | "bookmarkFilled"
   | "bookmarkOutline"
   | "calendarFilled"
