@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: "Inctagram | Photo Sharing & Social Network",
   description:
     "Upload photos, follow friends, and explore content from creators around the world. Your visual story starts here.",
+  icons: {
+    icon: "/logo16x16.svg",
+  },
 }
 
 export default function RootLayout({
