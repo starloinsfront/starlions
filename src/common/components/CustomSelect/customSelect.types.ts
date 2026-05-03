@@ -23,4 +23,6 @@ export type CustomSelectProps = {
   id?: string
   required?: boolean
   className?: string
+  triggerClassName?: string
+  contentClassName?: string
 }

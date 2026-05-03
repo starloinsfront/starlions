@@ -26,6 +26,8 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
       id,
       required = false,
       className,
+      contentClassName,
+      triggerClassName,
     },
     ref,
   ) => {
@@ -34,7 +36,7 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
     const errorId = error ? `${selectId}-error` : undefined
 
     return (
-      <div className={styles.wrapper}>
+      <div className={clsx(styles.wrapper, className)}>
         {label && (
           <label htmlFor={selectId} className={styles.label}>
             {label}
@@ -53,28 +55,24 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
             ref={ref}
             id={selectId}
             onBlur={onBlur}
-            className={clsx(styles.trigger, error && styles.error, className)}
+            className={clsx(styles.trigger, error && styles.error, className, triggerClassName)}
             aria-invalid={!!error}
             aria-describedby={errorId}
+            aria-required={required}
           >
             <Select.Value className={styles.value} placeholder={placeholder} />
-            <Select.Icon className={styles.icon}>
+            <Select.Icon className={clsx(styles.icon, "select-chevron")}>
               <Icon name="arrowIosDownOutline" />
             </Select.Icon>
           </Select.Trigger>
-
           <Select.Portal>
             <Select.Content
-              className={styles.content}
+              className={clsx(styles.content, contentClassName)}
               position="popper"
               side="bottom"
               align="start"
               sideOffset={-1}
             >
-              <Select.ScrollUpButton className={styles.scrollButton}>
-                <Icon name="arrowIosDownOutline" />
-              </Select.ScrollUpButton>
-
               <Select.Viewport className={styles.viewport}>
                 {options.map((option) => (
                   <Select.Item
@@ -85,17 +83,17 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
                   >
                     <Select.ItemText>
                       <span className={styles.itemContent}>
-                        {option.icon && <Icon name={option.icon} width={20} height={20} />}
-                        <span>{option.label}</span>
+                        {option.icon && (
+                          <span className={clsx(className, "iconlabel")}>
+                            <Icon name={option.icon} width={20} height={20} />
+                          </span>
+                        )}
+                        <span className={clsx(className, "textlabel")}>{option.label}</span>
                       </span>
                     </Select.ItemText>
                   </Select.Item>
                 ))}
               </Select.Viewport>
-
-              <Select.ScrollDownButton className={styles.scrollButton}>
-                <Icon name="arrowIosDownOutline" />
-              </Select.ScrollDownButton>
             </Select.Content>
           </Select.Portal>
         </Select.Root>
@@ -110,4 +108,4 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
   },
 )
 
-CustomSelect.displayName = "CustomSelect"
+CustomSelect.displayName = "Selector"

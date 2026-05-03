@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { CustomSelect } from "@/common/components/CustomSelect/CustomSelect"
 import { SelectOption } from "@/common/components/CustomSelect/customSelect.types"
+import { useState } from "react"
 import styles from "./LanguageSelect.module.css"
 
 export const LanguageSelect = () => {
@@ -20,6 +20,8 @@ export const LanguageSelect = () => {
         value={language}
         onValueChange={setLanguage}
         placeholder="language"
+        className={styles.mobile}
+        triggerClassName={styles.mobileTrigger}
       />
     </div>
   )
