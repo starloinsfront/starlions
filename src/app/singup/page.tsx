@@ -1,93 +1,87 @@
+// app/singup/page.tsx
 "use client"
+
 import s from "./Signup.module.css"
 import Link from "next/link"
-import {Button} from "@/common/components/Button/Button"
-import {Icon} from "@/common/components/Icon/Icon"
-import {TextField} from "@/common/components/TextField/TextField"
-import {useRouter} from "next/navigation";
-import {useState} from "react";
-import {useForm} from "react-hook-form";
-import {RegisterFormData, registerSchema} from "@/app/singup/register.schema";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useRegisterMutation} from "@/features/auth/api/authApi";
+import { Button } from "@/common/components/Button/Button"
+import { Icon } from "@/common/components/Icon/Icon"
+import { TextField } from "@/common/components/TextField/TextField"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { RegisterFormData, registerSchema } from "./register.schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useAuthError } from "@/common/hooks/useAuthError"
+import { useRegister } from "@/common/hooks/useRegister"
 
-
-export default function Home() {
-  const router = useRouter();
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  // ✅ Используем хук RTK Query
-  const [registerUser, {isLoading, error: apiError}] = useRegisterMutation();
+export default function SignupPage() {
+  const router = useRouter()
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const { register: registerUser, isLoading, error, reset: resetMutation } = useRegister()
+  const { getErrorMessage } = useAuthError({ type: "registration" })
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
-    reset,
+    formState: { errors, isValid },
+    reset: resetForm,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     mode: "onChange",
     defaultValues: {
-      isTermsAccepted: false,  // ← было agreeToTerms
+      isTermsAccepted: false,
     },
-  });
+  })
 
   const onSubmit = async (data: RegisterFormData) => {
-    setSuccessMessage(null);
+    setSuccessMessage(null)
+    resetMutation()
 
     try {
-      // Отправляем запрос через RTK Query
-      await registerUser({
+      registerUser({
         username: data.username,
         email: data.email,
         password: data.password,
         passwordConfirmation: data.passwordConfirmation,
         isTermsAccepted: data.isTermsAccepted,
-      }).unwrap();
+      })
 
-      // Если дошли сюда — успех
-      setSuccessMessage(`We have sent a link to confirm your email to ${data.email}`);
-      reset();
+      setSuccessMessage(`We have sent a link to confirm your email to ${data.email}`)
+      resetForm()
+
+      setTimeout(() => {
+        router.push("/login")
+      }, 2000)
     } catch (err) {
-      // Ошибка обрабатывается автоматически через apiError
-      console.error('Registration failed:', err);
+      console.error("Registration failed:", err)
     }
-  };
+  }
 
-  // Получаем текст ошибки из RTK Query
-  const getErrorMessage = () => {
-    if (!apiError) return null;
-
-    const err = apiError as any;
-
-    if (err?.status === 400) {
-      if (err?.data?.message?.includes('email')) {
-        return 'User with this email is already registered';
-      }
-      if (err?.data?.message?.includes('username')) {
-        return 'User with this username is already registered';
-      }
-      return err?.data?.message || 'Registration failed';
-    }
-
-    if (err?.status === 429) {
-      return 'Too many attempts. Please try again later.';
-    }
-
-    return 'Something went wrong. Please try again.';
-  };
-
-  const serverError = getErrorMessage();
+  const serverError = getErrorMessage(error)
 
   return (
     <section className={s.registrationPage}>
       <div className={s.signupContainer}>
         <h1 className={s.singUpTitle}>Sign up</h1>
+
         <div className={s.authProviders}>
-          <Icon className={s.authIcon} height={36} name={"googleFilled"} width={36}/>
-          <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36}/>
+          <Icon className={s.authIcon} height={36} name={"googleFilled"} width={36} />
+          <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36} />
         </div>
+
         <form className={s.signupForm} onSubmit={handleSubmit(onSubmit)}>
+          {serverError && !successMessage && (
+            <div className={s.errorMessage} role="alert">
+              {serverError}
+            </div>
+          )}
+
+          {successMessage && (
+            <div className={s.successMessage} role="status">
+              {successMessage}
+            </div>
+          )}
+
           <TextField
             containerClassName={s.regItem}
             label={"Username"}
@@ -95,8 +89,10 @@ export default function Home() {
             autoComplete={"username"}
             type={"text"}
             errorMessage={errors.username?.message}
+            disabled={isLoading}
             {...register("username")}
           />
+
           <TextField
             containerClassName={s.regItem}
             label={"Email"}
@@ -104,8 +100,10 @@ export default function Home() {
             autoComplete={"email"}
             type={"email"}
             errorMessage={errors.email?.message}
+            disabled={isLoading}
             {...register("email")}
           />
+
           <TextField
             containerClassName={s.regItem}
             label={"Password"}
@@ -113,32 +111,47 @@ export default function Home() {
             autoComplete={"new-password"}
             type={"password"}
             errorMessage={errors.password?.message}
+            disabled={isLoading}
             {...register("password")}
           />
+
           <TextField
             containerClassName={s.regItem}
             label={"Password confirmation"}
             placeholder={"Password confirmation"}
             autoComplete={"new-password"}
             type={"password"}
-            errorMessage={errors.passwordConfirmation?.message}  // ← было confirmPassword
+            errorMessage={errors.passwordConfirmation?.message}
+            disabled={isLoading}
             {...register("passwordConfirmation")}
           />
+
           <div className={s.consentContainer}>
             <input
               type="checkbox"
               id="termsCheckbox"
-              {...register("isTermsAccepted")} // ← было agreeToTerms
+              disabled={isLoading}
+              {...register("isTermsAccepted")}
             />
-            <p className={s.consentText}>I agree to the
-              <Link className={s.regLink} href='/termsofservice'> Terms of Service</Link> and
-              <Link className={s.regLink} href='/privacypolicy'> Privacy Policy</Link>
+            <p className={s.consentText}>
+              I agree to the
+              <Link className={s.regLink} href="/termsofservice">
+                {" "}
+                Terms of Service
+              </Link>{" "}
+              and
+              <Link className={s.regLink} href="/privacypolicy">
+                {" "}
+                Privacy Policy
+              </Link>
             </p>
           </div>
+
           <Button className={s.submitButton} type={"submit"} disabled={!isValid || isLoading}>
             {isLoading ? "Loading..." : "Sign Up"}
           </Button>
         </form>
+
         <p className={s.authText}>Do you have an account?</p>
         <Link className={s.authLink} href="/login">
           Sign In
