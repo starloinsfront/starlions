@@ -24,14 +24,18 @@ export const Sidebar = () => {
       </nav>
       <nav className={clsx(styles.sidebarSection, styles.mobileNav)}>
         <ul>
-          {secondary?.map((link, index) => (
-            <li key={index}>
-              <NavLink href={link.href}>
-                <Icon name={link.icon} />
-                {link.title}
-              </NavLink>
-            </li>
-          ))}
+          {secondary?.map((link, index) => {
+            if (index !== 0) {
+              return (
+                <li key={index}>
+                  <NavLink href={link.href}>
+                    <Icon name={link.icon} />
+                    {link.title}
+                  </NavLink>
+                </li>
+              )
+            }
+          })}
         </ul>
       </nav>
       <div className={clsx(styles.logoutSection, styles.mobileNav)}>
