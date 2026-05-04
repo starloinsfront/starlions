@@ -14,10 +14,10 @@ type Props = {
   modalTitle: string
   description?: ReactNode
   ariaDescribedBy?: string
-  /** @deprecated Use ariaDescribedBy instead */
   ariaDescribedby?: string
   size?: ModalSize
   contentClassName?: string
+  children: ReactNode
 } & Omit<
   ComponentPropsWithoutRef<typeof Dialog.Content>,
   "children" | "title" | "aria-describedby" | "onOpenChange"
