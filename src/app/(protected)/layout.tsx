@@ -20,7 +20,9 @@ export default function ProtectedLayout({
       <Header isAuth={isAuth} />
       <div className="mainContent">
         <Sidebar />
-        <main className="main">{children}</main>
+        <main className="main">
+          <div className="mainInner">{children}</div>
+        </main>
       </div>
     </div>
   )

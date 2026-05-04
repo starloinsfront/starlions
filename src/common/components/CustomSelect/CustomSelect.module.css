@@ -136,6 +136,20 @@
   gap: 8px;
 }
 
+.optionIcon {
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.optionLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .error {
   border-color: var(--danger-500);
 }

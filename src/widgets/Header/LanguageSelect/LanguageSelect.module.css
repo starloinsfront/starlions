@@ -17,15 +17,14 @@
     padding: 0;
   }
 
+  .mobileTrigger:focus,
   .mobileTrigger:focus-visible {
     border-color: transparent;
+    box-shadow: none;
     outline: none;
   }
 
-  .mobileTrigger:hover:not([data-disabled]) {
-    border-color: transparent;
-  }
-
+  .mobileTrigger:hover:not([data-disabled]),
   .mobileTrigger[data-state="open"] {
     border-color: transparent;
   }
@@ -36,17 +35,17 @@
     cursor: not-allowed;
   }
 
-  .mobileTrigger :global(.select-chevron) {
+  .chevron {
     height: 16px;
     width: 16px;
   }
 
-  .mobileTrigger :global(.select-chevron) svg {
+  .chevron svg {
     height: 100% !important;
     width: 100% !important;
   }
 
-  .mobile:global(.textlabel) {
+  .optionLabel {
     display: none;
   }
 }

@@ -18,11 +18,18 @@ export type CustomSelectProps = {
   placeholder?: string
   disabled?: boolean
   label?: string
+  ariaLabel?: string
   error?: string
   name?: string
   id?: string
   required?: boolean
   className?: string
   triggerClassName?: string
+  valueClassName?: string
+  chevronClassName?: string
   contentClassName?: string
+  optionClassName?: string
+  optionContentClassName?: string
+  optionIconClassName?: string
+  optionLabelClassName?: string
 }

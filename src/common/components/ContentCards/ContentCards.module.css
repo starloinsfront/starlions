@@ -38,8 +38,8 @@
 }
 
 .statsCard {
-  background: linear-gradient(180deg, rgb(57 125 246 / 16%), transparent 70%),
-    rgb(255 255 255 / 2%);
+  background:
+    linear-gradient(180deg, rgb(57 125 246 / 16%), transparent 70%), rgb(255 255 255 / 2%);
   border: 1px solid rgb(255 255 255 / 8%);
   border-radius: 18px;
   min-height: 100%;
@@ -108,7 +108,9 @@
   height: 240px;
   overflow: hidden;
   position: relative;
-  transition: transform 0.3s ease, height 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    height 0.3s ease;
   width: 100%;
 }
 
@@ -136,7 +138,8 @@
 }
 
 .slide::before {
-  background: linear-gradient(180deg, transparent 40%, rgb(0 0 0 / 70%) 100%),
+  background:
+    linear-gradient(180deg, transparent 40%, rgb(0 0 0 / 70%) 100%),
     var(--slide-background, linear-gradient(135deg, #222222 0%, #111111 100%));
   content: "";
   inset: 0;
@@ -161,7 +164,8 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  transition: background-color 0.2s ease,
+  transition:
+    background-color 0.2s ease,
     border-color 0.2s ease;
   width: 24px;
   z-index: 1;
@@ -208,7 +212,8 @@
   cursor: pointer;
   height: 8px;
   padding: 0;
-  transition: transform 0.2s ease,
+  transition:
+    transform 0.2s ease,
     background-color 0.2s ease;
   width: 8px;
 }
@@ -239,8 +244,8 @@
 
 .avatar {
   align-items: center;
-  background: linear-gradient(135deg, rgb(57 125 246 / 85%), rgb(57 125 246 / 20%)),
-    var(--dark-300);
+  background:
+    linear-gradient(135deg, rgb(57 125 246 / 85%), rgb(57 125 246 / 20%)), var(--dark-300);
   border: 1px solid rgb(255 255 255 / 12%);
   border-radius: 50%;
   color: var(--light-100);
@@ -314,7 +319,7 @@
   text-underline-offset: 4px;
 }
 
-@media (width <= 1100px) {
+@media (width <= 1279px) {
   .hero {
     grid-template-columns: 1fr;
   }

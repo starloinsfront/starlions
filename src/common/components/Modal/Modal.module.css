@@ -4,6 +4,7 @@
   inset: 0;
   opacity: 0.5;
   position: fixed;
+  z-index: 100;
 }
 
 .content {
@@ -20,6 +21,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: calc(100% - 15px);
+  z-index: 101;
 }
 
 .content:focus {
@@ -54,9 +56,21 @@
   margin: 0;
 }
 
+.description {
+  position: absolute;
+
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 1px;
+}
+
 .iconButton {
-  align-items: center;
   all: unset;
+
+  align-items: center;
   background-color: transparent;
   border-radius: 100%;
   color: var(--light-100);
@@ -69,6 +83,11 @@
 
 .iconButton:hover {
   background-color: var(--dark-100);
+}
+
+.iconButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
 }
 
 .mainContent {

@@ -21,13 +21,20 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
       placeholder = "Select",
       disabled = false,
       label,
+      ariaLabel,
       error,
       name,
       id,
       required = false,
       className,
-      contentClassName,
       triggerClassName,
+      valueClassName,
+      chevronClassName,
+      contentClassName,
+      optionClassName,
+      optionContentClassName,
+      optionIconClassName,
+      optionLabelClassName,
     },
     ref,
   ) => {
@@ -55,16 +62,18 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
             ref={ref}
             id={selectId}
             onBlur={onBlur}
-            className={clsx(styles.trigger, error && styles.error, className, triggerClassName)}
+            className={clsx(styles.trigger, error && styles.error, triggerClassName)}
+            aria-label={label ? undefined : ariaLabel}
             aria-invalid={!!error}
             aria-describedby={errorId}
             aria-required={required}
           >
-            <Select.Value className={styles.value} placeholder={placeholder} />
-            <Select.Icon className={clsx(styles.icon, "select-chevron")}>
+            <Select.Value className={clsx(styles.value, valueClassName)} placeholder={placeholder} />
+            <Select.Icon className={clsx(styles.icon, chevronClassName)}>
               <Icon name="arrowIosDownOutline" />
             </Select.Icon>
           </Select.Trigger>
+
           <Select.Portal>
             <Select.Content
               className={clsx(styles.content, contentClassName)}
@@ -79,16 +88,19 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
                     key={option.value}
                     value={option.value}
                     disabled={option.disabled}
-                    className={styles.item}
+                    textValue={option.label}
+                    className={clsx(styles.item, optionClassName)}
                   >
                     <Select.ItemText>
-                      <span className={styles.itemContent}>
+                      <span className={clsx(styles.itemContent, optionContentClassName)}>
                         {option.icon && (
-                          <span className={clsx(className, "iconlabel")}>
+                          <span className={clsx(styles.optionIcon, optionIconClassName)}>
                             <Icon name={option.icon} width={20} height={20} />
                           </span>
                         )}
-                        <span className={clsx(className, "textlabel")}>{option.label}</span>
+                        <span className={clsx(styles.optionLabel, optionLabelClassName)}>
+                          {option.label}
+                        </span>
                       </span>
                     </Select.ItemText>
                   </Select.Item>
@@ -108,4 +120,4 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
   },
 )
 
-CustomSelect.displayName = "Selector"
+CustomSelect.displayName = "CustomSelect"
