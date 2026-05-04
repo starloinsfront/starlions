@@ -3,6 +3,7 @@ import { Icon } from "@/common/components/Icon/Icon"
 import { NavLink } from "./NavLink/NavLink"
 import { sidebarSections } from "./sidebar.data"
 import styles from "./Sidebar.module.css"
+import clsx from "clsx"
 
 export const Sidebar = () => {
   const { main, secondary } = sidebarSections
@@ -15,13 +16,13 @@ export const Sidebar = () => {
             <li key={link.href}>
               <NavLink href={link.href}>
                 <Icon name={link.icon} />
-                {link.title}
+                <span className={styles.textLink}>{link.title}</span>
               </NavLink>
             </li>
           ))}
         </ul>
       </nav>
-      <nav className={styles.sidebarSection}>
+      <nav className={clsx(styles.sidebarSection, styles.mobileNav)}>
         <ul>
           {secondary?.map((link, index) => (
             <li key={index}>
@@ -33,7 +34,7 @@ export const Sidebar = () => {
           ))}
         </ul>
       </nav>
-      <div className={styles.logoutSection}>
+      <div className={clsx(styles.logoutSection, styles.mobileNav)}>
         <Logout />
       </div>
     </aside>
