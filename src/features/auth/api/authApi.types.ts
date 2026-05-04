@@ -6,6 +6,10 @@ export interface RegisterRequest {
   isTermsAccepted: boolean
 }
 
+export interface ConfirmRegistrationRequest {
+  code: string
+}
+
 export interface ApiError {
   status: number
   data: {

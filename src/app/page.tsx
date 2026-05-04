@@ -1,7 +1,7 @@
-import {App} from "@/app/App"
-
 export default function Home() {
-
-  return <App/>
-
+  return (
+    <div>
+      <h1>Welcome to Starlions</h1>
+    </div>
+  )
 }

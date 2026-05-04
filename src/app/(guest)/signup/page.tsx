@@ -1,22 +1,27 @@
 "use client"
 
-import s from "./Signup.module.css"
 import Link from "next/link"
-import { Button } from "@/common/components/Button/Button"
-import { Icon } from "@/common/components/Icon/Icon"
-import { TextField } from "@/common/components/TextField/TextField"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { RegisterFormData, registerSchema } from "@/app/(guest)/signup/register.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@/common/components/Button/Button"
+import { Icon } from "@/common/components/Icon/Icon"
+import { TextField } from "@/common/components/TextField/TextField"
+import { useAuthError } from "@/common/hooks/useAuthError"
+import { useRegister } from "@/common/hooks/useRegister"
+import { RegisterFormData, registerSchema } from "@/app/(guest)/signup/register.schema"
+import s from "./Signup.module.css"
+import { Modal } from "@/common/components/Modal/Modal"
+import { ROUTES } from "@/common/constants/route"
 
 export default function Home() {
   const router = useRouter()
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const { register: registerUser, isLoading, error, reset: resetMutation } = useRegister()
   const { getErrorMessage } = useAuthError({ type: "registration" })
-
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [registeredEmail, setRegisteredEmail] = useState("")
   const {
     register,
     handleSubmit,
@@ -24,11 +29,11 @@ export default function Home() {
     reset: resetForm,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    mode: "onChange", // валидация при каждом изменении
+    mode: "onChange",
     defaultValues: {
-      agreeToTerms: false,
+      isTermsAccepted: false,
     },
-  });
+  })
 
   const onSubmit = async (data: RegisterFormData) => {
     setSuccessMessage(null)
@@ -44,27 +49,43 @@ export default function Home() {
       })
 
       setSuccessMessage(`We have sent a link to confirm your email to ${data.email}`)
+      setRegisteredEmail(data.email)
+      setIsModalOpen(true)
       resetForm()
-
-      setTimeout(() => {
-        router.push("/login")
-      }, 2000)
+      // setTimeout(() => {
+      //   router.push("/login")
+      // }, 2000)
     } catch (err) {
       console.error("Registration failed:", err)
     }
   }
 
   const serverError = getErrorMessage(error)
-
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+    router.push(ROUTES.signIn)
+  }
   return (
     <section className={s.registrationPage}>
       <div className={s.signupContainer}>
         <h1 className={s.singUpTitle}>Sign up</h1>
         <div className={s.authProviders}>
-          <Icon className={s.authIcon} height={36} name={"googleFilled"} width={36}/>
-          <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36}/>
+          <Icon className={s.authIcon} height={36} name={"googleFilled"} width={36} />
+          <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36} />
         </div>
         <form className={s.signupForm} onSubmit={handleSubmit(onSubmit)}>
+          {serverError && !successMessage && (
+            <div className={s.formMessage} role="alert">
+              {serverError}
+            </div>
+          )}
+
+          {successMessage && (
+            <div className={s.formMessage} role="status">
+              {successMessage}
+            </div>
+          )}
+
           <TextField
             containerClassName={s.regItem}
             label={"Username"}
@@ -98,29 +119,35 @@ export default function Home() {
             placeholder={"Password confirmation"}
             autoComplete={"new-password"}
             type={"password"}
-            errorMessage={errors.confirmPassword?.message}
-            {...register("confirmPassword")}
+            errorMessage={errors.passwordConfirmation?.message}
+            {...register("passwordConfirmation")}
           />
-          <div className={s.consentContainer}>
-            <input
-              type="checkbox"
-              id="termsCheckbox"
-              disabled={isLoading}
-              {...register("isTermsAccepted")}
-            />
-            <p className={s.consentText}>
-              I agree to the
-              <Link className={s.regLink} href="/termsofservice">
-                {" "}
-                Terms of Service
-              </Link>{" "}
-              and
-              <Link className={s.regLink} href="/privacypolicy">
-                {" "}
-                Privacy Policy
-              </Link>
-            </p>
+
+          <div className={s.consentBlock}>
+            <label className={s.consentContainer} htmlFor="termsCheckbox">
+              <input
+                type="checkbox"
+                id="termsCheckbox"
+                className={s.termsCheckbox}
+                disabled={isLoading}
+                {...register("isTermsAccepted")}
+              />
+              <span className={s.consentText}>
+                I agree to the
+                <Link className={s.regLink} href="/termsofservice">
+                  {" "}
+                  Terms of Service
+                </Link>{" "}
+                and
+                <Link className={s.regLink} href="/privacypolicy">
+                  {" "}
+                  Privacy Policy
+                </Link>
+              </span>
+            </label>
+            <span className={s.consentError}>{errors.isTermsAccepted?.message || "\u00A0"}</span>
           </div>
+
           <Button className={s.submitButton} type={"submit"} disabled={!isValid || isLoading}>
             {isLoading ? "Loading..." : "Sign Up"}
           </Button>
@@ -130,6 +157,16 @@ export default function Home() {
           Sign In
         </Link>
       </div>
+      <Modal open={isModalOpen} onClose={handleModalClose} modalTitle="Email sent">
+        <div className={s.modalContent}>
+          <p className={s.modalText}>
+            We have sent a link to confirm your email to {registeredEmail}
+          </p>
+          <Button className={s.modalButton} onClick={handleModalClose}>
+            OK
+          </Button>
+        </div>
+      </Modal>
     </section>
   )
 }

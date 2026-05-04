@@ -2,14 +2,13 @@
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
-  position: relative;
+  min-height: 76px;
   width: 100%;
 }
 
 .label {
   color: var(--light-900);
 }
-
 
 .inputWrapper {
   align-items: center;
@@ -35,9 +34,6 @@
   opacity: 1;
 }
 
-/* --- СОСТОЯНИЯ (STATES) --- */
-
-/* Focus */
 .input:focus {
   border-color: var(--accent-300);
 }
@@ -50,8 +46,6 @@
   color: var(--dark-100);
 }
 
-/* --- ICONS --- */
-
 .iconStart,
 .iconEnd {
   align-items: center;
@@ -59,13 +53,13 @@
   display: flex;
   height: 20px;
   justify-content: center;
-  pointer-events: none;
   position: absolute;
   width: 20px;
 }
 
 .iconStart {
   left: 12px;
+  pointer-events: none;
 }
 
 .iconEnd {
@@ -73,7 +67,6 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  pointer-events: auto;
   right: 12px;
 }
 
@@ -90,7 +83,6 @@
   padding-right: 36px;
 }
 
-/* Disabled */
 .input:disabled {
   border-color: var(--dark-100);
   color: var(--dark-100);
@@ -106,7 +98,6 @@
   color: var(--dark-100);
 }
 
-/* Error */
 .error .input {
   border-color: var(--danger-500);
 }
@@ -114,20 +105,19 @@
 .errorText {
   color: var(--danger-300);
   line-height: var(--line-height-sm);
+  min-height: 16px;
+  padding-top: 4px;
 }
 
-/* Hover */
 .input:hover:not(:disabled, :focus) {
   border-color: var(--light-700);
 }
 
-/* Active */
 .input:active:not(:disabled) {
   border-color: var(--light-100);
   outline: none;
 }
 
-/* Error + Hover */
 .error .input:hover:not(:disabled, :focus) {
   border-color: var(--danger-500);
 }

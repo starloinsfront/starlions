@@ -1,6 +1,6 @@
-import clsx from "clsx"
 import { ComponentPropsWithoutRef, ReactNode, useId, useState } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
+import s from "./TextField.module.css"
 
 export type Props = {
   label?: string
@@ -48,16 +48,17 @@ export const TextField = ({
           <button
             type="button"
             className={s.iconEnd}
+            aria-label={showPassword ? "Hide password" : "Show password"}
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? "👁️" : "🕶️"}
+            <Icon height={20} name={showPassword ? "eyeOffOutline" : "eyeOutline"} width={20} />
           </button>
         ) : (
           iconEnd && <span className={s.iconEnd}>{iconEnd}</span>
         )}
       </div>
 
-      {errorMessage && <span className={s.errorText}>{errorMessage}</span>}
+      <span className={s.errorText}>{errorMessage || "\u00A0"}</span>
     </div>
   )
 }

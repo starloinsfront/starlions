@@ -11,6 +11,7 @@ export const ROUTES = {
 
   signIn: "/login",
   signUp: "/signup",
+  confirmEmail: "/confirm-email",
   forgotPassword: "/forgot-password",
   emailCheck: "/forgot-password/email-check",
   createNewPassword: "/create-new-password",

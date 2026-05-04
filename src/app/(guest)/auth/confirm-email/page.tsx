@@ -39,7 +39,9 @@ export default function ConfirmEmailPage() {
 
         if (error?.status === 400) {
           setStatus("expired")
-          setErrorMessage(error?.data?.message || "The confirmation code has expired or is invalid.")
+          setErrorMessage(
+            error?.data?.message || "The confirmation code has expired or is invalid.",
+          )
         } else if (error?.status === 404) {
           setStatus("notFound")
           setErrorMessage(error?.data?.message || "User not found.")
@@ -91,8 +93,12 @@ export default function ConfirmEmailPage() {
         <div className={s.content}>
           <div className={`${s.statusIcon} ${s.successIcon}`}>OK</div>
           <h1 className={s.title}>Email Confirmed</h1>
-          <p className={s.description}>Your email has been successfully verified and your account is now active.</p>
-          <p className={s.secondaryText}>You will be redirected to the login page in a few seconds.</p>
+          <p className={s.description}>
+            Your email has been successfully verified and your account is now active.
+          </p>
+          <p className={s.secondaryText}>
+            You will be redirected to the login page in a few seconds.
+          </p>
           <Button className={s.button} asChild>
             <Link href={ROUTES.signIn}>Go to Login</Link>
           </Button>
@@ -108,7 +114,9 @@ export default function ConfirmEmailPage() {
           <div className={`${s.statusIcon} ${s.errorIcon}`}>!</div>
           <h1 className={s.title}>Link Expired</h1>
           <p className={s.description}>{errorMessage}</p>
-          <p className={s.secondaryText}>The confirmation link has expired or has already been used.</p>
+          <p className={s.secondaryText}>
+            The confirmation link has expired or has already been used.
+          </p>
           <div className={s.buttonGroup}>
             <Button className={s.button} asChild>
               <Link href={ROUTES.signUp}>Sign Up Again</Link>
@@ -129,7 +137,9 @@ export default function ConfirmEmailPage() {
           <div className={`${s.statusIcon} ${s.errorIcon}`}>!</div>
           <h1 className={s.title}>User Not Found</h1>
           <p className={s.description}>{errorMessage}</p>
-          <p className={s.secondaryText}>We couldn&apos;t find a user associated with this confirmation link.</p>
+          <p className={s.secondaryText}>
+            We couldn&apos;t find a user associated with this confirmation link.
+          </p>
           <div className={s.buttonGroup}>
             <Button className={s.button} asChild>
               <Link href={ROUTES.signUp}>Create Account</Link>
