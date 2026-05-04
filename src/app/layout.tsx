@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { ReactNode } from "react"
-import StoreProvider from "@/app/StoreProvider"
+import QueryProvider from "@/app/providers/QueryProvider"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -22,13 +21,13 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: ReactNode
+  children: React.ReactNode
 }>) {
   return (
-    <StoreProvider>
-      <html lang="en" className={inter.variable}>
-        <body>{children}</body>
-      </html>
-    </StoreProvider>
+    <html lang="en" className={inter.variable}>
+      <body>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
+    </html>
   )
 }

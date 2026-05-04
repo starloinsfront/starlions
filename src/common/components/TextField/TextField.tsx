@@ -1,4 +1,3 @@
-import clsx from "clsx"
 import { ComponentPropsWithoutRef, ReactNode, useId, useState } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
 import s from "./TextField.module.css"
@@ -29,10 +28,13 @@ export const TextField = ({
   const isPassword = type === "password"
   const inputType = isPassword && showPassword ? "text" : type
 
+  const containerClasses = `${s.inputContainer} ${errorMessage ? s.error : ""} ${containerClassName || ""}`
+  const inputClasses = `${s.input} ${iconStart ? s.withIconStart : ""} ${iconEnd || isPassword ? s.withIconEnd : ""} ${className || ""}`
+
   return (
-    <div className={clsx(s.inputContainer, { [s.error]: errorMessage }, containerClassName)}>
+    <div className={containerClasses}>
       {label && (
-        <label htmlFor={finalId} className={clsx(s.label, "regularText14")}>
+        <label htmlFor={finalId} className={s.label}>
           {label}
         </label>
       )}
@@ -40,35 +42,23 @@ export const TextField = ({
       <div className={s.inputWrapper}>
         {iconStart && <span className={s.iconStart}>{iconStart}</span>}
 
-        <input
-          id={finalId}
-          type={inputType}
-          className={clsx(
-            s.input,
-            "regularText16",
-            {
-              [s.withIconStart]: iconStart,
-              [s.withIconEnd]: iconEnd || isPassword,
-            },
-            className,
-          )}
-          {...rest}
-        />
+        <input id={finalId} type={inputType} className={inputClasses} {...rest} />
 
         {isPassword ? (
           <button
             type="button"
             className={s.iconEnd}
+            aria-label={showPassword ? "Hide password" : "Show password"}
             onClick={() => setShowPassword(!showPassword)}
           >
-            <Icon name={showPassword ? "eyeOffOutline" : "eyeOutline"} />
+            <Icon height={20} name={showPassword ? "eyeOffOutline" : "eyeOutline"} width={20} />
           </button>
         ) : (
           iconEnd && <span className={s.iconEnd}>{iconEnd}</span>
         )}
       </div>
 
-      {errorMessage && <span className={clsx(s.errorText, "regularText14")}>{errorMessage}</span>}
+      <span className={s.errorText}>{errorMessage || "\u00A0"}</span>
     </div>
   )
 }
