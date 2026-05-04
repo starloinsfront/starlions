@@ -9,3 +9,29 @@
   padding: 6px 5px;
   width: 100px;
 }
+
+.desktop {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+}
+
+.mobile {
+  display: none;
+}
+
+@media (width <= 768px) {
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: block;
+  }
+
+  .linkBtn {
+    height: 36px;
+    padding: 6px 5px;
+    width: 100px;
+  }
+}
