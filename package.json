@@ -9,7 +9,7 @@
     "stylelint": "stylelint '**/*.{css,scss}'",
     "stylelint:fix": "stylelint '**/*.{css,scss}' --fix",
     "check-all": "npm run lint && npm run stylelint && npm run format",
-    "dev": "next dev -p 3000",
+    "dev": "next dev --hostname dev.it-incubator.ru --port 3000 --experimental-https",
     "build": "next build",
     "build:production": "next build",
     "start": "next start",
