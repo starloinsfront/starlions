@@ -18,7 +18,9 @@ export default function GuestLayout({
     <div className="content">
       <Header isAuth={isAuth} />
       <div className="mainContent mainContentWithoutSidebar">
-        <main className="main">{children}</main>
+        <main className="main">
+          <div className="mainInner mainInnerWithoutSidebar">{children}</div>
+        </main>
       </div>
     </div>
   )

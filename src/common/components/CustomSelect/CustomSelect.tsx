@@ -21,11 +21,20 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
       placeholder = "Select",
       disabled = false,
       label,
+      ariaLabel,
       error,
       name,
       id,
       required = false,
       className,
+      triggerClassName,
+      valueClassName,
+      chevronClassName,
+      contentClassName,
+      optionClassName,
+      optionContentClassName,
+      optionIconClassName,
+      optionLabelClassName,
     },
     ref,
   ) => {
@@ -34,7 +43,7 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
     const errorId = error ? `${selectId}-error` : undefined
 
     return (
-      <div className={styles.wrapper}>
+      <div className={clsx(styles.wrapper, className)}>
         {label && (
           <label htmlFor={selectId} className={styles.label}>
             {label}
@@ -53,49 +62,50 @@ export const CustomSelect = forwardRef<SelectTriggerRef, CustomSelectProps>(
             ref={ref}
             id={selectId}
             onBlur={onBlur}
-            className={clsx(styles.trigger, error && styles.error, className)}
+            className={clsx(styles.trigger, error && styles.error, triggerClassName)}
+            aria-label={label ? undefined : ariaLabel}
             aria-invalid={!!error}
             aria-describedby={errorId}
+            aria-required={required}
           >
-            <Select.Value className={styles.value} placeholder={placeholder} />
-            <Select.Icon className={styles.icon}>
+            <Select.Value className={clsx(styles.value, valueClassName)} placeholder={placeholder} />
+            <Select.Icon className={clsx(styles.icon, chevronClassName)}>
               <Icon name="arrowIosDownOutline" />
             </Select.Icon>
           </Select.Trigger>
 
           <Select.Portal>
             <Select.Content
-              className={styles.content}
+              className={clsx(styles.content, contentClassName)}
               position="popper"
               side="bottom"
               align="start"
               sideOffset={-1}
             >
-              <Select.ScrollUpButton className={styles.scrollButton}>
-                <Icon name="arrowIosDownOutline" />
-              </Select.ScrollUpButton>
-
               <Select.Viewport className={styles.viewport}>
                 {options.map((option) => (
                   <Select.Item
                     key={option.value}
                     value={option.value}
                     disabled={option.disabled}
-                    className={styles.item}
+                    textValue={option.label}
+                    className={clsx(styles.item, optionClassName)}
                   >
                     <Select.ItemText>
-                      <span className={styles.itemContent}>
-                        {option.icon && <Icon name={option.icon} width={20} height={20} />}
-                        <span>{option.label}</span>
+                      <span className={clsx(styles.itemContent, optionContentClassName)}>
+                        {option.icon && (
+                          <span className={clsx(styles.optionIcon, optionIconClassName)}>
+                            <Icon name={option.icon} width={20} height={20} />
+                          </span>
+                        )}
+                        <span className={clsx(styles.optionLabel, optionLabelClassName)}>
+                          {option.label}
+                        </span>
                       </span>
                     </Select.ItemText>
                   </Select.Item>
                 ))}
               </Select.Viewport>
-
-              <Select.ScrollDownButton className={styles.scrollButton}>
-                <Icon name="arrowIosDownOutline" />
-              </Select.ScrollDownButton>
             </Select.Content>
           </Select.Portal>
         </Select.Root>

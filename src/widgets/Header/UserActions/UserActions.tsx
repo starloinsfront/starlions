@@ -1,15 +1,13 @@
-import { Icon } from "@/common/components/Icon/Icon"
 import { LanguageSelect } from "../LanguageSelect/LanguageSelect"
-import s from "./UserActions.module.css"
+import { DropdownMenuNavItem } from "./DropdownMenuNavItem/DropdownMenuNavItem"
+import { MessageMenu } from "./MessageMenu/MessageMenu"
 
 export function UserActions() {
   return (
     <>
-      <button className={s.iconButton}>
-        <Icon name="bellOutline" width={18} hanging={20} />
-        <span>1</span>
-      </button>
+      <MessageMenu />
       <LanguageSelect />
+      <DropdownMenuNavItem />
     </>
   )
 }

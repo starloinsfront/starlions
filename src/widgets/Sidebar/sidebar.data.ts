@@ -10,6 +10,7 @@ export const sidebarSections: SidebarSection = {
     { title: "Search", href: ROUTES.search, icon: "searchOutline" },
   ],
   secondary: [
+    { title: "Profile Settings", href: ROUTES.settings, icon: "settingsOutline" },
     { title: "Statistics", href: ROUTES.statistics, icon: "trendingUpFilled" },
     { title: "Favorites", href: ROUTES.favorites, icon: "bookmarkOutline" },
   ],

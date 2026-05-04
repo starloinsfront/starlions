@@ -2,3 +2,50 @@
   flex: 0 0 163px;
   width: 163px;
 }
+
+@media (width <= 768px) {
+  .languageSelect {
+    flex: 0 0 42px;
+    width: 42px;
+  }
+
+  .mobileTrigger {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    gap: 0;
+    padding: 0;
+  }
+
+  .mobileTrigger:focus,
+  .mobileTrigger:focus-visible {
+    border-color: transparent;
+    box-shadow: none;
+    outline: none;
+  }
+
+  .mobileTrigger:hover:not([data-disabled]),
+  .mobileTrigger[data-state="open"] {
+    border-color: transparent;
+  }
+
+  .mobileTrigger[data-disabled] {
+    border-color: transparent;
+    color: var(--dark-100);
+    cursor: not-allowed;
+  }
+
+  .chevron {
+    height: 16px;
+    width: 16px;
+  }
+
+  .chevron svg {
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  .optionLabel {
+    display: none;
+  }
+}
