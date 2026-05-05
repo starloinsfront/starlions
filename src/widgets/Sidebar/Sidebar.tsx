@@ -5,11 +5,9 @@ import { Icon } from "@/common/components/Icon/Icon"
 import { NavLink } from "./NavLink/NavLink"
 import { sidebarSections } from "./sidebar.data"
 import styles from "./Sidebar.module.css"
-import { useLogout } from "@/features/auth/lib/useLogout"
-
 export const Sidebar = () => {
   const { main, secondary } = sidebarSections
-  const { logout } = useLogout()
+  const logout = () => {}
 
   return (
     <aside className={styles.sidebar}>
