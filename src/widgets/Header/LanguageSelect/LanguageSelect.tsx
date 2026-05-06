@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 
-import { CustomSelect } from "@/common/components/CustomSelect/CustomSelect"
-import { SelectOption } from "@/common/components/CustomSelect/customSelect.types"
+import { SelectOption } from "@/common/components/Select/customSelect.types"
 
 import styles from "./LanguageSelect.module.css"
+import { Select } from "@/common/components/Select/CustomSelect"
 
 type Language = "ru" | "en"
 
@@ -19,7 +19,7 @@ export const LanguageSelect = () => {
 
   return (
     <div className={styles.languageSelect}>
-      <CustomSelect
+      <Select
         options={LANGUAGE_OPTIONS}
         value={language}
         onValueChange={(value) => setLanguage(value as Language)}
