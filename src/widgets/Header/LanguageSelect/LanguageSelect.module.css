@@ -10,27 +10,27 @@
   }
 
   .mobileTrigger {
-    background-color: transparent;
-    border-color: transparent;
-    box-shadow: none;
-    gap: 0;
-    padding: 0;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    gap: 0 !important;
+    padding: 0 !important;
   }
 
   .mobileTrigger:focus,
   .mobileTrigger:focus-visible {
-    border-color: transparent;
-    box-shadow: none;
-    outline: none;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 
   .mobileTrigger:hover:not([data-disabled]),
   .mobileTrigger[data-state="open"] {
-    border-color: transparent;
+    border: none !important;
   }
 
   .mobileTrigger[data-disabled] {
-    border-color: transparent;
+    border: none !important;
     color: var(--dark-100);
     cursor: not-allowed;
   }
@@ -41,8 +41,8 @@
   }
 
   .chevron svg {
-    height: 100% !important;
-    width: 100% !important;
+    height: 100%;
+    width: 100%;
   }
 
   .optionLabel {
