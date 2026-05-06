@@ -1,4 +1,8 @@
-import { ApiError, ConfirmRegistrationRequest, RegisterRequest } from "@/features/auth/api/authApi.types"
+import {
+  ApiError,
+  ConfirmRegistrationRequest,
+  RegisterRequest,
+} from "@/features/auth/api/authApi.types"
 class AuthService {
   private baseUrl = process.env.NEXT_PUBLIC_API_URL
 

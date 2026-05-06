@@ -87,7 +87,6 @@ export const Default: Story = {
           >
             <Button
               onClick={() => {
-                console.log("Do")
                 onClose()
               }}
             >
