@@ -1,5 +1,4 @@
 import { Header } from "@/widgets/Header/Header"
-import "../globals.css"
 import { Sidebar } from "@/widgets/Sidebar/Sidebar"
 import { isAuthenticated } from "@/common/utils/isAuth"
 import { redirect } from "next/navigation"
