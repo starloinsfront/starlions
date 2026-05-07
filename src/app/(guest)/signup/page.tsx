@@ -9,16 +9,19 @@ import { Button } from "@/common/components/Button/Button"
 import { Icon } from "@/common/components/Icon/Icon"
 import { TextField } from "@/common/components/TextField/TextField"
 import { useAuthError } from "@/common/hooks/useAuthError"
-import { useRegister } from "@/common/hooks/useRegister"
-import { RegisterFormData, registerSchema } from "@/app/(guest)/signup/register.schema"
+
+import { RegisterFormData, registerSchema } from "@/features/auth/model/register.schema"
 import s from "./Signup.module.css"
 import { Modal } from "@/common/components/Modal/Modal"
 import { ROUTES } from "@/common/constants/route"
 
+import { useRegistration } from "@/features/auth/api/useRegistration"
+
 export default function Home() {
   const router = useRouter()
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
-  const { register: registerUser, isLoading, error, reset: resetMutation } = useRegister()
+
+  const mutation = useRegistration()
   const { getErrorMessage } = useAuthError({ type: "registration" })
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [registeredEmail, setRegisteredEmail] = useState("")
@@ -35,32 +38,20 @@ export default function Home() {
     },
   })
 
-  const onSubmit = async (data: RegisterFormData) => {
-    setSuccessMessage(null)
-    resetMutation()
-
-    try {
-      registerUser({
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        passwordConfirmation: data.passwordConfirmation,
-        isTermsAccepted: data.isTermsAccepted,
-      })
-
-      setSuccessMessage(`We have sent a link to confirm your email to ${data.email}`)
-      setRegisteredEmail(data.email)
-      setIsModalOpen(true)
-      resetForm()
-      // setTimeout(() => {
-      //   router.push("/login")
-      // }, 2000)
-    } catch (err) {
-      console.error("Registration failed:", err)
-    }
+  const onSubmit = (data: RegisterFormData) => {
+    mutation.mutate(data, {
+      onSuccess: (res) => {
+        setRegisteredEmail(data.email)
+        setIsModalOpen(true)
+        resetForm()
+      },
+      onError: (err) => {
+        console.log(err)
+      },
+    })
   }
 
-  const serverError = getErrorMessage(error)
+  const serverError = getErrorMessage(mutation.error)
   const handleModalClose = () => {
     setIsModalOpen(false)
     router.push(ROUTES.signIn)
@@ -129,7 +120,7 @@ export default function Home() {
                 type="checkbox"
                 id="termsCheckbox"
                 className={s.termsCheckbox}
-                disabled={isLoading}
+                disabled={mutation.isPending}
                 {...register("isTermsAccepted")}
               />
               <span className={s.consentText}>
@@ -148,8 +139,12 @@ export default function Home() {
             <span className={s.consentError}>{errors.isTermsAccepted?.message || "\u00A0"}</span>
           </div>
 
-          <Button className={s.submitButton} type={"submit"} disabled={!isValid || isLoading}>
-            {isLoading ? "Loading..." : "Sign Up"}
+          <Button
+            className={s.submitButton}
+            type={"submit"}
+            disabled={!isValid || mutation.isPending}
+          >
+            {mutation.isPending ? "Loading..." : "Sign Up"}
           </Button>
         </form>
         <p className={s.authText}>Do you have an account?</p>
