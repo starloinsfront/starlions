@@ -6,22 +6,35 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 648px;
-  padding-top: 30px;
+  min-height: 648px;
+  padding: 30px 0;
   width: 378px;
 }
 
 .registrationPage {
   align-items: center;
   display: flex;
-  height: 100vh;
   justify-content: center;
+  min-height: 100vh;
+  padding: 24px 0;
+  width: 100%;
+}
+
+.consentBlock {
   width: 100%;
 }
 
 .consentContainer {
+  align-items: flex-start;
+  cursor: pointer;
   display: flex;
-  gap: 5px;
+  gap: 8px;
+}
+
+.termsCheckbox {
+  accent-color: var(--accent-500);
+  flex: 0 0 auto;
+  margin-top: 2px;
 }
 
 .authProviders {
@@ -39,7 +52,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 12px;
   margin-top: 20px;
   width: calc(100% - 48px);
 }
@@ -55,6 +68,15 @@
 .consentText {
   color: var(--light-100);
   font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+.consentError {
+  color: var(--danger-300);
+  display: block;
+  line-height: var(--line-height-sm);
+  min-height: 16px;
+  padding-top: 4px;
 }
 
 .authText {
@@ -79,4 +101,27 @@
   text-decoration: underline;
 }
 
+.formMessage {
+  color: var(--light-100);
+  line-height: 1.4;
+  min-height: 20px;
+  width: 100%;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.modalText {
+  padding-bottom: 10px;
+}
+
+.modalButton {
+  align-self: flex-end; /* 👈 Кнопка будет справа */
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 /* stylelint-enable selector-class-pattern */

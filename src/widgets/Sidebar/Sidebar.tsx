@@ -1,5 +1,8 @@
+import clsx from "clsx"
+
 import { Logout } from "@/features/auth/ui/Logout/Logout"
 import { Icon } from "@/common/components/Icon/Icon"
+
 import { NavLink } from "./NavLink/NavLink"
 import { sidebarSections } from "./sidebar.data"
 import styles from "./Sidebar.module.css"
@@ -9,31 +12,36 @@ export const Sidebar = () => {
 
   return (
     <aside className={styles.sidebar}>
-      <nav className={styles.sidebarSection}>
-        <ul>
+      <nav className={styles.sidebarSection} aria-label="Main navigation">
+        <ul className={styles.navList}>
           {main?.map((link) => (
             <li key={link.href}>
               <NavLink href={link.href}>
                 <Icon name={link.icon} />
-                {link.title}
+                <span className={styles.textLink}>{link.title}</span>
               </NavLink>
             </li>
           ))}
         </ul>
       </nav>
-      <nav className={styles.sidebarSection}>
-        <ul>
-          {secondary?.map((link, index) => (
-            <li key={index}>
+
+      <nav
+        className={clsx(styles.sidebarSection, styles.desktopOnly)}
+        aria-label="Secondary navigation"
+      >
+        <ul className={styles.navList}>
+          {secondary?.slice(1).map((link) => (
+            <li key={link.href}>
               <NavLink href={link.href}>
                 <Icon name={link.icon} />
-                {link.title}
+                <span>{link.title}</span>
               </NavLink>
             </li>
           ))}
         </ul>
       </nav>
-      <div className={styles.logoutSection}>
+
+      <div className={clsx(styles.logoutSection, styles.desktopOnly)}>
         <Logout />
       </div>
     </aside>

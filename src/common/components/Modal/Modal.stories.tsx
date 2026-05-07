@@ -75,7 +75,7 @@ export const Default: Story = {
           }}
         >
           <p style={{ margin: 0, color: "white" }}>
-            Do you really want to delete a Following “URLProfile”?
+            Do you really want to delete a Following "URLProfile"?
           </p>
 
           <div

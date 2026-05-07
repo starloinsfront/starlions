@@ -1,7 +1,72 @@
-import type { LoginArgs, LoginResponse } from "@/features/auth/api/authApi.types"
+import { ApiError, ConfirmRegistrationRequest, RegisterRequest } from "@/features/auth/api/authApi.types"
+class AuthService {
+  private baseUrl = process.env.NEXT_PUBLIC_API_URL
 
-export const authApi = {
-  login: async (_data: LoginArgs): Promise<LoginResponse> => {
-    return Promise.resolve({ isLoggedIn: true })
-  },
+  async register(data: RegisterRequest): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/api/v1/auth/registration`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+
+      const error: ApiError = {
+        status: response.status,
+        data: errorData,
+      }
+      throw error
+    }
+
+    if (response.status === 204) {
+      return
+    }
+    return response.json()
+  }
+  async confirmRegistration(data: ConfirmRegistrationRequest): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/api/v1/auth/registration-confirmation`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+
+    // 204 - Успешное подтверждение
+    if (response.status === 204) {
+      return
+    }
+
+    // 400 - Код просрочен, уже использован или неверный
+    if (response.status === 400) {
+      const errorData = await response.json().catch(() => ({}))
+      throw {
+        status: 400,
+        data: errorData,
+        message: errorData.message || "Invalid or expired confirmation code",
+      }
+    }
+
+    // 404 - Пользователь не найден
+    if (response.status === 404) {
+      throw {
+        status: 404,
+        data: await response.json().catch(() => ({})),
+        message: "User not found",
+      }
+    }
+
+    // Другие ошибки
+    const errorData = await response.json().catch(() => ({}))
+    throw {
+      status: response.status,
+      data: errorData,
+      message: errorData.message || "Confirmation failed",
+    }
+  }
 }
+
+export const authService = new AuthService()
