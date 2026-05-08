@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/common/components/Button/Button"
 import { Icon } from "@/common/components/Icon/Icon"
 import { TextField } from "@/common/components/TextField/TextField"
-import { useAuthError } from "@/common/hooks/useAuthError"
 
 import { RegisterFormData, registerSchema } from "@/features/auth/model/register.schema"
 import s from "./Signup.module.css"
@@ -22,7 +21,6 @@ export default function Home() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const mutation = useRegistration()
-  const { getErrorMessage } = useAuthError({ type: "registration" })
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [registeredEmail, setRegisteredEmail] = useState("")
   const {
@@ -51,7 +49,6 @@ export default function Home() {
     })
   }
 
-  const serverError = getErrorMessage(mutation.error)
   const handleModalClose = () => {
     setIsModalOpen(false)
     router.push(ROUTES.signIn)
@@ -65,12 +62,6 @@ export default function Home() {
           <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36} />
         </div>
         <form className={s.signupForm} onSubmit={handleSubmit(onSubmit)}>
-          {serverError && !successMessage && (
-            <div className={s.formMessage} role="alert">
-              {serverError}
-            </div>
-          )}
-
           {successMessage && (
             <div className={s.formMessage} role="status">
               {successMessage}
