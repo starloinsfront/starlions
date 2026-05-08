@@ -1,5 +1,4 @@
 import { Header } from "@/widgets/Header/Header"
-import "../globals.css"
 import { isAuthenticated } from "@/common/utils/isAuth"
 import { redirect } from "next/navigation"
 
@@ -18,7 +17,9 @@ export default function GuestLayout({
     <div className="content">
       <Header isAuth={isAuth} />
       <div className="mainContent mainContentWithoutSidebar">
-        <main className="main">{children}</main>
+        <main className="main">
+          <div className="mainInner mainInnerWithoutSidebar">{children}</div>
+        </main>
       </div>
     </div>
   )

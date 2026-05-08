@@ -22,11 +22,14 @@ export const NavLink = ({
 }: Props) => {
   const pathname = usePathname()
 
-  const isActive = exact
-    ? pathname === href
-    : href === "/"
-      ? pathname === "/"
-      : pathname.startsWith(href)
+  const isActive = Boolean(
+    pathname &&
+    (exact
+      ? pathname === href
+      : href === "/"
+        ? pathname === "/"
+        : pathname === href || pathname.startsWith(`${href}/`)),
+  )
 
   const linkClassName = clsx(
     styles.navLink,

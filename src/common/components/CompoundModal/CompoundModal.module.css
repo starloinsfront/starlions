@@ -21,7 +21,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: calc(100% - 15px);
-  z-index: 100;
+  z-index: 101;
 }
 
 .content:focus {
@@ -56,6 +56,15 @@
   margin: 0;
 }
 
+.description {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 .iconButton {
   align-items: center;
   all: unset;
@@ -73,10 +82,14 @@
   background-color: var(--dark-100);
 }
 
+.iconButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
 .mainContent {
-  display: flex;
-  flex-direction: column;
-  padding: 30px 24px;
+  box-sizing: border-box;
+  padding: 0 24px;
   width: 100%;
 }
 
@@ -100,14 +113,4 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
-}
-
-.description {
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-
 }

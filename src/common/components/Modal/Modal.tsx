@@ -1,9 +1,7 @@
-import styles from "./Modal.module.css"
-
-import * as Dialog from "@radix-ui/react-dialog"
 import clsx from "clsx"
-import { ComponentPropsWithoutRef } from "react"
-import { Icon } from "../Icon/Icon"
+import { useId, type ComponentPropsWithoutRef, type ReactNode } from "react"
+import styles from "./Modal.module.css"
+import { CompoundModal } from "../CompoundModal"
 
 type ModalSize = "lg" | "md" | "sm"
 
@@ -11,41 +9,64 @@ type Props = {
   open: boolean
   onClose: () => void
   modalTitle: string
+  children: ReactNode
+  description?: ReactNode
+  ariaDescribedBy?: string
   ariaDescribedby?: string
   size?: ModalSize
-} & ComponentPropsWithoutRef<"div">
+  contentClassName?: string
+} & Omit<
+  ComponentPropsWithoutRef<typeof CompoundModal.Content>,
+  "children" | "title" | "aria-describedby" | "size" | "contentClassName"
+>
 
 export const Modal = ({
   size = "md",
   modalTitle,
+  description,
+  ariaDescribedBy,
   ariaDescribedby,
   onClose,
   children,
   className,
+  contentClassName,
   open,
-  ...rest
-}: Props) => (
-  <Dialog.Root open={open} onOpenChange={onClose} {...rest}>
-    <Dialog.Portal>
-      <Dialog.Overlay className={styles.overlay} />
-      <Dialog.Content
-        className={clsx(styles.content, styles[size], className)}
-        aria-describedby={
-          ariaDescribedby
-            ? ariaDescribedby
-            : "Information dialog with important details and available actions"
+  ...contentProps
+}: Props) => {
+  const generatedDescriptionId = useId()
+  const descriptionId = description
+    ? (ariaDescribedBy ?? ariaDescribedby ?? generatedDescriptionId)
+    : undefined
+
+  return (
+    <CompoundModal.Root
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          onClose()
         }
-      >
-        <div className={styles.header}>
-          <Dialog.Title className={clsx(styles.title, "h1")}>{modalTitle}</Dialog.Title>
-          <Dialog.Close asChild>
-            <button className={styles.iconButton} aria-label="Close">
-              <Icon name="closeOutline" />
-            </button>
-          </Dialog.Close>
-        </div>
-        <div className={styles.mainContent}>{children}</div>
-      </Dialog.Content>
-    </Dialog.Portal>
-  </Dialog.Root>
-)
+      }}
+    >
+      <CompoundModal.Portal>
+        <CompoundModal.Overlay />
+        <CompoundModal.Content
+          size={size}
+          className={clsx(className, contentClassName)}
+          aria-describedby={descriptionId ?? ariaDescribedBy ?? ariaDescribedby}
+          {...contentProps}
+        >
+          <CompoundModal.Header>
+            <CompoundModal.Title>{modalTitle}</CompoundModal.Title>
+            <CompoundModal.Close />
+          </CompoundModal.Header>
+          {description && (
+            <CompoundModal.Description id={descriptionId} className={styles.description}>
+              {description}
+            </CompoundModal.Description>
+          )}
+          <CompoundModal.MainContent>{children}</CompoundModal.MainContent>
+        </CompoundModal.Content>
+      </CompoundModal.Portal>
+    </CompoundModal.Root>
+  )
+}

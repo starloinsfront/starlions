@@ -4,6 +4,7 @@
   color: var(--light-100);
   display: flex;
   gap: 12px;
+  height: 24px;
   text-decoration: none;
   transition:
     color 0.2s ease,
