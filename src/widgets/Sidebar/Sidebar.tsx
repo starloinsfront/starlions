@@ -11,10 +11,18 @@ import styles from "./Sidebar.module.css"
 import { useState } from "react"
 import { Modal } from "@/common/components/Modal/Modal"
 import { Button } from "@/common/components/Button/Button"
+import { useLogoutMutation } from "@/features/auth/api/useLogoutMutation"
+
 export const Sidebar = () => {
   const { main, secondary } = sidebarSections
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const logout = () => {}
+  const mutation = useLogoutMutation()
+
+  const handleLogout = () => {
+    mutation.mutate()
+    setIsModalOpen(false)
+  }
+
 
   return (
     <aside className={styles.sidebar}>
@@ -66,7 +74,7 @@ export const Sidebar = () => {
           }}
         >
           <Button
-            onClick={() => {}}
+            onClick={handleLogout}
             variant={"outline"}
             style={{
               width: "96px",
