@@ -8,12 +8,21 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
 import styles from "./CreateNewPasswordForm.module.css"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { redirect, useSearchParams } from "next/navigation"
+import { ROUTES } from "@/common/constants/route"
 
 export const createNewPasswordSchema = passwordConfirmationSchema
 
 export type CreateNewPasswordFormValues = z.infer<typeof createNewPasswordSchema>
 
 export const CreateNewPasswordForm = () => {
+  const searchParams = useSearchParams()
+  const token = searchParams ? searchParams.get("token") : null
+
+  if (!token) {
+    redirect(ROUTES.forgotPassword)
+  }
+
   const {
     register,
     handleSubmit,

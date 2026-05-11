@@ -49,12 +49,12 @@ export const Recaptcha = ({ value, onChange, error }: RecaptchaProps) => {
   const hasError = Boolean(error)
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} ${hasError ? styles.errorBox : ""}`}>
       {isExpired && (
         <p className={styles.expiredText}>Verification expired. Check the checkbox again.</p>
       )}
 
-      <div className={`${styles.box} ${hasError ? styles.errorBox : ""}`}>
+      <div className={`${styles.box}`}>
         <div className={styles.recaptchaScale}>
           <ReCAPTCHA
             ref={recaptchaRef}
@@ -69,7 +69,11 @@ export const Recaptcha = ({ value, onChange, error }: RecaptchaProps) => {
         </div>
       </div>
 
-      {hasError && !isExpired && <p className={styles.errorText}>{error}</p>}
+      {hasError && !isExpired && (
+        <p className={styles.errorText}>
+          {error ? error === "Invalid input" && "Please verify that you are not a robot" : error}
+        </p>
+      )}
     </div>
   )
 }

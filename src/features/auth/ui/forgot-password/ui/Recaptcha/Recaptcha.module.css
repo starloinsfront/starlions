@@ -1,25 +1,22 @@
 .root {
   display: flex;
   flex-direction: column;
-  margin: 24px auto 0;
+  margin: 0 auto;
+  order: 2;
+  padding: 8px 8px 12px;
   width: 314px;
 }
 
 .box {
-  background-color: #1a1a1a;
-  border: 1px solid #333333;
-  border-radius: 2px;
+  background-color: var(--dark-500);
+  border: 1px solid var(--dark-300);
   overflow: hidden;
   position: relative;
   width: 300px;
 }
 
-.box:hover {
-  border-color: #444444;
-}
-
 .errorBox {
-  border-color: #ff0000;
+  border: 1px solid rgb(255 0 0 / 100%);
 }
 
 .recaptchaScale {
@@ -28,16 +25,22 @@
 }
 
 .errorText {
-  color: #ff0000;
+  color: rgb(255 0 0 / 100%);
   font-size: 12px;
   line-height: 1.3;
   margin: 8px 0 0;
 }
 
 .expiredText {
-  color: #ff0000;
+  color: rgb(255 0 0 / 100%);
   font-size: 12px;
   line-height: 1.3;
   margin: 0 0 4px;
   padding-left: 20px;
+}
+
+@media (width<576px) {
+  .root {
+    order: 1;
+  }
 }
