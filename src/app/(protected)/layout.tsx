@@ -1,6 +1,5 @@
-import { Header } from "@/widgets/Header/Header"
-import { Sidebar } from "@/widgets/Sidebar/Sidebar"
 import { isAuthenticated } from "@/common/utils/isAuth"
+import { AppLayout } from "@/widgets/AppLayout/AppLayout"
 import { redirect } from "next/navigation"
 
 export default function ProtectedLayout({
@@ -15,14 +14,8 @@ export default function ProtectedLayout({
   }
 
   return (
-    <div className="content">
-      <Header isAuth={isAuth} />
-      <div className="mainContent">
-        <Sidebar />
-        <main className="main">
-          <div className="mainInner">{children}</div>
-        </main>
-      </div>
-    </div>
+    <AppLayout isAuth withSidebar>
+      {children}
+    </AppLayout>
   )
 }

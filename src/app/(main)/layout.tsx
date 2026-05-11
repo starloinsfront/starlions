@@ -1,6 +1,5 @@
 import { isAuthenticated } from "@/common/utils/isAuth"
-import { Header } from "@/widgets/Header/Header"
-import { Sidebar } from "@/widgets/Sidebar/Sidebar"
+import { AppLayout } from "@/widgets/AppLayout/AppLayout"
 import { ReactNode } from "react"
 
 export default function MainLayout({
@@ -10,24 +9,9 @@ export default function MainLayout({
 }>) {
   const isAuth = isAuthenticated()
 
-  return isAuth ? (
-    <div className="content">
-      <Header isAuth={isAuth} />
-      <div className="mainContent">
-        <Sidebar />
-        <main className="main">
-          <div className="mainInner">{children}</div>
-        </main>
-      </div>
-    </div>
-  ) : (
-    <div className="content">
-      <Header isAuth={isAuth} />
-      <div className="mainContent mainContentWithoutSidebar">
-        <main className="main">
-          <div className="mainInner mainInnerWithoutSidebar">{children}</div>
-        </main>
-      </div>
-    </div>
+  return (
+    <AppLayout isAuth={isAuth} withSidebar={isAuth} centered={!isAuth}>
+      {children}
+    </AppLayout>
   )
 }
