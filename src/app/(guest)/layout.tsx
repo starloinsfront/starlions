@@ -1,7 +1,6 @@
-import { Header } from "@/widgets/Header/Header"
 import { isAuthenticated } from "@/common/utils/isAuth"
+import { AppLayout } from "@/widgets/AppLayout/AppLayout"
 import { redirect } from "next/navigation"
-
 export default function GuestLayout({
   children,
 }: Readonly<{
@@ -13,14 +12,5 @@ export default function GuestLayout({
     redirect("/")
   }
 
-  return (
-    <div className="content">
-      <Header isAuth={isAuth} />
-      <div className="mainContent mainContentWithoutSidebar">
-        <main className="main">
-          <div className="mainInner mainInnerWithoutSidebar">{children}</div>
-        </main>
-      </div>
-    </div>
-  )
+  return <AppLayout centered>{children}</AppLayout>
 }

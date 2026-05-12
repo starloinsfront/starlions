@@ -58,7 +58,7 @@ export const TextField = ({
         )}
       </div>
 
-      <span className={s.errorText}>{errorMessage || "\u00A0"}</span>
+      {errorMessage && <span className={s.errorText}>{errorMessage}</span>}
     </div>
   )
 }

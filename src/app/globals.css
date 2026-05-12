@@ -57,7 +57,7 @@
 
 @media (width <= 992px) {
   .mainContent {
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: 200px minmax(0, 1fr);
   }
 
   .mainContentWithoutSidebar {

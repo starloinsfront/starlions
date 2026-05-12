@@ -4,11 +4,11 @@ import clsx from "clsx"
 import { Fragment } from "react"
 
 import {
-  Dropdown,
+  DropdownMenu,
   DropdownMenuArrow,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@/common/components/Dropdown/Dropdown"
+} from "@/common/components/DropdownMenu/DropdownMenu"
 import { Icon } from "@/common/components/Icon/Icon"
 
 import styles from "./MessageMenu.module.css"
@@ -67,7 +67,7 @@ export const MessageMenu = () => {
   const newNotificationsCount = notifications.filter((notification) => notification.isNew).length
 
   return (
-    <Dropdown
+    <DropdownMenu
       align="end"
       modal
       sideOffset={0}
@@ -127,6 +127,6 @@ export const MessageMenu = () => {
           </Fragment>
         ))}
       </div>
-    </Dropdown>
+    </DropdownMenu>
   )
 }
