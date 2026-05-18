@@ -89,6 +89,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/password-recovery/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resend password recovery link to email */
+        post: operations["AuthController_resendPasswordRecovery"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health/live": {
         parameters: {
             query?: never;
@@ -167,7 +184,18 @@ export interface components {
              */
             email: string;
         };
-        PasswordRecoveryInputDto: Record<string, never>;
+        PasswordRecoveryInputDto: {
+            /**
+             * @description Valid email, format: example@example.com
+             * @example user@example.com
+             */
+            email: string;
+            /**
+             * @description reCAPTCHA v2 token
+             * @example 03AGdBq...
+             */
+            recaptchaToken: string;
+        };
         NewPasswordInputDto: {
             /**
              * @description Password recovery token received via email link
@@ -379,6 +407,42 @@ export interface operations {
             };
             /** @description User with this recovery code not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_resendPasswordRecovery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmailInputDto"];
+            };
+        };
+        responses: {
+            /** @description Email with password recovery link has been resent */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The email must match the format example@example.com or recovery was not requested */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 3 resend attempts for this email */
+            429: {
                 headers: {
                     [name: string]: unknown;
                 };

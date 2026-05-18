@@ -14,10 +14,10 @@ export const passwordSchema = z
 
 export const passwordConfirmationSchema = z
   .object({
-    password: passwordSchema,
-    confirmPassword: passwordSchema,
+    newPassword: passwordSchema,
+    newPasswordConfirmation: passwordSchema,
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.newPassword === data.newPasswordConfirmation, {
     message: "Passwords do not match",
-    path: ["confirmPassword"],
+    path: ["newPasswordConfirmation"],
   })

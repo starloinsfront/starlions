@@ -38,10 +38,10 @@
 
 @media (width <= 992px) {
   .sidebar {
-    max-width: 220px;
-    min-width: 220px;
+    /* max-width: 220px;
+    min-width: 220px; */
     padding: 72px 0 36px 30px;
-    width: 220px;
+    width: 190px;
   }
 }
 

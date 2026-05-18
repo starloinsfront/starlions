@@ -25,9 +25,6 @@ export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>
 export const ForgotPasswordForm = () => {
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState("")
-  const [token, setToken] = useState<string | null>(null)
-
-  console.log(token)
 
   const {
     register,
@@ -77,32 +74,34 @@ export const ForgotPasswordForm = () => {
           <Button variant="link" className={styles.sendButton} asChild>
             <Link href={ROUTES.signIn}>Back to Sign In</Link>
           </Button>
+          <Controller
+            name="recaptcha"
+            control={control}
+            rules={{
+              required: "Please verify that you are not a robot",
+            }}
+            render={({ field, fieldState }) => (
+              <Recaptcha
+                value={field.value}
+                onChange={field.onChange}
+                error={fieldState.error?.message}
+              />
+            )}
+          />
         </div>
-        <Controller
-          name="recaptcha"
-          control={control}
-          rules={{
-            required: "Please verify that you are not a robot",
-          }}
-          render={({ field, fieldState }) => (
-            <Recaptcha
-              value={field.value}
-              onChange={field.onChange}
-              error={fieldState.error?.message}
-            />
-          )}
-        />
       </form>
-      <Modal modalTitle="Email sent" onClose={() => setOpen(false)} open={open} size="sm">
-        <div className={styles.dialog}>
-          <p className={clsx("regularText16", styles.modalDescription)}>
-            We have sent a link to confirm your email to {email}
-          </p>
-          <Button type="button" onClick={handleOkClick}>
-            OK
-          </Button>
-        </div>
-      </Modal>
+      {open && (
+        <Modal modalTitle="Email sent" onClose={handleOkClick} open={open} size="sm">
+          <div className={styles.dialog}>
+            <p className={clsx("regularText16", styles.modalDescription)}>
+              We have sent a link to confirm your email to {email}
+            </p>
+            <Button type="button" onClick={handleOkClick}>
+              OK
+            </Button>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }

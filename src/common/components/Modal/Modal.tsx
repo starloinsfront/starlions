@@ -12,7 +12,6 @@ type Props = {
   children: ReactNode
   description?: ReactNode
   ariaDescribedBy?: string
-  ariaDescribedby?: string
   size?: ModalSize
   contentClassName?: string
 } & Omit<
@@ -25,7 +24,6 @@ export const Modal = ({
   modalTitle,
   description,
   ariaDescribedBy,
-  ariaDescribedby,
   onClose,
   children,
   className,
@@ -34,9 +32,7 @@ export const Modal = ({
   ...contentProps
 }: Props) => {
   const generatedDescriptionId = useId()
-  const descriptionId = description
-    ? (ariaDescribedBy ?? ariaDescribedby ?? generatedDescriptionId)
-    : undefined
+  const descriptionId = description ? (ariaDescribedBy ?? generatedDescriptionId) : undefined
 
   return (
     <CompoundModal.Root
@@ -52,7 +48,7 @@ export const Modal = ({
         <CompoundModal.Content
           size={size}
           className={clsx(className, contentClassName)}
-          aria-describedby={descriptionId ?? ariaDescribedBy ?? ariaDescribedby}
+          aria-describedby={descriptionId ?? ariaDescribedBy}
           {...contentProps}
         >
           <CompoundModal.Header>
