@@ -1,18 +1,19 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { client } from "@/shared/api/client"
-import { RegisterFormData } from "@/features/auth/model/register.schema"
+import { useMutation } from "@tanstack/react-query"
+
+import { apiAuth } from "@/features/auth/api/apiAuth"
+import { isApiError } from "@/common/utils/api/error/apiError"
 
 export const useRegistration = () => {
-  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (data: RegisterFormData) => {
-      const response = await client.POST("/api/v1/auth/registration", {
-        body: data,
-      })
-      if (response.error) {
-        throw new Error(JSON.stringify(response.error))
+    mutationFn: apiAuth.registrationUser,
+    onError: (error) => {
+      if (isApiError(error)) {
+        console.log("API ERROR:", error.status)
+        console.log("DATA:", error.data)
+        return
       }
-      return response.data
+
+      console.log("UNKNOWN ERROR:", error)
     },
   })
 }

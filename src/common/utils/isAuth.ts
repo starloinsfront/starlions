@@ -1,5 +1,9 @@
-export function isAuthenticated() {
-  const isAuth = true
+import { cookies } from "next/headers"
 
-  return isAuth
+import { ACCESS_TOKEN_COOKIE } from "@/common/constants/auth"
+
+export async function isAuthenticated() {
+  const cookieStore = await cookies()
+
+  return Boolean(cookieStore.get(ACCESS_TOKEN_COOKIE)?.value)
 }

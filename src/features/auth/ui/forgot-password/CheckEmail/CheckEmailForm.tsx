@@ -1,19 +1,26 @@
 "use client"
 
-import { Button } from "@/common/components/Button/Button"
-import { Modal } from "@/common/components/Modal/Modal"
-import { TextField } from "@/common/components/TextField/TextField"
-import { ROUTES } from "@/common/constants/route"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { clsx } from "clsx"
 import Link from "next/link"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import * as z from "zod"
+
+import { Button } from "@/common/components/Button/Button"
+import { Loader } from "@/common/components/Loader/Loader"
+import { TextField } from "@/common/components/TextField/TextField"
+import { ROUTES } from "@/common/constants/route"
+import { emailSchema } from "@/features/auth/model/auth-schemas"
+import { usePasswordRecoveryResend } from "@/features/auth/model/usePasswordRecoveryResend"
+import { EmailSentModal } from "../EmailSentModal/EmailSentModal"
 import styles from "./CheckEmailForm.module.css"
-import {
-  ForgotPasswordFormValues,
-  forgotPasswordSchema,
-} from "../../ForgotPasswordForm/ForgotPasswordForm"
+
+export const checkEmailSchema = z.object({
+  email: emailSchema,
+})
+
+export type CheckEmailFormValues = z.infer<typeof checkEmailSchema>
 
 export const CheckEmailForm = () => {
   const [open, setOpen] = useState(false)
@@ -22,20 +29,26 @@ export const CheckEmailForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<ForgotPasswordFormValues>({
-    resolver: zodResolver(forgotPasswordSchema),
+    setError,
+    formState: { errors, isValid },
+  } = useForm<CheckEmailFormValues>({
+    resolver: zodResolver(checkEmailSchema),
     mode: "onChange",
     defaultValues: {
       email: "",
     },
   })
 
-  const onSubmit: SubmitHandler<ForgotPasswordFormValues> = (data) => {
-    console.log(data)
+  const { mutate, isPending, isCooldownActive } = usePasswordRecoveryResend<CheckEmailFormValues>({
+    setError,
+    onSuccess: (email) => {
+      setEmail(email)
+      setOpen(true)
+    },
+  })
 
-    setEmail(data.email)
-    setOpen(true)
+  const onSubmit: SubmitHandler<CheckEmailFormValues> = (data) => {
+    mutate(data)
   }
 
   return (
@@ -58,24 +71,25 @@ export const CheckEmailForm = () => {
           The link has been sent by email. If you don’t receive an email send link again
         </p>
         <div className={styles.box}>
-          <Button className={styles.sendButton} type="submit" disabled={!isValid || isSubmitting}>
-            Send Link Again
+          <Button
+            className={styles.sendButton}
+            type="submit"
+            disabled={!isValid || isPending || isCooldownActive}
+          >
+            {isPending ? (
+              <span style={{ height: "20px", width: "20px" }}>
+                <Loader />
+              </span>
+            ) : (
+              "Send Link Again"
+            )}
           </Button>
           <Button variant="link" className={styles.sendButton} asChild>
             <Link href={ROUTES.signIn}>Back to Sign In</Link>
           </Button>
         </div>
       </form>
-      {open && (
-        <Modal modalTitle="Email sent" onClose={() => setOpen(false)} open={open} size="sm">
-          <div className={styles.dialog}>
-            <p className={clsx("regularText16", styles.modalDescription)}>
-              We have sent a link to confirm your email to {email}
-            </p>
-            <Button onClick={() => setOpen(false)}>OK</Button>
-          </div>
-        </Modal>
-      )}
+      {open && <EmailSentModal email={email} onClose={() => setOpen(false)} open={open} />}
     </div>
   )
 }

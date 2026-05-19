@@ -7,12 +7,16 @@ type ApiResult<TData, TError> = {
 }
 
 /**
- * Handles a response returned by openapi-fetch.
+ * Converts an openapi-fetch result into a normal success/error flow.
  *
- * If the response contains an API error, it throws ApiError so TanStack Query
- * can catch it in global and local onError handlers.
+ * openapi-fetch returns `{ data, error, response }` instead of throwing
+ * for HTTP errors. This helper throws ApiError when `error` exists,
+ * so TanStack Query treats the request as failed.
  *
- * If the response is successful, it returns response data.
+ * @param result Result returned from `client.GET`, `client.POST`, etc.
+ * @param message Optional fallback message for ApiError.
+ * @returns Successful response data, or undefined for endpoints without body.
+ * @throws ApiError when the server returns an error response.
  */
 export const handleApiResponse = <TData, TError>(
   result: ApiResult<TData, TError>,
@@ -21,7 +25,7 @@ export const handleApiResponse = <TData, TError>(
   const { data, error, response } = result
 
   if (error) {
-    throw new ApiError(response.status, error, message)
+    throw new ApiError(response.status, error, message, response)
   }
 
   return data
