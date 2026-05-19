@@ -6,6 +6,8 @@ export type ServerErrorCode =
   | "VALIDATION_ERROR"
   | "INVALID_CREDENTIALS"
   | "UNAUTHORIZED"
+  | "TOO_MANY_REQUESTS"
+  | "INVALID_RECOVERY_CODE"
   | (string & {})
 
 export type ServerErrorExtension = {
