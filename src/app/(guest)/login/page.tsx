@@ -21,7 +21,7 @@ export default function LoginPage() {
   })
   const mutation = useLoginMutation()
   const onSubmit = (data: SignInFormData) => {
-    mutation.mutate()
+    mutation.mutate(data)
   }
   return (
     <section className={s.loginPage}>

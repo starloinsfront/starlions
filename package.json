@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "api:gen": "pnpm openapi-typescript https://gateway.starlionstech.org/api/v1/swagger-json -o ./src/shared/api/schema.ts --root-types",
+    "api:gen": "pnpm openapi-typescript https://gateway.starlionstech.org/api/v1/swagger-json -o ./src/common/api/schema.ts --root-types",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write .",
