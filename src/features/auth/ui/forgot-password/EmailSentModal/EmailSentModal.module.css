@@ -1,0 +1,11 @@
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 30px 0 36px;
+}
+
+.modalDescription {
+  color: var(--light-100);
+  font-weight: var(--font-weight-regular);
+}

@@ -19,6 +19,12 @@ export const Recaptcha = ({ value, onChange, error }: RecaptchaProps) => {
 
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 
+  useEffect(() => {
+    if (!value) {
+      recaptchaRef.current?.reset()
+    }
+  }, [value])
+
   if (!siteKey) {
     return null
   }
@@ -37,13 +43,6 @@ export const Recaptcha = ({ value, onChange, error }: RecaptchaProps) => {
     setStatus("error")
     onChange(null)
   }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    if (!value) {
-      recaptchaRef.current?.reset()
-    }
-  }, [value])
 
   const isExpired = status === "expired"
   const hasError = Boolean(error)

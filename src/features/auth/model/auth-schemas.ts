@@ -17,4 +17,14 @@ export const signInSchema = z.object({
   password: passwordSchema,
 })
 
+export const passwordConfirmationSchema = z
+  .object({
+    newPassword: passwordSchema,
+    newPasswordConfirmation: passwordSchema,
+  })
+  .refine((data) => data.newPassword === data.newPasswordConfirmation, {
+    message: "Passwords do not match",
+    path: ["newPasswordConfirmation"],
+  })
+
 export type SignInFormData = z.infer<typeof signInSchema>

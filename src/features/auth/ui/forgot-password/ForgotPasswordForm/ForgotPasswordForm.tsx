@@ -1,28 +1,31 @@
 "use client"
 
-import { TextField } from "@/common/components/TextField/TextField"
-import styles from "./ForgotPasswordForm.module.css"
-import { clsx } from "clsx"
 import { Button } from "@/common/components/Button/Button"
-import Link from "next/link"
+import { Loader } from "@/common/components/Loader/Loader"
+import { TextField } from "@/common/components/TextField/TextField"
 import { ROUTES } from "@/common/constants/route"
-import { Modal } from "@/common/components/Modal/Modal"
+import { emailSchema } from "@/features/auth/model/auth-schemas"
+import { usePasswordRecovery } from "@/features/auth/model/usePasswordRecovery"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { clsx } from "clsx"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import { emailSchema } from "@/features/auth/model/auth-schemas"
 import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { redirect } from "next/navigation"
+import { EmailSentModal } from "../EmailSentModal/EmailSentModal"
 import { Recaptcha } from "../Recaptcha/Recaptcha"
+import styles from "./ForgotPasswordForm.module.css"
 
 export const forgotPasswordSchema = z.object({
   email: emailSchema,
-  recaptcha: z.string().min(1, "Please verify that you are not a robot"),
+  recaptchaToken: z.string().min(1, "Please verify that you are not a robot"),
 })
 
 export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>
 
 export const ForgotPasswordForm = () => {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState("")
 
@@ -30,25 +33,32 @@ export const ForgotPasswordForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors, isValid, isSubmitting },
+    setError,
+    formState: { errors, isValid },
   } = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
     mode: "onChange",
     defaultValues: {
       email: "",
+      recaptchaToken: "",
+    },
+  })
+
+  const { mutate, isPending, isCooldownActive } = usePasswordRecovery<ForgotPasswordFormValues>({
+    setError,
+    onSuccess: (email) => {
+      setEmail(email)
+      setOpen(true)
     },
   })
 
   const onSubmit: SubmitHandler<ForgotPasswordFormValues> = (data) => {
-    console.log(data)
-
-    setEmail(data.email)
-    setOpen(true)
+    mutate(data)
   }
 
   const handleOkClick = () => {
     setOpen(false)
-    redirect(ROUTES.emailCheck)
+    router.push(ROUTES.emailCheck)
   }
 
   return (
@@ -68,14 +78,24 @@ export const ForgotPasswordForm = () => {
           Enter your email address and we will send you further instructions
         </p>
         <div className={styles.box}>
-          <Button className={styles.sendButton} type="submit" disabled={!isValid || isSubmitting}>
-            Send link
+          <Button
+            className={styles.sendButton}
+            type="submit"
+            disabled={!isValid || isCooldownActive || isPending}
+          >
+            {isPending ? (
+              <span style={{ height: "20px", width: "20px" }}>
+                <Loader />
+              </span>
+            ) : (
+              "Send link"
+            )}
           </Button>
           <Button variant="link" className={styles.sendButton} asChild>
             <Link href={ROUTES.signIn}>Back to Sign In</Link>
           </Button>
           <Controller
-            name="recaptcha"
+            name="recaptchaToken"
             control={control}
             rules={{
               required: "Please verify that you are not a robot",
@@ -90,18 +110,8 @@ export const ForgotPasswordForm = () => {
           />
         </div>
       </form>
-      {open && (
-        <Modal modalTitle="Email sent" onClose={handleOkClick} open={open} size="sm">
-          <div className={styles.dialog}>
-            <p className={clsx("regularText16", styles.modalDescription)}>
-              We have sent a link to confirm your email to {email}
-            </p>
-            <Button type="button" onClick={handleOkClick}>
-              OK
-            </Button>
-          </div>
-        </Modal>
-      )}
+
+      {open && <EmailSentModal email={email} onClose={handleOkClick} open={open} />}
     </div>
   )
 }

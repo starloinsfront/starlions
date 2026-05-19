@@ -1,4 +1,4 @@
-import { isApiServerError, getServerErrorMessage } from "./serverError"
+import { getServerErrorMessage, getServerErrorMessages, isApiServerError } from "./serverError"
 import { type ToastMessage } from "./types"
 
 /**
@@ -59,11 +59,12 @@ export const getApiErrorMessage = (error: unknown): ToastMessage => {
     // case 409: {
     //   return getServerErrorMessage(error.data) || "Conflict error"
     // }
-    // case 422: {
-    //   return getServerErrorMessages(error.data)
-    // }
+    case 422: {
+      return getServerErrorMessage(error.data) || "Link expired"
+    }
     case 429: {
-      return getServerErrorMessage(error.data) || "Too many requests. Please try again later"
+      return "Too many requests. Please try again later"
+      // getServerErrorMessages(error.data) ||
     }
 
     default: {

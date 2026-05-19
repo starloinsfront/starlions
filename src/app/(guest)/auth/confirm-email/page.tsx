@@ -30,7 +30,7 @@ export default function ConfirmEmailPage() {
 
   const searchParams = useSearchParams()
   const router = useRouter()
-  const code = searchParams.get("code")
+  const code = searchParams?.get("code")
   const resendMutation = useResendConfirmation()
   const mutation = useRegistrationConfirmation()
   const onSubmit = (data: RegisterFormData) => {
