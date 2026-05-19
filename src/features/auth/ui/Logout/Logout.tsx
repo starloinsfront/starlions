@@ -1,7 +1,7 @@
 "use client"
 
-import { ACCESS_TOKEN_COOKIE } from "@/common/constants/auth"
 import { ROUTES } from "@/common/constants/route"
+import { clearAccessToken } from "@/common/utils/auth/accessToken"
 import { useRouter } from "next/navigation"
 
 type Props = {
@@ -12,8 +12,7 @@ export const Logout = ({ onClick }: Props) => {
   const router = useRouter()
 
   const handleClick = () => {
-    localStorage.removeItem("accessToken")
-    document.cookie = `${ACCESS_TOKEN_COOKIE}=; path=/; max-age=0; samesite=lax`
+    clearAccessToken()
     onClick?.()
     router.push(ROUTES.signIn)
     router.refresh()
