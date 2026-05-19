@@ -1,5 +1,10 @@
-import { ForgotPassword } from "@/features/auth/ui/forgot-password/ui/ForgotPassword"
+import { AuthPageSection } from "@/features/auth/ui/AuthPageSection/AuthPageSection"
+import { ForgotPasswordForm } from "@/features/auth/ui/forgot-password"
 
 export default function ForgotPasswordPage() {
-  return <ForgotPassword />
+  return (
+    <AuthPageSection>
+      <ForgotPasswordForm />
+    </AuthPageSection>
+  )
 }

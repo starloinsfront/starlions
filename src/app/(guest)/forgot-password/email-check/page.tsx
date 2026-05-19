@@ -1,5 +1,10 @@
-import { CheckEmail } from "@/features/auth/ui/forgot-password/ui/CheckEmail/CheckEmail"
+import { AuthPageSection } from "@/features/auth/ui/AuthPageSection/AuthPageSection"
+import { CheckEmailForm } from "@/features/auth/ui/forgot-password"
 
 export default function CheckEmailPage() {
-  return <CheckEmail />
+  return (
+    <AuthPageSection>
+      <CheckEmailForm />
+    </AuthPageSection>
+  )
 }
