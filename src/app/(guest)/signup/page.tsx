@@ -19,10 +19,10 @@ import { useRegistration } from "@/features/auth/api/useRegistration"
 export default function Home() {
   const router = useRouter()
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
-
   const mutation = useRegistration()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [registeredEmail, setRegisteredEmail] = useState("")
+
   const {
     register,
     handleSubmit,
@@ -116,12 +116,12 @@ export default function Home() {
               />
               <span className={s.consentText}>
                 I agree to the
-                <Link className={s.regLink} href="/termsofservice">
+                <Link className={s.regLink} href={ROUTES.termsOfService}>
                   {" "}
                   Terms of Service
                 </Link>{" "}
                 and
-                <Link className={s.regLink} href="/privacypolicy">
+                <Link className={s.regLink} href={ROUTES.privacyPolicy}>
                   {" "}
                   Privacy Policy
                 </Link>
@@ -139,7 +139,7 @@ export default function Home() {
           </Button>
         </form>
         <p className={s.authText}>Do you have an account?</p>
-        <Link className={s.authLink} href="/login">
+        <Link className={s.authLink} href={ROUTES.signIn}>
           Sign In
         </Link>
       </div>

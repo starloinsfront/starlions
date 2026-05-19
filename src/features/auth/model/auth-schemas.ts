@@ -12,12 +12,9 @@ export const passwordSchema = z
   .max(20, "Maximum number of characters 20")
   .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain 0-9, a-z, A-Z")
 
-export const passwordConfirmationSchema = z
-  .object({
-    newPassword: passwordSchema,
-    newPasswordConfirmation: passwordSchema,
-  })
-  .refine((data) => data.newPassword === data.newPasswordConfirmation, {
-    message: "Passwords do not match",
-    path: ["newPasswordConfirmation"],
-  })
+export const signInSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+})
+
+export type SignInFormData = z.infer<typeof signInSchema>

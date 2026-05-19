@@ -3,12 +3,13 @@ import { useMutation } from "@tanstack/react-query"
 import { apiAuth } from "@/features/auth/api/apiAuth"
 import { isApiError } from "@/common/utils/api/error/apiError"
 
-export const useRegistration = () => {
+export const useResendConfirmation = () => {
   return useMutation({
-    mutationFn: apiAuth.registrationUser,
+    mutationFn: apiAuth.ResendConfirmation,
+
     onError: (error) => {
       if (isApiError(error)) {
-        console.log("API ERROR:", error.status)
+        console.log("RESEND CONFIRMATION ERROR:", error.status)
         console.log("DATA:", error.data)
         return
       }
