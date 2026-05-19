@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import { apiAuth } from "@/features/auth/api/apiAuth"
-import { ACCESS_TOKEN_COOKIE } from "@/common/constants/auth"
+import { setAccessToken } from "@/common/utils/auth/accessToken"
 import { useRouter } from "next/navigation"
 
 export const useLoginMutation = () => {
@@ -12,11 +12,10 @@ export const useLoginMutation = () => {
     mutationFn: apiAuth.SignIn,
     onSuccess: (response) => {
       if (response?.accessToken) {
-        localStorage.setItem("accessToken", response.accessToken)
-        document.cookie = `${ACCESS_TOKEN_COOKIE}=${response.accessToken}; path=/; max-age=18000; samesite=lax`
+        setAccessToken(response.accessToken)
       }
 
-      queryClient.invalidateQueries({ queryKey: ["user"] })
+      queryClient.invalidateQueries({ queryKey: ["me"] })
 
       router.push("/profile")
     },

@@ -189,6 +189,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get information about current user */
+        get: operations["AuthController_me"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/security/devices": {
         parameters: {
             query?: never;
@@ -743,6 +760,40 @@ export interface operations {
                     "application/json": {
                         /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
                         accessToken?: string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_me: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns current user info */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example c923e3ec-f555-495c-9975-29bfa5d707fc */
+                        id?: string;
+                        /** @example john_doe */
+                        username?: string;
+                        /** @example user@example.com */
+                        email?: string;
                     };
                 };
             };

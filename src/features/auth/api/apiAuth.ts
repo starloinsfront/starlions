@@ -1,14 +1,46 @@
 import { handleApiResponse } from "@/common/utils/api/error/handleApiResponse"
+import { isApiErrorMatching } from "@/common/utils/api/error/serverError"
 import { client } from "@/common/api/client"
 import type {
   SchemaEmailInputDto,
   SchemaNewPasswordInputDto,
   SchemaPasswordRecoveryInputDto,
 } from "@/common/api/schema"
+import { clearAccessToken, getAccessToken, setAccessToken } from "@/common/utils/auth/accessToken"
 import { RegisterFormData } from "@/features/auth/model/register.schema"
-import { useRegistrationConfirmation } from "@/features/auth/api/useRegistrationConfirmation"
-import { useResendConfirmation } from "@/features/auth/api/useResendConfirmation"
+
 import { SignInFormData } from "@/features/auth/model/auth-schemas"
+
+const getAuthHeaders = () => {
+  const accessToken = getAccessToken()
+
+  if (!accessToken) {
+    return undefined
+  }
+
+  return {
+    Authorization: `Bearer ${accessToken}`,
+  }
+}
+
+const requestAuthMe = async () => {
+  const result = await client.GET("/api/v1/auth/me", {
+    headers: getAuthHeaders(),
+  })
+
+  return handleApiResponse(result, "Auth me request failed")
+}
+
+const refreshAccessToken = async () => {
+  const result = await client.POST("/api/v1/auth/refresh-token")
+  const data = handleApiResponse(result, "Refresh token request failed")
+
+  if (data?.accessToken) {
+    setAccessToken(data.accessToken)
+  }
+
+  return data
+}
 
 export const apiAuth = {
   createNewPassword: async (data: SchemaNewPasswordInputDto) => {
@@ -63,5 +95,37 @@ export const apiAuth = {
     })
 
     return handleApiResponse(result, "Sign in request failed")
+  },
+  refreshToken: async () => {
+    return refreshAccessToken()
+  },
+  authMe: async () => {
+    if (!getAccessToken()) {
+      try {
+        await refreshAccessToken()
+      } catch {
+        clearAccessToken()
+
+        return null
+      }
+    }
+
+    try {
+      return await requestAuthMe()
+    } catch (error) {
+      if (!isApiErrorMatching(error, { status: 401 })) {
+        throw error
+      }
+
+      try {
+        await refreshAccessToken()
+
+        return await requestAuthMe()
+      } catch {
+        clearAccessToken()
+
+        return null
+      }
+    }
   },
 }
