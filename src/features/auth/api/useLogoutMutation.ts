@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { client } from "@/shared/api/client"
 import { useRouter } from "next/navigation"
+import { client } from "@/common/api/client"
+import { ROUTES } from "@/common/constants/route"
+import { clearAccessToken } from "@/common/utils/auth/accessToken"
 
 export const useLogoutMutation = () => {
   const queryClient = useQueryClient()
@@ -8,20 +10,15 @@ export const useLogoutMutation = () => {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await client.POST("/api/v1/auth/logout", {
-        body: {
-          refreshToken: localStorage.getItem("refresh-token")!,
-        },
-      })
+      const response = await client.POST("/api/v1/auth/sign-out")
       return response.data
     },
     onSuccess: () => {
-      localStorage.removeItem("refresh-token")
-      localStorage.removeItem("access-token")
+      clearAccessToken()
       queryClient.resetQueries({
-        queryKey: ["auth", "me"],
+        queryKey: ["me"],
       })
-      router.push("/auth/login")
+      router.push(ROUTES.signIn)
     },
   })
 

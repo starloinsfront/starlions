@@ -12,11 +12,14 @@ import { useState } from "react"
 import { Modal } from "@/common/components/Modal/Modal"
 import { Button } from "@/common/components/Button/Button"
 import { useLogoutMutation } from "@/features/auth/api/useLogoutMutation"
+import { useMe } from "@/features/auth/api/useMe"
 
 export const Sidebar = () => {
   const { main, secondary } = sidebarSections
   const [isModalOpen, setIsModalOpen] = useState(false)
   const mutation = useLogoutMutation()
+
+  const { data } = useMe()
 
   const handleLogout = () => {
     mutation.mutate()
@@ -64,7 +67,7 @@ export const Sidebar = () => {
         modalTitle={"Log Out"}
         size={"sm"}
       >
-        <p>Are you really want to log out of your account @email?</p>
+        <p>Are you really want to log out of your account {data?.email}?</p>
         <div
           style={{
             display: "flex",
