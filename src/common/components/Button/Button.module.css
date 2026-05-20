@@ -5,6 +5,7 @@
   cursor: pointer;
   display: inline-flex;
   gap: 10px;
+  height: 36px;
   justify-content: center;
   outline: none;
   padding: 6px 24px;

@@ -1,26 +1,17 @@
-"use client"
+import { Icon } from "@/common/components/Icon/Icon"
+import styles from "../../../../widgets/Sidebar/NavLink/NavLink.module.css"
+import clsx from "clsx"
 
-import { ROUTES } from "@/common/constants/route"
-import { clearAccessToken } from "@/common/utils/auth/accessToken"
-import { useRouter } from "next/navigation"
 
 type Props = {
   onClick?: () => void
 }
 
 export const Logout = ({ onClick }: Props) => {
-  const router = useRouter()
-
-  const handleClick = () => {
-    clearAccessToken()
-    onClick?.()
-    router.push(ROUTES.signIn)
-    router.refresh()
-  }
-
   return (
-    <button type="button" onClick={handleClick}>
-      Logout
-    </button>
+    <div onClick={onClick} className={clsx(styles.navLink, "mediumText14")}>
+      <Icon name="logOutOutline" />
+      Log Out
+    </div>
   )
 }
