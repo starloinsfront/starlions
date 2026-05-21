@@ -11,7 +11,7 @@ import { RegisterFormData } from "@/features/auth/model/register.schema"
 
 import { SignInFormData } from "@/features/auth/model/auth-schemas"
 
-const getAuthHeaders = () => {
+export  const getAuthHeaders = () => {
   const accessToken = getAccessToken()
 
   if (!accessToken) {

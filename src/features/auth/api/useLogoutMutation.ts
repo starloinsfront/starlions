@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 import { client } from "@/common/api/client"
 import { ROUTES } from "@/common/constants/route"
 import { clearAccessToken } from "@/common/utils/auth/accessToken"
+import { getAuthHeaders } from "@/features/auth/api/apiAuth"
 
 export const useLogoutMutation = () => {
   const queryClient = useQueryClient()
@@ -10,10 +11,12 @@ export const useLogoutMutation = () => {
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await client.POST("/api/v1/auth/sign-out")
+      const response = await client.POST("/api/v1/auth/sign-out", {
+        headers: getAuthHeaders(),
+      })
       return response.data
     },
-    onSuccess: () => {
+    onSettled: () => {
       clearAccessToken()
       queryClient.resetQueries({
         queryKey: ["me"],
