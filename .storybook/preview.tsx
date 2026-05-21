@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/nextjs-vite"
+import { themes } from "storybook/theming"
 /* Fonts (Fontsource Inter) */
 import "@fontsource/inter/400.css"
 import "@fontsource/inter/600.css"
@@ -20,6 +21,9 @@ const preview: Preview = {
   ],
 
   parameters: {
+    docs: {
+      theme: themes.dark,
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

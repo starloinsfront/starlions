@@ -1,0 +1,127 @@
+/* stylelint-disable selector-class-pattern */
+.signupContainer {
+  align-items: center;
+  background-color: var(--dark-500);
+  border: 1px solid var(--dark-300);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 648px;
+  padding: 30px 0;
+  width: 378px;
+}
+
+.registrationPage {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 0;
+  width: 100%;
+}
+
+.consentBlock {
+  width: 100%;
+}
+
+.consentContainer {
+  align-items: flex-start;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+}
+
+.termsCheckbox {
+  accent-color: var(--accent-500);
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.authProviders {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  width: 100%;
+}
+
+.authIcon {
+  color: var(--light-100);
+}
+
+.signupForm {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  width: calc(100% - 48px);
+}
+
+.regItem {
+  width: 100%;
+}
+
+.submitButton {
+  width: 100%;
+}
+
+.consentText {
+  color: var(--light-100);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+.consentError {
+  color: var(--danger-300);
+  display: block;
+  line-height: var(--line-height-sm);
+  min-height: 16px;
+  padding-top: 4px;
+}
+
+.authText {
+  color: var(--light-100);
+  font-size: var(--font-size-m);
+}
+
+.authLink {
+  color: var(--accent-500);
+  font-size: var(--font-size-m);
+}
+
+.singUpTitle {
+  color: var(--light-100);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-xl);
+}
+
+.regLink {
+  color: var(--accent-500);
+  text-decoration: underline;
+}
+
+.formMessage {
+  color: var(--light-100);
+  line-height: 1.4;
+  min-height: 20px;
+  width: 100%;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.modalText {
+  padding-bottom: 10px;
+}
+
+.modalButton {
+  align-self: flex-end; /* 👈 Кнопка будет справа */
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+/* stylelint-enable selector-class-pattern */

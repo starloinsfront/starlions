@@ -1,58 +1,92 @@
-/* Модульные файлы css */
 @import url("../styles/colorPalitre.css");
 @import url("../styles/typography.css");
 @import url("../styles/breakpoints.css");
+@import url("../styles/boilerplate.css");
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+.content {
+  display: grid;
+  grid-template: auto minmax(0, 1fr) / 1fr;
+  grid-template-areas:
+    "header"
+    "mainContent";
+  height: 100dvh;
+  overflow: hidden;
+  width: 100%;
 }
 
-html {
-  color-scheme: dark;
-  height: 100%;
-
+.header {
+  grid-area: header;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+.mainContent {
+  display: grid;
+  grid-area: mainContent;
+  grid-template-columns: 220px minmax(0, 1fr);
+  min-height: 0;
+  min-width: 0;
 }
 
-body {
-  background: var(--dark-700);
-  color: var(--light-100);
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-inter), sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: var(--line-height-m);
-  min-height: 100%;
-  overflow-x: hidden;
+.mainContentWithoutSidebar {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: stretch;
 }
 
-a {
-  color: var(--accent-500);
-  text-decoration: none;
+.main {
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 24px 60px 20px 24px;
+  scrollbar-gutter: stable;
 }
 
-/* Настройка полосы прокрутки (Scrollbar) под темную тему */
-::-webkit-scrollbar {
-  width: 8px;
+.mainInner {
+  min-width: 0;
+  width: 100%;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--dark-900);
+.mainContentWithoutSidebar .main {
+  padding: 24px 60px 20px;
+  width: 100%;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--dark-300);
-  border-radius: 4px;
+.mainInnerWithoutSidebar {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 100%;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-100);
+@media (width <= 992px) {
+  .mainContent {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+
+  .mainContentWithoutSidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .main {
+    padding: 24px;
+  }
+
+  .mainContentWithoutSidebar .main {
+    padding: 30px;
+  }
+}
+
+@media (width <= 768px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+
+  .main {
+    padding: 16px 16px calc(100px + env(safe-area-inset-bottom));
+  }
+
+  .mainContentWithoutSidebar .main {
+    padding: 16px 16px calc(100px + env(safe-area-inset-bottom));
+  }
+
+  .mainInnerWithoutSidebar {
+    max-width: none;
+  }
 }

@@ -1,0 +1,51 @@
+.languageSelect {
+  flex: 0 0 163px;
+  width: 163px;
+}
+
+@media (width <= 768px) {
+  .languageSelect {
+    flex: 0 0 42px;
+    width: 42px;
+  }
+
+  .mobileTrigger {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    gap: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mobileTrigger:focus,
+  .mobileTrigger:focus-visible {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .mobileTrigger:hover:not([data-disabled]),
+  .mobileTrigger[data-state="open"] {
+    border: none !important;
+  }
+
+  .mobileTrigger[data-disabled] {
+    border: none !important;
+    color: var(--dark-100);
+    cursor: not-allowed;
+  }
+
+  .chevron {
+    height: 16px;
+    width: 16px;
+  }
+
+  .chevron svg {
+    height: 100%;
+    width: 100%;
+  }
+
+  .optionLabel {
+    display: none;
+  }
+}
