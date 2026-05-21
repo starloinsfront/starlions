@@ -1,5 +1,5 @@
 # Base стейдж с общими настройками
-FROM node:20.11-alpine as base
+FROM node:22.13-alpine as base
 RUN npm install -g pnpm
 
 # Устанавливаем зависимости
