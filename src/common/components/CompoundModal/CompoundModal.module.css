@@ -28,8 +28,12 @@
   outline: none;
 }
 
-.sm {
+.xs {
   max-width: 378px;
+}
+
+.sm {
+  max-width: 438px;
 }
 
 .md {
@@ -89,7 +93,7 @@
 
 .mainContent {
   box-sizing: border-box;
-  padding: 36px 24px;
+  padding: 0 24px;
   width: 100%;
 }
 

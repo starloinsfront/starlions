@@ -13,9 +13,10 @@ export interface CompoundModalOverlayProps {
   className?: string
 }
 
+export type ModalSize = "lg" | "md" | "sm" | "xs"
 export interface CompoundModalContentProps extends Omit<DialogContentProps, "children" | "title"> {
   children: ReactNode
-  size?: "sm" | "md" | "lg"
+  size?: ModalSize
   className?: string
   contentClassName?: string
 }
