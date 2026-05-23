@@ -14,12 +14,15 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isValid },
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     mode: "onChange",
   })
-  const mutation = useLoginMutation()
+
+  const mutation = useLoginMutation(setError)
+
   const onSubmit = (data: SignInFormData) => {
     mutation.mutate(data)
   }
@@ -56,7 +59,11 @@ export default function LoginPage() {
             Forgot Password
           </Link>
 
-          <Button disabled={!isValid} className={s.submitButton} type={"submit"}>
+          <Button
+            disabled={!isValid || mutation.status === "pending"}
+            className={s.submitButton}
+            type={"submit"}
+          >
             Sign In
           </Button>
         </form>

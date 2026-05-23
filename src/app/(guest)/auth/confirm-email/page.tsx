@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import s from "./ConfirmEmail.module.css"
 import { useRegistrationConfirmation } from "@/features/auth/api/useRegistrationConfirmation"
 import { Button } from "@/common/components/Button/Button"
@@ -32,20 +32,23 @@ export default function ConfirmEmailPage() {
   const router = useRouter()
   const code = searchParams?.get("code")
   const resendMutation = useResendConfirmation()
-  const mutation = useRegistrationConfirmation()
+  const { mutate: confirmEmail, isPending, isError } = useRegistrationConfirmation()
+  const requestedCodeRef = useRef<string | null>(null)
   const onSubmit = (data: RegisterFormData) => {
     resendMutation.mutate(data.email)
   }
 
   useEffect(() => {
     if (!code) return
+    if (requestedCodeRef.current === code) return
 
-    mutation.mutate({ code }, {})
-  }, [code, mutation])
+    requestedCodeRef.current = code
+    confirmEmail({ code })
+  }, [code, confirmEmail])
 
-  if (mutation.isPending) return <div>Confirming email...</div>
+  if (isPending) return <div>Confirming email...</div>
 
-  if (mutation.isError)
+  if (isError)
     return (
       <div className={s.container}>
         <h1 className={s.titlePage}>Email verification link expired</h1>

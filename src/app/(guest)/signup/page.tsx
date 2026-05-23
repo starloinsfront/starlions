@@ -18,16 +18,14 @@ import { useRegistration } from "@/features/auth/api/useRegistration"
 
 export default function Home() {
   const router = useRouter()
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
-  const mutation = useRegistration()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [registeredEmail, setRegisteredEmail] = useState("")
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isValid },
-    reset: resetForm,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     mode: "onChange",
@@ -35,16 +33,13 @@ export default function Home() {
       isTermsAccepted: false,
     },
   })
+  const { mutate, isPending } = useRegistration(setError)
 
   const onSubmit = (data: RegisterFormData) => {
-    mutation.mutate(data, {
-      onSuccess: (res) => {
+    mutate(data, {
+      onSuccess: () => {
         setRegisteredEmail(data.email)
         setIsModalOpen(true)
-        resetForm()
-      },
-      onError: (err) => {
-        console.log(err)
       },
     })
   }
@@ -62,12 +57,6 @@ export default function Home() {
           <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36} />
         </div>
         <form className={s.signupForm} onSubmit={handleSubmit(onSubmit)}>
-          {successMessage && (
-            <div className={s.formMessage} role="status">
-              {successMessage}
-            </div>
-          )}
-
           <TextField
             containerClassName={s.regItem}
             label={"Username"}
@@ -111,7 +100,7 @@ export default function Home() {
                 type="checkbox"
                 id="termsCheckbox"
                 className={s.termsCheckbox}
-                disabled={mutation.isPending}
+                disabled={isPending}
                 {...register("isTermsAccepted")}
               />
               <span className={s.consentText}>
@@ -130,14 +119,17 @@ export default function Home() {
             <span className={s.consentError}>{errors.isTermsAccepted?.message || "\u00A0"}</span>
           </div>
 
-          <Button
-            className={s.submitButton}
-            type={"submit"}
-            disabled={!isValid || mutation.isPending}
-          >
-            {mutation.isPending ? "Loading..." : "Sign Up"}
+          {errors.root?.message && (
+            <span className={s.consentError} role="alert">
+              {errors.root.message}
+            </span>
+          )}
+
+          <Button className={s.submitButton} type={"submit"} disabled={!isValid || isPending}>
+            {isPending ? "Loading..." : "Sign Up"}
           </Button>
         </form>
+
         <p className={s.authText}>Do you have an account?</p>
         <Link className={s.authLink} href={ROUTES.signIn}>
           Sign In
