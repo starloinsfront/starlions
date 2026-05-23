@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 
 import { Header } from "@/widgets/Header/Header"
 import { Sidebar } from "@/widgets/Sidebar/Sidebar"
+import { ToastLayoutSync } from "@/app/providers/ToastProvider/ToastLayoutSync"
 
 type AppLayoutProps = {
   children: ReactNode
@@ -18,16 +19,21 @@ export const AppLayout = ({
   centered = false,
 }: AppLayoutProps) => {
   return (
-    <div className="content">
-      <Header isAuth={isAuth} />
+    <>
+      <ToastLayoutSync withSidebar={withSidebar} />
+      <div className="content">
+        <Header isAuth={isAuth} />
 
-      <div className={clsx("mainContent", !withSidebar && "mainContentWithoutSidebar")}>
-        {withSidebar && <Sidebar />}
+        <div className={clsx("mainContent", !withSidebar && "mainContentWithoutSidebar")}>
+          {withSidebar && <Sidebar />}
 
-        <main className="main">
-          <div className={clsx("mainInner", centered && "mainInnerWithoutSidebar")}>{children}</div>
-        </main>
+          <main className="main">
+            <div className={clsx("mainInner", centered && "mainInnerWithoutSidebar")}>
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -1,7 +1,8 @@
+import QueryProvider from "@/app/providers/QueryProvider"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import QueryProvider from "@/app/providers/QueryProvider"
+import { ToastProvider } from "./providers/ToastProvider/ToastProvider"
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -10,7 +11,6 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-
   title: "Inctagram | Photo Sharing & Social Network",
   description:
     "Upload photos, follow friends, and explore content from creators around the world. Your visual story starts here.",
@@ -27,7 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+
+          <ToastProvider />
+        </QueryProvider>
       </body>
     </html>
   )

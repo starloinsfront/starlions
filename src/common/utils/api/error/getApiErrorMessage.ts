@@ -1,5 +1,5 @@
+import { ToastMessage } from "../../toast/showToast"
 import { getServerErrorMessage, getServerErrorMessages, isApiServerError } from "./serverError"
-import { type ToastMessage } from "./types"
 
 /**
  * Returns a user-friendly message for an API error.
@@ -19,8 +19,7 @@ export const getApiErrorMessage = (error: unknown): ToastMessage => {
     case 400: {
       switch (code) {
         case "VALIDATION_ERROR":
-          return "Incorrect data"
-        // || getServerErrorMessages(error.data)
+          return getServerErrorMessages(error.data) || "Incorrect data"
         case "BAD_REQUEST":
           return getServerErrorMessage(error.data) || "Bad request"
 
