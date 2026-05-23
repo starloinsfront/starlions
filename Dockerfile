@@ -1,12 +1,12 @@
 # Base стейдж с общими настройками
-FROM node:20.11-alpine as base
-RUN npm install -g pnpm
+FROM node:22.13-alpine as base
+RUN npm install -g pnpm  
 
 # Устанавливаем зависимости
 FROM base as dependencies
 WORKDIR /app
 COPY package*.json ./
-RUN pnpm install
+RUN pnpm install --no-frozen-lockfile --ignore-scripts
 
 # Билдим приложение
 FROM base as builder
