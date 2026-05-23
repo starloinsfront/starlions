@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/common/components/Button/Button"
-import { Loader } from "@/common/components/Loader/Loader"
 import { TextField } from "@/common/components/TextField/TextField"
 import { ROUTES } from "@/common/constants/route"
 import { passwordConfirmationSchema } from "@/features/auth/model/auth-schemas"
@@ -13,6 +12,7 @@ import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
 import styles from "./CreateNewPasswordForm.module.css"
+import { showSuccessToast } from "@/common/utils/toast/showToast"
 
 export const createNewPasswordSchema = passwordConfirmationSchema
 
@@ -42,13 +42,12 @@ export const CreateNewPasswordForm = () => {
     },
   })
 
-  const { mutate, isPending, isCooldownActive } = useCreateNewPassword<CreateNewPasswordFormValues>(
-    {
-      onSuccess: () => {
-        router.push(ROUTES.signIn)
-      },
+  const { mutate, isPending, isCooldownActive } = useCreateNewPassword({
+    onSuccess: () => {
+      router.push(ROUTES.signIn)
+      showSuccessToast("You have changed your password.")
     },
-  )
+  })
 
   const onSubmit: SubmitHandler<CreateNewPasswordFormValues> = (data) => {
     const code = recoveryCode
@@ -98,14 +97,9 @@ export const CreateNewPasswordForm = () => {
             className={styles.sendButton}
             type="submit"
             disabled={isPending || !isValid || isCooldownActive}
+            isLoading={isPending}
           >
-            {isPending ? (
-              <span style={{ height: "20px", width: "20px" }}>
-                <Loader />
-              </span>
-            ) : (
-              "Create new password"
-            )}
+            Create new password
           </Button>
         </div>
       </form>

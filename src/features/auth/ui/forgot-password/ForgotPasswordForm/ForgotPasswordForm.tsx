@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/common/components/Button/Button"
-import { Loader } from "@/common/components/Loader/Loader"
 import { TextField } from "@/common/components/TextField/TextField"
 import { ROUTES } from "@/common/constants/route"
 import { emailSchema } from "@/features/auth/model/auth-schemas"
@@ -70,7 +69,7 @@ export const ForgotPasswordForm = () => {
           label="Email"
           id="email"
           type="email"
-          placeholder="Epam@epam.com"
+          placeholder="example@mail.com"
           errorMessage={errors.email?.message}
           {...register("email")}
         />
@@ -82,14 +81,9 @@ export const ForgotPasswordForm = () => {
             className={styles.sendButton}
             type="submit"
             disabled={!isValid || isCooldownActive || isPending}
+            isLoading={isPending}
           >
-            {isPending ? (
-              <span style={{ height: "20px", width: "20px" }}>
-                <Loader />
-              </span>
-            ) : (
-              "Send link"
-            )}
+            Send link
           </Button>
           <Button variant="link" className={styles.sendButton} asChild>
             <Link href={ROUTES.signIn}>Back to Sign In</Link>

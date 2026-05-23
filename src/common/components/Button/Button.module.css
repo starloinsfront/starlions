@@ -119,3 +119,8 @@
 .languageSwitcher:focus:not(:disabled) {
   background-color: var(--dark-300);
 }
+
+.loader {
+  height: 20px;
+  width: 20px;
+}

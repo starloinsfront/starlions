@@ -2,6 +2,7 @@ import clsx from "clsx"
 import { ComponentPropsWithoutRef, ReactNode } from "react"
 import { Slot } from "@radix-ui/react-slot"
 import s from "./Button.module.css"
+import { Loader } from "../Loader/Loader"
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "link" | "languageSwitcher"
 
@@ -11,6 +12,7 @@ type Props = {
   children: ReactNode
   fullWidth?: boolean
   className?: string
+  isLoading?: boolean
 } & ComponentPropsWithoutRef<"button">
 
 export const Button = ({
@@ -19,6 +21,7 @@ export const Button = ({
   children,
   className,
   fullWidth,
+  isLoading,
   ...rest
 }: Props) => {
   const Component = asChild ? Slot : "button"
@@ -26,7 +29,13 @@ export const Button = ({
 
   return (
     <Component className={classNames} {...rest}>
-      {children}
+      {isLoading ? (
+        <span className={s.loader}>
+          <Loader />
+        </span>
+      ) : (
+        children
+      )}
     </Component>
   )
 }

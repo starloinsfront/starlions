@@ -1,0 +1,78 @@
+.toaster {
+  bottom: 24px !important;
+  left: var(--toast-left-offset, 24px) !important;
+  right: auto !important;
+  width: 390px;
+}
+
+.toast {
+  align-items: center;
+  border: 1px solid;
+  border-radius: 2px;
+  box-shadow: none;
+  color: var(--light-100);
+  display: flex;
+  font-size: 14px;
+  line-height: 24px;
+  min-height: 48px;
+  padding: 8px 44px 8px 24px;
+  width: 100%;
+}
+
+.toast strong {
+  font-weight: 700;
+}
+
+.error {
+  background-color: var(--danger-900, #660018);
+  border-color: var(--danger-500, #cc1439);
+}
+
+.success {
+  background-color: var(--success-900, #064e2e);
+  border-color: var(--success-500, #14cc70);
+}
+
+.warning {
+  background-color: var(--warning-900, #6b3d00);
+  border-color: var(--warning-500, #f59e0b);
+}
+
+.info {
+  background-color: var(--accent-900, #102a56);
+  border-color: var(--accent-500, #397df6);
+}
+
+.closeButton {
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--light-100);
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+}
+
+.closeButton:hover {
+  background-color: #8a8a8a5e;
+}
+
+.closeButton svg {
+  transform: scale(1.5);
+}
+
+@media (width <= 768px) {
+  .toaster {
+    bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+    left: 16px !important;
+    right: 16px !important;
+    width: auto;
+  }
+}

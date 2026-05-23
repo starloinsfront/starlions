@@ -1,6 +1,6 @@
 import { getApiErrorMessage } from "./api/error/getApiErrorMessage"
 import { isApiServerError, type ServerErrorCode } from "./api/error/serverError"
-import { ToastMessage } from "./api/error/types"
+import { showErrorToast } from "./toast/showToast"
 
 /**
  * Rule that describes which API error should be handled silently.
@@ -41,26 +41,6 @@ export type GlobalErrorMeta = {
 }
 
 /**
- * Temporary toast replacement.
- *
- * Accepts either a single message or a list of messages.
- * Currently logs messages to the console.
- *
- * Later this function can be replaced with a real toast implementation.
- */
-const toast = (message: ToastMessage) => {
-  if (Array.isArray(message)) {
-    message.forEach((item) => {
-      console.error("[TOAST]", item)
-    })
-
-    return
-  }
-
-  console.error("[TOAST]", message)
-}
-
-/**
  * Checks whether the current error should be silent.
  *
  * Silent errors do not show a global toast, but they are still available
@@ -98,16 +78,16 @@ export const handleGlobalError = (error: unknown, meta?: GlobalErrorMeta) => {
   }
 
   if (isApiServerError(error)) {
-    toast(getApiErrorMessage(error))
+    showErrorToast(getApiErrorMessage(error))
 
     return
   }
 
   if (error instanceof Error) {
-    toast(error.message || "Something went wrong")
+    showErrorToast(error.message || "Something went wrong")
 
     return
   }
 
-  toast("Something went wrong")
+  showErrorToast("Something went wrong")
 }
