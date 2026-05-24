@@ -11,6 +11,13 @@ export const ROUTES = {
 
   signIn: "/login",
   signUp: "/signup",
+  /** OAuth redirect: must match an Authorized redirect URI in Google Cloud (same origin as the app). */
+  googleOAuthCallback: "/auth/google/callback",
+  /**
+   * After Google OAuth the API should redirect the browser **here** (app origin), not to `/api/v1/auth` on gateway.
+   * Query: `accessToken` | `access_token` | `token` — JWT; prefer HttpOnly cookies + redirect without token in URL (backend).
+   */
+  oauthComplete: "/auth/oauth-complete",
   confirmEmail: "/auth/confirm-email",
   forgotPassword: "/forgot-password",
   emailCheck: "/forgot-password/email-check",

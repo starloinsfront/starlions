@@ -1,6 +1,9 @@
 "use client"
+
 import s from "./Login.module.css"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 import { Button } from "@/common/components/Button/Button"
 import { Icon } from "@/common/components/Icon/Icon"
 import { TextField } from "@/common/components/TextField/TextField"
@@ -9,8 +12,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { SignInFormData, signInSchema } from "@/features/auth/model/auth-schemas"
 import { useLoginMutation } from "@/features/auth/api/useLoginMutation"
 import { ROUTES } from "@/common/constants/route"
+import { GoogleOAuthLaunchLink } from "@/features/auth/ui/GoogleOAuthLaunchLink/GoogleOAuthLaunchLink"
 
-export default function LoginPage() {
+function LoginPageContent() {
+  const searchParams = useSearchParams()
+  const oauthError = searchParams.get("error")
+
   const {
     register,
     handleSubmit,
@@ -26,12 +33,22 @@ export default function LoginPage() {
   const onSubmit = (data: SignInFormData) => {
     mutation.mutate(data)
   }
+
   return (
     <section className={s.loginPage}>
       <div className={s.loginContainer}>
         <p>Sign In</p>
+        {oauthError ? (
+          <p className={s.oauthError} role="alert">
+            {oauthError}
+          </p>
+        ) : null}
         <div className={s.authProviders}>
-          <Icon className={s.authIcon} height={36} name={"googleFilled"} width={36} />
+          <GoogleOAuthLaunchLink
+            ariaLabel="Sign in with Google"
+            buttonClassName={s.googleOAuthButton}
+            iconClassName={s.authIcon}
+          />
           <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36} />
         </div>
         <form className={s.loginForm} onSubmit={handleSubmit(onSubmit)}>
@@ -73,5 +90,21 @@ export default function LoginPage() {
         </Link>
       </div>
     </section>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <section className={s.loginPage}>
+          <div className={s.loginContainer}>
+            <p>Sign In</p>
+          </div>
+        </section>
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
   )
 }

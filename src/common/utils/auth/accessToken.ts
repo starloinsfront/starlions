@@ -7,8 +7,16 @@ export const getAccessToken = () => {
 }
 
 export const setAccessToken = (accessToken: string) => {
-  localStorage.setItem(ACCESS_TOKEN_COOKIE, accessToken)
-  document.cookie = `${ACCESS_TOKEN_COOKIE}=${accessToken}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}; samesite=lax`
+  const trimmed = accessToken.trim()
+
+  localStorage.setItem(ACCESS_TOKEN_COOKIE, trimmed)
+
+  const isHttps =
+    typeof window !== "undefined" && window.location.protocol === "https:"
+
+  const secureFlag = isHttps ? "; secure" : ""
+
+  document.cookie = `${ACCESS_TOKEN_COOKIE}=${trimmed}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}; samesite=lax${secureFlag}`
 }
 
 export const clearAccessToken = () => {

@@ -13,6 +13,7 @@ import { RegisterFormData, registerSchema } from "@/features/auth/model/register
 import s from "./Signup.module.css"
 import { Modal } from "@/common/components/Modal/Modal"
 import { ROUTES } from "@/common/constants/route"
+import { GoogleOAuthLaunchLink } from "@/features/auth/ui/GoogleOAuthLaunchLink/GoogleOAuthLaunchLink"
 
 import { useRegistration } from "@/features/auth/api/useRegistration"
 
@@ -48,12 +49,17 @@ export default function Home() {
     setIsModalOpen(false)
     router.push(ROUTES.signIn)
   }
+
   return (
     <section className={s.registrationPage}>
       <div className={s.signupContainer}>
         <h1 className={s.singUpTitle}>Sign up</h1>
         <div className={s.authProviders}>
-          <Icon className={s.authIcon} height={36} name={"googleFilled"} width={36} />
+          <GoogleOAuthLaunchLink
+            ariaLabel="Sign up with Google"
+            buttonClassName={s.googleOAuthButton}
+            iconClassName={s.authIcon}
+          />
           <Icon className={s.authIcon} height={36} name={"githubFilled"} width={36} />
         </div>
         <form className={s.signupForm} onSubmit={handleSubmit(onSubmit)}>
