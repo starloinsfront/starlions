@@ -30,6 +30,36 @@
   color: var(--light-100);
 }
 
+.googleOAuthButton {
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  padding: 0;
+  text-decoration: none;
+}
+
+.googleOAuthButton:any-link {
+  color: var(--light-100);
+}
+
+.googleOAuthButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+.oauthError {
+  color: var(--danger-500);
+  font-size: 14px;
+  margin: 0;
+  max-width: 100%;
+  text-align: center;
+  width: calc(100% - 48px);
+}
+
 .loginForm {
   align-items: center;
   display: flex;
