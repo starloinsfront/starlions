@@ -16,6 +16,7 @@ import { ROUTES } from "@/common/constants/route"
 import { GoogleOAuthLaunchLink } from "@/features/auth/ui/GoogleOAuthLaunchLink/GoogleOAuthLaunchLink"
 
 import { useRegistration } from "@/features/auth/api/useRegistration"
+import { AuthPageSection } from "@/features/auth/ui/AuthPageSection/AuthPageSection"
 
 export default function Home() {
   const router = useRouter()
@@ -51,7 +52,7 @@ export default function Home() {
   }
 
   return (
-    <section className={s.registrationPage}>
+    <AuthPageSection>
       <div className={s.signupContainer}>
         <h1 className={s.singUpTitle}>Sign up</h1>
         <div className={s.authProviders}>
@@ -151,6 +152,6 @@ export default function Home() {
           </Button>
         </div>
       </Modal>
-    </section>
+    </AuthPageSection>
   )
 }

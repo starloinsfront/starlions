@@ -13,6 +13,7 @@ import { SignInFormData, signInSchema } from "@/features/auth/model/auth-schemas
 import { useLoginMutation } from "@/features/auth/api/useLoginMutation"
 import { ROUTES } from "@/common/constants/route"
 import { GoogleOAuthLaunchLink } from "@/features/auth/ui/GoogleOAuthLaunchLink/GoogleOAuthLaunchLink"
+import { AuthPageSection } from "@/features/auth/ui/AuthPageSection/AuthPageSection"
 
 function LoginPageContent() {
   const searchParams = useSearchParams()
@@ -21,21 +22,20 @@ function LoginPageContent() {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isValid },
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     mode: "onChange",
   })
 
-  const mutation = useLoginMutation(setError)
+  const mutation = useLoginMutation()
 
   const onSubmit = (data: SignInFormData) => {
     mutation.mutate(data)
   }
 
   return (
-    <section className={s.loginPage}>
+    <AuthPageSection>
       <div className={s.loginContainer}>
         <p>Sign In</p>
         {oauthError ? (
@@ -89,7 +89,7 @@ function LoginPageContent() {
           Sign Up
         </Link>
       </div>
-    </section>
+    </AuthPageSection>
   )
 }
 

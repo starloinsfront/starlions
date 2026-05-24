@@ -87,6 +87,10 @@ export const useRegistration = (setError?: UseFormSetError<RegisterFormData>) =>
         },
         {
           status: 400,
+          code: "EMAIL_ALREADY_EXISTS",
+        },
+        {
+          status: 400,
           code: "VALIDATION_ERROR",
         },
       ],
@@ -128,6 +132,7 @@ export const useRegistration = (setError?: UseFormSetError<RegisterFormData>) =>
 
       if (
         isApiErrorMatching(error, { status: 400, code: "BAD_REQUEST" }) ||
+        isApiErrorMatching(error, { status: 400, code: "EMAIL_ALREADY_EXISTS" }) ||
         isApiErrorMatching(error, { status: 400, code: "VALIDATION_ERROR" })
       ) {
         if (applyRegistrationMessageError(error.data.message, setError)) {

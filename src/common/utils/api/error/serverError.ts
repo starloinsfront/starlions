@@ -2,6 +2,7 @@ import { isApiError, type ApiError } from "./apiError"
 
 export type ServerErrorCode =
   | "BAD_REQUEST"
+  | "EMAIL_ALREADY_EXISTS"
   | "NOT_FOUND"
   | "VALIDATION_ERROR"
   | "INVALID_CREDENTIALS"
