@@ -8,7 +8,6 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { Button } from "@/common/components/Button/Button"
-import { Loader } from "@/common/components/Loader/Loader"
 import { TextField } from "@/common/components/TextField/TextField"
 import { ROUTES } from "@/common/constants/route"
 import { emailSchema } from "@/features/auth/model/auth-schemas"
@@ -60,7 +59,7 @@ export const CheckEmailForm = () => {
           label="Email"
           id="email"
           type="email"
-          placeholder="Epam@epam.com"
+          placeholder="example@mail.com"
           errorMessage={errors.email?.message}
           {...register("email")}
         />
@@ -75,14 +74,9 @@ export const CheckEmailForm = () => {
             className={styles.sendButton}
             type="submit"
             disabled={!isValid || isPending || isCooldownActive}
+            isLoading={isPending}
           >
-            {isPending ? (
-              <span style={{ height: "20px", width: "20px" }}>
-                <Loader />
-              </span>
-            ) : (
-              "Send Link Again"
-            )}
+            Send Link Again
           </Button>
           <Button variant="link" className={styles.sendButton} asChild>
             <Link href={ROUTES.signIn}>Back to Sign In</Link>

@@ -1,8 +1,5 @@
-// src/features/auth/model/useCreateNewPassword.ts
-
 import { useMutation } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
-import type { FieldValues } from "react-hook-form"
 
 import { ROUTES } from "@/common/constants/route"
 import { useRateLimitCooldown } from "@/common/hooks/useRateLimitCooldown"
@@ -11,15 +8,15 @@ import { apiAuth } from "@/features/auth/api/apiAuth"
 
 const DEFAULT_RATE_LIMIT_SECONDS = 10
 
-type UseCreateNewPasswordParams<TFormValues extends FieldValues> = {
+type UseCreateNewPasswordParams = {
   onSuccess?: () => void
   rateLimitStorageKey?: string
 }
 
-export const useCreateNewPassword = <TFormValues extends FieldValues>({
+export const useCreateNewPassword = ({
   onSuccess,
   rateLimitStorageKey = "rate-limit:create-new-password",
-}: UseCreateNewPasswordParams<TFormValues>) => {
+}: UseCreateNewPasswordParams = {}) => {
   const router = useRouter()
 
   const { cooldown, isCooldownActive, startCooldown, resetCooldown } = useRateLimitCooldown({
@@ -28,15 +25,6 @@ export const useCreateNewPassword = <TFormValues extends FieldValues>({
 
   const mutation = useMutation({
     mutationFn: apiAuth.createNewPassword,
-
-    meta: {
-      silentErrors: [
-        {
-          status: 400,
-          code: "VALIDATION_ERROR",
-        },
-      ],
-    },
 
     onSuccess: () => {
       onSuccess?.()
@@ -51,11 +39,13 @@ export const useCreateNewPassword = <TFormValues extends FieldValues>({
 
       if (isApiErrorMatching(error, { status: 422, code: "INVALID_RECOVERY_CODE" })) {
         router.push(ROUTES.recoveryLinkExpired)
+
         return
       }
 
       if (isApiErrorMatching(error, { status: 404, code: "NOT_FOUND" })) {
         router.push(ROUTES.forgotPassword)
+
         return
       }
     },

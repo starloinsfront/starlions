@@ -1,5 +1,9 @@
 import styles from "./Loader.module.css"
 
-export const Loader = () => {
-  return <div className={styles.loader}></div>
+type Props = {
+  theme?: "dark" | "light"
+}
+
+export const Loader = ({ theme = "dark" }: Props) => {
+  return <div className={theme === "dark" ? styles.loader : styles["loader-light"]}></div>
 }

@@ -26,7 +26,7 @@ export const usePasswordRecoveryResend = <TFormValues extends FieldValues>({
 }: Params<TFormValues>) => {
   const router = useRouter()
 
-  const { cooldown, isCooldownActive, startCooldown, resetCooldown } = useRateLimitCooldown({
+  const { cooldown, isCooldownActive, startCooldown } = useRateLimitCooldown({
     storageKey: rateLimitStorageKey,
   })
 
@@ -72,6 +72,5 @@ export const usePasswordRecoveryResend = <TFormValues extends FieldValues>({
     ...mutation,
     cooldown,
     isCooldownActive,
-    resetCooldown,
   }
 }

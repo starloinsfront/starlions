@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/common/components/Button/Button"
-import { Loader } from "@/common/components/Loader/Loader"
 import { TextField } from "@/common/components/TextField/TextField"
 import { ROUTES } from "@/common/constants/route"
 import { emailSchema } from "@/features/auth/model/auth-schemas"
@@ -28,12 +27,14 @@ export const ForgotPasswordForm = () => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState("")
+  const [recaptchaResetKey, setRecaptchaResetKey] = useState(0)
 
   const {
     register,
     handleSubmit,
     control,
     setError,
+    setValue,
     formState: { errors, isValid },
   } = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -46,6 +47,14 @@ export const ForgotPasswordForm = () => {
 
   const { mutate, isPending, isCooldownActive } = usePasswordRecovery<ForgotPasswordFormValues>({
     setError,
+    recaptchaFieldName: "recaptchaToken",
+    onInvalidRecaptcha: () => {
+      setRecaptchaResetKey((prev) => prev + 1)
+
+      setValue("recaptchaToken", "", {
+        shouldValidate: true,
+      })
+    },
     onSuccess: (email) => {
       setEmail(email)
       setOpen(true)
@@ -70,7 +79,7 @@ export const ForgotPasswordForm = () => {
           label="Email"
           id="email"
           type="email"
-          placeholder="Epam@epam.com"
+          placeholder="example@mail.com"
           errorMessage={errors.email?.message}
           {...register("email")}
         />
@@ -82,14 +91,9 @@ export const ForgotPasswordForm = () => {
             className={styles.sendButton}
             type="submit"
             disabled={!isValid || isCooldownActive || isPending}
+            isLoading={isPending}
           >
-            {isPending ? (
-              <span style={{ height: "20px", width: "20px" }}>
-                <Loader />
-              </span>
-            ) : (
-              "Send link"
-            )}
+            Send link
           </Button>
           <Button variant="link" className={styles.sendButton} asChild>
             <Link href={ROUTES.signIn}>Back to Sign In</Link>
@@ -105,6 +109,7 @@ export const ForgotPasswordForm = () => {
                 value={field.value}
                 onChange={field.onChange}
                 error={fieldState.error?.message}
+                resetKey={recaptchaResetKey}
               />
             )}
           />

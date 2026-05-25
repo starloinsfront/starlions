@@ -13,7 +13,7 @@ type Props = {
 
 export const EmailSentModal = ({ open, email, onClose }: Props) => {
   return (
-    <Modal modalTitle="Email sent" onClose={onClose} open={open} size="sm">
+    <Modal modalTitle="Email sent" onClose={onClose} open={open}>
       <div className={styles.dialog}>
         <p className={clsx("regularText16", styles.description)}>
           We have sent a link to confirm your email to {email}
