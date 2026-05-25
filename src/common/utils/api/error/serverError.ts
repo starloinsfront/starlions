@@ -9,6 +9,7 @@ export type ServerErrorCode =
   | "UNAUTHORIZED"
   | "TOO_MANY_REQUESTS"
   | "INVALID_RECOVERY_CODE"
+  | "INVALID_RECAPTCHA"
   | (string & {})
 
 export type ServerErrorExtension = {

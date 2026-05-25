@@ -1,10 +1,8 @@
 import Image from "next/image"
-import styles from "./RecoveryLinkExpired.module.css"
-import { Button } from "@/common/components/Button/Button"
-import Link from "next/link"
-import { ROUTES } from "@/common/constants/route"
+import { ReactNode } from "react"
+import styles from "./AuthLinkExpired.module.css"
 
-export const RecoveryLinkExpired = () => {
+export const AuthLinkExpired = ({ children }: { children: ReactNode }) => {
   return (
     <div className={styles.content}>
       <h1 className={styles.title}>Email verification link expired</h1>
@@ -15,7 +13,7 @@ export const RecoveryLinkExpired = () => {
 
       <div className={styles.imageWrapper}>
         <Image
-          src="/images/auth/email-link-expired.svg"
+          src="/images/auth/recovery-link-expired.svg"
           alt="Email verification link expired"
           width={0}
           height={0}
@@ -25,9 +23,7 @@ export const RecoveryLinkExpired = () => {
         />
       </div>
 
-      <Button className={styles.button} asChild>
-        <Link href={ROUTES.forgotPassword}>Resend link</Link>
-      </Button>
+      <div className={styles.children}>{children}</div>
     </div>
   )
 }

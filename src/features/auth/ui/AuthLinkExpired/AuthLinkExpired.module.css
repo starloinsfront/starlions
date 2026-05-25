@@ -27,9 +27,12 @@
   text-align: center;
 }
 
-.button {
-  height: 36px;
-  margin-bottom: 28px;
+.children {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 31px;
   max-width: 274px;
   order: 3;
   width: 100%;
@@ -71,7 +74,7 @@
   }
 
   .imageWrapper {
-    margin-bottom: 48px;
+    margin-bottom: 40px;
     order: 3;
   }
 
@@ -81,8 +84,7 @@
     width: 100%;
   }
 
-  .button {
-    height: 48px;
+  .children {
     margin-bottom: 0;
     max-width: none;
     order: 4;

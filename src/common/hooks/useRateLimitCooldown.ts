@@ -9,7 +9,7 @@ const getSavedCooldownUntil = (storageKey: string) => {
     return 0
   }
 
-  const savedValue = window.localStorage.getItem(storageKey)
+  const savedValue = localStorage.getItem(storageKey)
   const parsedValue = savedValue ? Number(savedValue) : 0
 
   return Number.isFinite(parsedValue) ? parsedValue : 0
@@ -35,17 +35,17 @@ export const useRateLimitCooldown = ({ storageKey }: UseRateLimitCooldownParams)
 
   useEffect(() => {
     if (!isCooldownActive) {
-      window.localStorage.removeItem(storageKey)
+      localStorage.removeItem(storageKey)
 
       return
     }
 
-    const intervalId = window.setInterval(() => {
+    const intervalId = setInterval(() => {
       setNow(Date.now())
     }, 1000)
 
     return () => {
-      window.clearInterval(intervalId)
+      clearInterval(intervalId)
     }
   }, [isCooldownActive, storageKey])
 
@@ -57,7 +57,7 @@ export const useRateLimitCooldown = ({ storageKey }: UseRateLimitCooldownParams)
 
       const nextCooldownUntil = Date.now() + seconds * 1000
 
-      window.localStorage.setItem(storageKey, String(nextCooldownUntil))
+      localStorage.setItem(storageKey, String(nextCooldownUntil))
       setCooldownUntil(nextCooldownUntil)
       setNow(Date.now())
     },
@@ -65,7 +65,7 @@ export const useRateLimitCooldown = ({ storageKey }: UseRateLimitCooldownParams)
   )
 
   const resetCooldown = useCallback(() => {
-    window.localStorage.removeItem(storageKey)
+    localStorage.removeItem(storageKey)
     setCooldownUntil(0)
     setNow(Date.now())
   }, [storageKey])
