@@ -9,6 +9,17 @@
   width: 100%;
 }
 
+.loader-light {
+  animation: l13 1s infinite linear;
+  background:
+    radial-gradient(farthest-side, #ffffff 30%, #00000000) top/3px 3px no-repeat,
+    conic-gradient(#00000000 30%, #ffffff);
+  border-radius: 50%;
+  height: 100%;
+  mask: radial-gradient(farthest-side, #00000000 calc(100% - 3px), #000000 0);
+  width: 100%;
+}
+
 @keyframes l13 {
   100% {
     transform: rotate(1turn);

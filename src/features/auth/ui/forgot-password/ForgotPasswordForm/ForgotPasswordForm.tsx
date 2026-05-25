@@ -27,12 +27,14 @@ export const ForgotPasswordForm = () => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState("")
+  const [recaptchaResetKey, setRecaptchaResetKey] = useState(0)
 
   const {
     register,
     handleSubmit,
     control,
     setError,
+    setValue,
     formState: { errors, isValid },
   } = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -45,6 +47,14 @@ export const ForgotPasswordForm = () => {
 
   const { mutate, isPending, isCooldownActive } = usePasswordRecovery<ForgotPasswordFormValues>({
     setError,
+    recaptchaFieldName: "recaptchaToken",
+    onInvalidRecaptcha: () => {
+      setRecaptchaResetKey((prev) => prev + 1)
+
+      setValue("recaptchaToken", "", {
+        shouldValidate: true,
+      })
+    },
     onSuccess: (email) => {
       setEmail(email)
       setOpen(true)
@@ -99,6 +109,7 @@ export const ForgotPasswordForm = () => {
                 value={field.value}
                 onChange={field.onChange}
                 error={fieldState.error?.message}
+                resetKey={recaptchaResetKey}
               />
             )}
           />

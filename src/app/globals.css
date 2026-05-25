@@ -2,6 +2,7 @@
 @import url("../styles/typography.css");
 @import url("../styles/breakpoints.css");
 @import url("../styles/boilerplate.css");
+@import url("../styles/variables.css");
 
 .content {
   display: grid;
