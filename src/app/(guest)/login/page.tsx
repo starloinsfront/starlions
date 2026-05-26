@@ -17,7 +17,7 @@ import { AuthPageSection } from "@/features/auth/ui/AuthPageSection/AuthPageSect
 
 function LoginPageContent() {
   const searchParams = useSearchParams()
-  const oauthError = searchParams.get("error")
+  const oauthError = searchParams?.get("error")
 
   const {
     register,

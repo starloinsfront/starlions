@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { apiAuth } from "@/features/auth/api/apiAuth"
 import { setAccessToken } from "@/common/utils/auth/accessToken"
 import { useRouter } from "next/navigation"
+import { ROUTES } from "@/common/constants/route"
 
 export const useLoginMutation = () => {
   const router = useRouter()
@@ -16,15 +17,7 @@ export const useLoginMutation = () => {
       }
 
       queryClient.invalidateQueries({ queryKey: ["me"] })
-      router.push("/profile")
-    },
-
-    onError: (error: any) => {
-      const extensions = error?.response?.data?.extensions || error?.data?.extensions
-
-      if (extensions) {
-        return
-      }
+      router.push(ROUTES.profile)
     },
   })
 }
