@@ -4,7 +4,7 @@ import type { SidebarSection } from "./sidebar.types"
 export const sidebarSections: SidebarSection = {
   main: [
     { title: "Feed", href: ROUTES.feed, icon: "homeOutline" },
-    { title: "Create", href: ROUTES.create, icon: "addOutline" },
+    { title: "Create", href: ROUTES.create, icon: "addOutline", action: "create" },
     { title: "My Profile", href: ROUTES.profile, icon: "personOutline" },
     { title: "Messenger", href: ROUTES.messenger, icon: "emailOutline" },
     { title: "Search", href: ROUTES.search, icon: "searchOutline" },
