@@ -2,25 +2,24 @@
 
 import { useCallback } from "react"
 import * as Dialog from "@radix-ui/react-dialog"
-import { CreatePostHeader } from "./CreatePostHeader"
-import { UploadStep } from "./UploadStep"
+import { useCreatePost } from "../../model/useCreatePost"
+import { CroppingStep } from "./CroppingStep"
 import styles from "./CreatePostModal.module.css"
 import type { CreatePostModalProps } from "./CreatePostModal.types"
+import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhoto"
 
 const CLOSE_CONFIRM_MESSAGE =
   "Do you really want to close the post creation? All changes will be lost."
 
-export const CreatePostModal = ({
-  isOpen,
-  onClose,
-  onSelectFiles,
-  onOpenDraft,
-}: CreatePostModalProps) => {
+export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModalProps) => {
+  const { step, imageUrl, selectFiles, goBack, goNext, reset } = useCreatePost()
+
   const handleCloseAttempt = useCallback(() => {
     if (window.confirm(CLOSE_CONFIRM_MESSAGE)) {
+      reset()
       onClose()
     }
-  }, [onClose])
+  }, [onClose, reset])
 
   const handleOverlayClick = useCallback(
     (event: Event) => {
@@ -39,9 +38,17 @@ export const CreatePostModal = ({
           className={styles.modalContent}
           onPointerDownOutside={handleOverlayClick}
         >
-          <CreatePostHeader title="Add Photo" onCloseClick={handleCloseAttempt} />
+          {step === "upload" && (
+            <AddPhoto
+              handleCloseAttempt={handleCloseAttempt}
+              onOpenDraft={onOpenDraft}
+              selectFiles={selectFiles}
+            />
+          )}
 
-          <UploadStep onSelectFiles={onSelectFiles} onOpenDraft={onOpenDraft} />
+          {step === "cropping" && imageUrl && (
+            <CroppingStep imageUrl={imageUrl} onBack={goBack} onNext={goNext} />
+          )}
 
           <Dialog.Description className={styles.srOnly}>
             Upload a photo to create a new post
