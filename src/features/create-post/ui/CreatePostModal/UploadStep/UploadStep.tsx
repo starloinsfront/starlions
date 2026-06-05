@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useCallback } from "react"
+import { useRef, useState, useCallback, useEffect } from "react"
 import { Button } from "@/common/components/Button/Button"
 import { Icon } from "@/common/components/Icon/Icon"
 import styles from "./UploadStep.module.css"
@@ -8,6 +8,15 @@ import type { UploadStepProps } from "./UploadStep.types"
 
 export const UploadStep = ({ onSelectFiles, onOpenDraft }: UploadStepProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl)
+      }
+    }
+  }, [previewUrl])
 
   const handleSelectFiles = useCallback(() => {
     fileInputRef.current?.click()
@@ -17,6 +26,8 @@ export const UploadStep = ({ onSelectFiles, onOpenDraft }: UploadStepProps) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const files = event.target.files
       if (files && files.length > 0) {
+        const url = URL.createObjectURL(files[0])
+        setPreviewUrl(url)
         onSelectFiles(files)
       }
     },
@@ -26,12 +37,20 @@ export const UploadStep = ({ onSelectFiles, onOpenDraft }: UploadStepProps) => {
   return (
     <div className={styles.body}>
       <div className={styles.uploadPlaceholder}>
-        <Icon
-          name="imageOutline"
-          width={48}
-          height={48}
-          className={styles.uploadIcon}
-        />
+        {previewUrl ? (
+          <img
+            src={previewUrl}
+            alt="Selected photo preview"
+            className={styles.previewImage}
+          />
+        ) : (
+          <Icon
+            name="imageOutline"
+            width={48}
+            height={48}
+            className={styles.uploadIcon}
+          />
+        )}
       </div>
 
       <input

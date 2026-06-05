@@ -12,9 +12,17 @@
   align-items: center;
   background-color: var(--dark-500);
   display: flex;
-  height: 140px;
+  height: 228px;
   justify-content: center;
-  width: 140px;
+  overflow: hidden;
+  width: 222px;
+}
+
+.previewImage {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .uploadIcon {
