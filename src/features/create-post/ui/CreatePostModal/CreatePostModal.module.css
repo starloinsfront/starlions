@@ -1,0 +1,67 @@
+.overlay {
+  animation: overlay-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--dark-900);
+  inset: 0;
+  opacity: 0.65;
+  position: fixed;
+  z-index: 1000;
+}
+
+.modalContent {
+  animation: content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--dark-300);
+  border: 1px solid var(--dark-100);
+  border-radius: 2px;
+  box-shadow:
+    hsl(206deg 22% 7% / 35%) 0 10px 38px -10px,
+    hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
+  display: flex;
+  flex-direction: column;
+  height: 560px;
+  left: 50%;
+  max-height: 85vh;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 490px;
+  z-index: 1001;
+}
+
+.modalContent:focus {
+  outline: none;
+}
+
+.srOnly {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@keyframes overlay-show {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.65;
+  }
+}
+
+@keyframes content-show {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

@@ -36,6 +36,14 @@
   padding-top: 60px;
 }
 
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
 @media (width <= 992px) {
   .sidebar {
     /* max-width: 220px;
