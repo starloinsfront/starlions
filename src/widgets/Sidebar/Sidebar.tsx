@@ -70,7 +70,6 @@ export const Sidebar = () => {
       <CreatePostModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onSelectFiles={(_files) => {}}
         onOpenDraft={() => {}}
       />
     </aside>
