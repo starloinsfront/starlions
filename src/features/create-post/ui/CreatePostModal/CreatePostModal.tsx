@@ -12,7 +12,18 @@ const CLOSE_CONFIRM_MESSAGE =
   "Do you really want to close the post creation? All changes will be lost."
 
 export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModalProps) => {
-  const { step, imageUrl, selectFiles, goBack, goNext, reset } = useCreatePost()
+  const {
+    step,
+    selectedImages,
+    isGalleryPanelOpen,
+    selectFiles,
+    addMoreFiles,
+    removeImage,
+    toggleGalleryPanel,
+    goBack,
+    goNext,
+    reset,
+  } = useCreatePost()
 
   const handleCloseAttempt = useCallback(() => {
     if (window.confirm(CLOSE_CONFIRM_MESSAGE)) {
@@ -46,8 +57,16 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
             />
           )}
 
-          {step === "cropping" && imageUrl && (
-            <CroppingStep imageUrl={imageUrl} onBack={goBack} onNext={goNext} />
+          {step === "cropping" && selectedImages.length > 0 && (
+            <CroppingStep
+              selectedImages={selectedImages}
+              isGalleryPanelOpen={isGalleryPanelOpen}
+              onBack={goBack}
+              onNext={goNext}
+              onToggleGallery={toggleGalleryPanel}
+              onAddMoreFiles={addMoreFiles}
+              onRemoveImage={removeImage}
+            />
           )}
 
           <Dialog.Description className={styles.srOnly}>
