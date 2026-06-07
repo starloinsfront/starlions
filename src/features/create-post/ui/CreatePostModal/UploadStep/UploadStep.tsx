@@ -1,27 +1,15 @@
 "use client"
 
-import { useRef, useCallback } from "react"
 import { Button } from "@/common/components/Button/Button"
 import { Icon } from "@/common/components/Icon/Icon"
+import { useFileInput } from "@/common/hooks/useFileInput"
 import styles from "./UploadStep.module.css"
 import type { UploadStepProps } from "./UploadStep.types"
 
 export const UploadStep = ({ onSelectFiles, onOpenDraft }: UploadStepProps) => {
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const handleSelectFiles = useCallback(() => {
-    fileInputRef.current?.click()
-  }, [])
-
-  const handleFileChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const files = event.target.files
-      if (files && files.length > 0) {
-        onSelectFiles(files)
-      }
-    },
-    [onSelectFiles],
-  )
+  const { fileInputRef, triggerFileInput, handleFileChange } = useFileInput({
+    onFilesSelected: onSelectFiles,
+  })
 
   return (
     <div className={styles.body}>
@@ -49,7 +37,7 @@ export const UploadStep = ({ onSelectFiles, onOpenDraft }: UploadStepProps) => {
         <Button
           variant="primary"
           fullWidth
-          onClick={handleSelectFiles}
+          onClick={triggerFileInput}
           type="button"
         >
           Select from Computer

@@ -3,7 +3,7 @@ import { CroppingStepHeader } from "./CroppingStepHeader/CroppingStepHeader"
 import { CarouselNavigation } from "./CarouselNavigation/CarouselNavigation"
 import { CroppingToolbar } from "./CroppingToolbar/CroppingToolbar"
 import { MiniGallery } from "./MiniGallery/MiniGallery"
-import { useFileInput } from "./hooks/useFileInput"
+import { useFileInput } from "@/common/hooks/useFileInput"
 import styles from "./CroppingStep.module.css"
 import type { CroppingStepProps } from "./CroppingStep.types"
 

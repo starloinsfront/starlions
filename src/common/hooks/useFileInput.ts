@@ -2,8 +2,6 @@ import { useRef, useCallback, ChangeEvent } from "react"
 
 type UseFileInputOptions = {
   onFilesSelected: (files: FileList) => void
-  multiple?: boolean
-  accept?: string
 }
 
 export const useFileInput = ({ onFilesSelected }: UseFileInputOptions) => {
