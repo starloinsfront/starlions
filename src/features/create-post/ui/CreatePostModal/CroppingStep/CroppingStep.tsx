@@ -1,41 +1,66 @@
-import * as Dialog from "@radix-ui/react-dialog"
-import { Icon } from "@/common/components/Icon/Icon"
+import { useCarousel } from "@/common/components/Carousel/useCarousel"
+import { CroppingStepHeader } from "./CroppingStepHeader/CroppingStepHeader"
+import { CarouselNavigation } from "./CarouselNavigation/CarouselNavigation"
+import { CroppingToolbar } from "./CroppingToolbar/CroppingToolbar"
+import { MiniGallery } from "./MiniGallery/MiniGallery"
+import { useFileInput } from "@/common/hooks/useFileInput"
 import styles from "./CroppingStep.module.css"
 import type { CroppingStepProps } from "./CroppingStep.types"
 
-export const CroppingStep = ({ imageUrl, onBack, onNext }: CroppingStepProps) => {
+export const CroppingStep = ({
+  selectedImages,
+  isGalleryPanelOpen,
+  onBack,
+  onNext,
+  onToggleGallery,
+  onAddMoreFiles,
+  onRemoveImage,
+}: CroppingStepProps) => {
+
+  const { activeIndex, goToSlide, showNext, showPrev } = useCarousel(selectedImages.length)
+  const { fileInputRef, triggerFileInput, handleFileChange } = useFileInput({
+    onFilesSelected: onAddMoreFiles,
+  })
+
+  const currentImageUrl = selectedImages[activeIndex]
+
   return (
     <div className={styles.step}>
-      <div className={styles.header}>
-        <button className={styles.backButton} type="button" aria-label="Go back" onClick={onBack}>
-          <Icon name="arrowBackOutline" width={24} height={24} />
-        </button>
-
-        <Dialog.Title className={styles.title}>Cropping</Dialog.Title>
-
-        <button className={styles.nextButton} type="button" onClick={onNext}>
-          Next
-        </button>
-      </div>
+      <CroppingStepHeader onBack={onBack} onNext={onNext} />
 
       <div className={styles.imageArea}>
+        {/* Main image */}
         {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL cannot be used with next/image */}
-        <img src={imageUrl} alt="Photo being cropped" className={styles.image} />
+        <img
+          src={currentImageUrl}
+          alt={`Photo ${activeIndex + 1} of ${selectedImages.length}`}
+          className={styles.image}
+        />
 
-        <div className={styles.toolbar}>
-          <div className={styles.toolbarGroup}>
-            <button className={styles.toolButton} type="button" aria-label="Crop">
-              <Icon name="expandOutline" width={24} height={24} />
-            </button>
-            <button className={styles.toolButton} type="button" aria-label="Zoom">
-              <Icon name="maximizeOutline" width={24} height={24} />
-            </button>
-          </div>
+        <CarouselNavigation
+          count={selectedImages.length}
+          activeIndex={activeIndex}
+          onPrev={showPrev}
+          onNext={showNext}
+          onGoToSlide={goToSlide}
+        />
 
-          <button className={styles.toolButton} type="button" aria-label="Gallery">
-            <Icon name="imageOutline" width={24} height={24} />
-          </button>
-        </div>
+        <CroppingToolbar
+          isGalleryOpen={isGalleryPanelOpen}
+          onToggleGallery={onToggleGallery}
+        />
+
+        {isGalleryPanelOpen && (
+          <MiniGallery
+            images={selectedImages}
+            activeIndex={activeIndex}
+            onSelectSlide={goToSlide}
+            onRemoveImage={onRemoveImage}
+            onAddClick={triggerFileInput}
+            fileInputRef={fileInputRef}
+            onFileChange={handleFileChange}
+          />
+        )}
       </div>
     </div>
   )

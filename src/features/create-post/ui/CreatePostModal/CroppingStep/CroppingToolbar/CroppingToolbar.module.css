@@ -1,0 +1,42 @@
+/* Toolbar */
+.toolbar {
+  align-items: center;
+  bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  left: 16px;
+  position: absolute;
+  right: 16px;
+  z-index: 2;
+}
+
+.toolbarGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.toolButton {
+  align-items: center;
+  appearance: none;
+  background-color: rgb(0 0 0 / 55%);
+  border: none;
+  border-radius: 2px;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 36px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 36px;
+}
+
+.toolButton:hover {
+  background-color: rgb(0 0 0 / 75%);
+}
+
+.toolButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
