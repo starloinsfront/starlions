@@ -19,6 +19,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
     selectFiles,
     addMoreFiles,
     removeImage,
+    replaceImage,
     toggleGalleryPanel,
     goBack,
     goNext,
@@ -64,6 +65,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
               onBack={goBack}
               onNext={goNext}
               onToggleGallery={toggleGalleryPanel}
+              onReplaceImage={replaceImage}
               onAddMoreFiles={addMoreFiles}
               onRemoveImage={removeImage}
             />
