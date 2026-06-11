@@ -28,6 +28,13 @@
   z-index: 1001;
 }
 
+/* Wider modal for the filters step (two-column layout) */
+
+.modalContentWide {
+  max-width: 90vw;
+  width: 720px;
+}
+
 .modalContent:focus {
   outline: none;
 }

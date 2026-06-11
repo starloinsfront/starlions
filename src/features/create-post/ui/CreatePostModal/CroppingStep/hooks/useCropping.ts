@@ -20,6 +20,61 @@ function generateCrop(width: number, height: number, ratio: number): Crop {
   )
 }
 
+/** Load an image URL into an off-screen HTMLImageElement and resolve when ready. */
+function loadImage(url: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = "anonymous"
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = url
+  })
+}
+
+/**
+ * Render a crop region from an already-loaded image element onto a canvas
+ * and return the result as a JPEG blob URL.
+ */
+async function renderCropFromElement(
+  imgElement: HTMLImageElement,
+  percentCrop: PercentCrop,
+): Promise<string | null> {
+  const { width, height } = imgElement
+  const pixelCrop: PixelCrop = {
+    x: (percentCrop.x / 100) * width,
+    y: (percentCrop.y / 100) * height,
+    width: (percentCrop.width / 100) * width,
+    height: (percentCrop.height / 100) * height,
+    unit: "px",
+  }
+
+  const canvas = document.createElement("canvas")
+  const ctx = canvas.getContext("2d")
+  if (!ctx) return null
+
+  canvas.width = pixelCrop.width
+  canvas.height = pixelCrop.height
+
+  ctx.drawImage(
+    imgElement,
+    pixelCrop.x,
+    pixelCrop.y,
+    pixelCrop.width,
+    pixelCrop.height,
+    0,
+    0,
+    pixelCrop.width,
+    pixelCrop.height,
+  )
+
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, "image/jpeg", 0.95),
+  )
+  if (!blob) return null
+
+  return URL.createObjectURL(blob)
+}
+
 export const useCropping = ({ onCropConfirm }: UseCroppingOptions) => {
   const [isCropOptionsOpen, setIsCropOptionsOpen] = useState(false)
   const [aspectRatio, setAspectRatioState] = useState<number | null>(null)
@@ -91,40 +146,9 @@ export const useCropping = ({ onCropConfirm }: UseCroppingOptions) => {
       const imgElement = imgElementRef.current
       if (!percentCrop || !imgElement) return
 
-      const { width, height } = imgElement
-      const pixelCrop: PixelCrop = {
-        x: (percentCrop.x / 100) * width,
-        y: (percentCrop.y / 100) * height,
-        width: (percentCrop.width / 100) * width,
-        height: (percentCrop.height / 100) * height,
-        unit: "px",
-      }
+      const croppedUrl = await renderCropFromElement(imgElement, percentCrop)
+      if (!croppedUrl) return
 
-      const canvas = document.createElement("canvas")
-      const ctx = canvas.getContext("2d")
-      if (!ctx) return
-
-      canvas.width = pixelCrop.width
-      canvas.height = pixelCrop.height
-
-      ctx.drawImage(
-        imgElement,
-        pixelCrop.x,
-        pixelCrop.y,
-        pixelCrop.width,
-        pixelCrop.height,
-        0,
-        0,
-        pixelCrop.width,
-        pixelCrop.height,
-      )
-
-      const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/jpeg", 0.95),
-      )
-      if (!blob) return
-
-      const croppedUrl = URL.createObjectURL(blob)
       onCropConfirm(croppedUrl, imageIndex)
 
       // Reset crop state
@@ -133,6 +157,50 @@ export const useCropping = ({ onCropConfirm }: UseCroppingOptions) => {
       completedCropRef.current = null
     },
     [onCropConfirm],
+  )
+
+  /**
+   * Batch-crop all photos using the current aspect ratio.
+   * Images that already have a cropped result (non-null in existingCropped)
+   * are skipped to avoid redundant work.
+   * Returns a new croppedImages array (same length as imageUrls).
+   */
+  const cropAllImages = useCallback(
+    async (
+      imageUrls: string[],
+      existingCropped: (string | null)[],
+    ): Promise<(string | null)[]> => {
+      const results = [...existingCropped]
+
+      for (let i = 0; i < imageUrls.length; i++) {
+        if (existingCropped[i]) continue
+
+        const imgElement = await loadImage(imageUrls[i])
+        const { width, height } = imgElement
+
+        let percentCrop: PercentCrop
+
+        if (aspectRatio !== null) {
+          const cropRect = generateCrop(width, height, aspectRatio)
+          percentCrop = {
+            x: cropRect.x as number,
+            y: cropRect.y as number,
+            width: cropRect.width as number,
+            height: cropRect.height as number,
+            unit: "%",
+          }
+        } else {
+          // No aspect ratio — full image (0,0,100,100)
+          percentCrop = { x: 0, y: 0, width: 100, height: 100, unit: "%" }
+        }
+
+        const url = await renderCropFromElement(imgElement, percentCrop)
+        results[i] = url
+      }
+
+      return results
+    },
+    [aspectRatio],
   )
 
   // Reset all crop state
@@ -156,6 +224,7 @@ export const useCropping = ({ onCropConfirm }: UseCroppingOptions) => {
     handleImageLoad,
     handleCropComplete,
     handleConfirmCrop,
+    cropAllImages,
     resetCrop,
   }
 }

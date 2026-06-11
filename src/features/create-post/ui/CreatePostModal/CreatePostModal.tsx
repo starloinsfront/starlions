@@ -4,6 +4,7 @@ import { useCallback } from "react"
 import * as Dialog from "@radix-ui/react-dialog"
 import { useCreatePost } from "../../model/useCreatePost"
 import { CroppingStep } from "./CroppingStep"
+import { FiltersStep } from "./FiltersStep"
 import styles from "./CreatePostModal.module.css"
 import type { CreatePostModalProps } from "./CreatePostModal.types"
 import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhoto"
@@ -15,14 +16,16 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
   const {
     step,
     selectedImages,
+    croppedImages,
     isGalleryPanelOpen,
     selectFiles,
     addMoreFiles,
     removeImage,
-    replaceImage,
+    setCroppedImage,
     toggleGalleryPanel,
     goBack,
     goNext,
+    goBackToCropping,
     reset,
   } = useCreatePost()
 
@@ -47,7 +50,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
         <Dialog.Overlay className={styles.overlay} />
         <Dialog.Content
           aria-describedby={undefined}
-          className={styles.modalContent}
+          className={`${styles.modalContent} ${step === "filters" ? styles.modalContentWide : ""}`}
           onPointerDownOutside={handleOverlayClick}
         >
           {step === "upload" && (
@@ -61,13 +64,23 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
           {step === "cropping" && selectedImages.length > 0 && (
             <CroppingStep
               selectedImages={selectedImages}
+              croppedImages={croppedImages}
               isGalleryPanelOpen={isGalleryPanelOpen}
               onBack={goBack}
               onNext={goNext}
               onToggleGallery={toggleGalleryPanel}
-              onReplaceImage={replaceImage}
+              onCropImage={setCroppedImage}
               onAddMoreFiles={addMoreFiles}
               onRemoveImage={removeImage}
+            />
+          )}
+
+          {step === "filters" && selectedImages.length > 0 && (
+            <FiltersStep
+              selectedImages={selectedImages}
+              croppedImages={croppedImages}
+              onBack={goBackToCropping}
+              onNext={goNext}
             />
           )}
 

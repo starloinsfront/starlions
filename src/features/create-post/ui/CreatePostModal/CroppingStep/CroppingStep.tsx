@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
@@ -14,14 +14,17 @@ import type { CroppingStepProps } from "./CroppingStep.types"
 
 export const CroppingStep = ({
   selectedImages,
+  croppedImages,
   isGalleryPanelOpen,
   onBack,
   onNext,
   onToggleGallery,
-  onReplaceImage,
+  onCropImage,
   onAddMoreFiles,
   onRemoveImage,
 }: CroppingStepProps) => {
+
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const { activeIndex, goToSlide, showNext, showPrev } = useCarousel(selectedImages.length)
   const { fileInputRef, triggerFileInput, handleFileChange } = useFileInput({
@@ -40,8 +43,9 @@ export const CroppingStep = ({
     handleImageLoad,
     handleCropComplete,
     handleConfirmCrop,
+    cropAllImages,
     resetCrop,
-  } = useCropping({ onCropConfirm: (url, index) => onReplaceImage(index, url) })
+  } = useCropping({ onCropConfirm: (url, index) => onCropImage(index, url) })
 
   const currentImageUrl = selectedImages[activeIndex]
 
@@ -58,9 +62,34 @@ export const CroppingStep = ({
   }, [isGalleryPanelOpen, toggleCropOptions])
 
   const handleNext = useCallback(async () => {
-    await handleConfirmCrop(activeIndex)
-    onNext()
-  }, [handleConfirmCrop, activeIndex, onNext])
+    setIsProcessing(true)
+    try {
+      // First confirm the active image crop (if one is in progress)
+      await handleConfirmCrop(activeIndex)
+
+      // Then batch-crop any remaining uncropped images
+      const results = await cropAllImages(selectedImages, croppedImages)
+
+      // Persist all new cropped URLs into parent state
+      results.forEach((url, i) => {
+        if (url && url !== croppedImages[i]) {
+          onCropImage(i, url)
+        }
+      })
+
+      onNext()
+    } finally {
+      setIsProcessing(false)
+    }
+  }, [
+    handleConfirmCrop,
+    cropAllImages,
+    activeIndex,
+    selectedImages,
+    croppedImages,
+    onCropImage,
+    onNext,
+  ])
 
   const handleBack = useCallback(() => {
     resetCrop()
@@ -69,7 +98,11 @@ export const CroppingStep = ({
 
   return (
     <div className={styles.step}>
-      <CroppingStepHeader onBack={handleBack} onNext={handleNext} />
+      <CroppingStepHeader
+        onBack={handleBack}
+        onNext={handleNext}
+        isNextDisabled={isProcessing}
+      />
 
       <div className={styles.imageArea}>
         <ReactCrop
