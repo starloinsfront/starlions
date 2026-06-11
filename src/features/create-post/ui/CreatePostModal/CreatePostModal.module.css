@@ -31,8 +31,8 @@
 /* Wider modal for the filters step (two-column layout) */
 
 .modalContentWide {
-  max-width: 90vw;
-  width: 720px;
+  max-width: 95vw;
+  width: 972px;
 }
 
 .modalContent:focus {

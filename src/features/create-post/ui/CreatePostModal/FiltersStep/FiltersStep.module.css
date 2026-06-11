@@ -20,7 +20,7 @@
 .previewArea {
   background-color: var(--dark-900);
   display: flex;
-  flex: 65;
+  flex: 50;
   flex-direction: column;
   overflow: hidden;
   position: relative;
@@ -40,7 +40,7 @@
   background-color: var(--dark-300);
   border-left: 1px solid var(--dark-100);
   display: flex;
-  flex: 35;
+  flex: 50;
   flex-direction: column;
   overflow-y: auto;
   padding: 12px 10px;

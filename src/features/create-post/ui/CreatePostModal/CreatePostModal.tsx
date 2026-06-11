@@ -26,6 +26,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
     goBack,
     goNext,
     goBackToCropping,
+    resetCroppedImages,
     reset,
   } = useCreatePost()
 
@@ -81,6 +82,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
               croppedImages={croppedImages}
               onBack={goBackToCropping}
               onNext={goNext}
+              onResetCrop={resetCroppedImages}
             />
           )}
 
