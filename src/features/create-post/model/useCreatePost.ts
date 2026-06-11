@@ -2,41 +2,43 @@
 
 import { useState, useCallback, useEffect, useRef } from "react"
 
-export type Step = "upload" | "cropping"
+export type Step = "upload" | "cropping" | "filters"
 
 type CreatePostState = {
   step: Step
-  // Array of blob URLs for all selected images
   selectedImages: string[]
-  // Whether the mini-gallery preview panel is open
+  /** Cropped version for each photo; null = not yet cropped. */
+  croppedImages: (string | null)[]
   isGalleryPanelOpen: boolean
 }
 
 type CreatePostActions = {
-  // Add files from initial upload (transitions to cropping step)
   selectFiles: (files: FileList) => void
-  // Add more files to existing gallery (stays on cropping step)
   addMoreFiles: (files: FileList) => void
-  // Remove image at given index
   removeImage: (index: number) => void
-  // Toggle mini-gallery panel visibility
+  replaceImage: (index: number, newUrl: string) => void
+  /** Store a cropped result for a specific photo index. */
+  setCroppedImage: (index: number, url: string) => void
   toggleGalleryPanel: () => void
-  // Step navigation
   goBack: () => void
+  /** Navigate from cropping → filters. */
   goNext: () => void
-  // Reset all state
+  /** Navigate from filters → cropping (preserves croppedImages). */
+  goBackToCropping: () => void
+  /** Clear all cropped results and revoke their blob URLs. */
+  resetCroppedImages: () => void
   reset: () => void
 }
 
 export function useCreatePost(): CreatePostState & CreatePostActions {
   const [step, setStep] = useState<Step>("upload")
   const [selectedImages, setSelectedImages] = useState<string[]>([])
+  const [croppedImages, setCroppedImages] = useState<(string | null)[]>([])
   const [isGalleryPanelOpen, setIsGalleryPanelOpen] = useState(false)
 
-  // Ref to track all blob URLs for cleanup on unmount
+  // Single set tracks ALL blob URLs (originals + cropped) for cleanup
   const blobUrlsRef = useRef<Set<string>>(new Set())
 
-  // Revoke all blob URLs on unmount
   useEffect(() => {
     const urls = blobUrlsRef.current
     return () => {
@@ -44,84 +46,120 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
     }
   }, [])
 
-  // Create blob URL and track it
   const createBlobUrl = useCallback((file: File): string => {
     const url = URL.createObjectURL(file)
     blobUrlsRef.current.add(url)
     return url
   }, [])
 
-  // Revoke a single blob URL
   const revokeBlobUrl = useCallback((url: string) => {
     URL.revokeObjectURL(url)
     blobUrlsRef.current.delete(url)
   }, [])
 
-  // Initial file selection — transitions to cropping step
   const selectFiles = useCallback(
     (files: FileList) => {
-      // Revoke any existing URLs
       blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url))
       blobUrlsRef.current.clear()
 
-      // Create new blob URLs
       const urls = Array.from(files).map(createBlobUrl)
       setSelectedImages(urls)
+      setCroppedImages([])
       setStep("cropping")
       setIsGalleryPanelOpen(false)
     },
     [createBlobUrl],
   )
 
-  // Add more files to existing gallery
   const addMoreFiles = useCallback(
     (files: FileList) => {
       const newUrls = Array.from(files).map(createBlobUrl)
       setSelectedImages((prev) => [...prev, ...newUrls])
+      setCroppedImages((prev) => [...prev, ...newUrls.map(() => null)])
     },
     [createBlobUrl],
   )
 
-  // Remove image at given index
   const removeImage = useCallback(
     (index: number) => {
       const urlToRemove = selectedImages[index]
       revokeBlobUrl(urlToRemove)
 
-      setSelectedImages((prev) => prev.filter((_, i) => i !== index))
+      const croppedUrl = croppedImages[index]
+      if (croppedUrl) revokeBlobUrl(croppedUrl)
 
-      // If no images left, go back to upload step
+      setSelectedImages((prev) => prev.filter((_, i) => i !== index))
+      setCroppedImages((prev) => prev.filter((_, i) => i !== index))
+
       if (selectedImages.length === 1) {
         setStep("upload")
         setIsGalleryPanelOpen(false)
       }
     },
+    [selectedImages, croppedImages, revokeBlobUrl],
+  )
+
+  const replaceImage = useCallback(
+    (index: number, newUrl: string) => {
+      const oldUrl = selectedImages[index]
+      revokeBlobUrl(oldUrl)
+      blobUrlsRef.current.add(newUrl)
+      setSelectedImages((prev) => {
+        const updated = [...prev]
+        updated[index] = newUrl
+        return updated
+      })
+    },
     [selectedImages, revokeBlobUrl],
   )
 
-  // Toggle gallery panel
+  const setCroppedImage = useCallback(
+    (index: number, url: string) => {
+      setCroppedImages((prev) => {
+        const oldUrl = prev[index]
+        if (oldUrl) revokeBlobUrl(oldUrl)
+        blobUrlsRef.current.add(url)
+        const updated = [...prev]
+        updated[index] = url
+        return updated
+      })
+    },
+    [revokeBlobUrl],
+  )
+
   const toggleGalleryPanel = useCallback(() => {
     setIsGalleryPanelOpen((prev) => !prev)
   }, [])
 
-  // Go back to upload step
   const goBack = useCallback(() => {
     blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url))
     blobUrlsRef.current.clear()
     setSelectedImages([])
+    setCroppedImages([])
     setStep("upload")
     setIsGalleryPanelOpen(false)
   }, [])
 
   const goNext = useCallback(() => {
-    // TODO: transition to next step (e.g. filters → publish)
+    setStep("filters")
   }, [])
 
-  // Reset all state
+  const goBackToCropping = useCallback(() => {
+    setStep("cropping")
+  }, [])
+
+  const resetCroppedImages = useCallback(() => {
+    croppedImages.forEach((url) => {
+      if (url) revokeBlobUrl(url)
+    })
+    setCroppedImages(croppedImages.map(() => null))
+  }, [croppedImages, revokeBlobUrl])
+
   const reset = useCallback(() => {
     blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url))
     blobUrlsRef.current.clear()
     setSelectedImages([])
+    setCroppedImages([])
     setStep("upload")
     setIsGalleryPanelOpen(false)
   }, [])
@@ -129,13 +167,18 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
   return {
     step,
     selectedImages,
+    croppedImages,
     isGalleryPanelOpen,
     selectFiles,
     addMoreFiles,
     removeImage,
+    replaceImage,
+    setCroppedImage,
     toggleGalleryPanel,
     goBack,
     goNext,
+    goBackToCropping,
+    resetCroppedImages,
     reset,
   }
 }
