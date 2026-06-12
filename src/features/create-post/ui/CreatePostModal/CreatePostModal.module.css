@@ -13,8 +13,8 @@
   border: 1px solid var(--dark-100);
   border-radius: 2px;
   box-shadow:
-    hsl(206deg 22% 7% / 35%) 0 10px 38px -10px,
-    hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
+    rgb(from var(--dark-900) r g b / 35%) 0 10px 38px -10px,
+    rgb(from var(--dark-900) r g b / 20%) 0 10px 20px -15px;
   display: flex;
   flex-direction: column;
   height: 560px;
