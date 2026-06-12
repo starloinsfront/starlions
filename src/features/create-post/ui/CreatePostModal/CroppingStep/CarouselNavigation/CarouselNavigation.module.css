@@ -39,11 +39,14 @@
 
 /* Pagination dots */
 .pagination {
+  background-color: color-mix(in srgb, var(--dark-300) 70%, transparent);
+  border-radius: 2px;
   bottom: 64px;
   display: flex;
   gap: 8px;
   justify-content: center;
   left: 50%;
+  padding: 8px;
   position: absolute;
   transform: translateX(-50%);
   z-index: 2;

@@ -45,7 +45,7 @@ export const CroppingStep = ({
     handleConfirmCrop,
     cropAllImages,
     resetCrop,
-  } = useCropping({ onCropConfirm: (url, index) => onCropImage(index, url) })
+  } = useCropping(activeIndex, selectedImages.length)
 
   const currentImageUrl = selectedImages[activeIndex]
 
@@ -65,10 +65,16 @@ export const CroppingStep = ({
     setIsProcessing(true)
     try {
       // First confirm the active image crop (if one is in progress)
-      await handleConfirmCrop(activeIndex)
+      const currentCropUrl = await handleConfirmCrop()
+
+      // Create updated croppedImages with the current photo's crop result
+      const updatedCroppedImages = [...croppedImages]
+      if (currentCropUrl) {
+        updatedCroppedImages[activeIndex] = currentCropUrl
+      }
 
       // Then batch-crop any remaining uncropped images
-      const results = await cropAllImages(selectedImages, croppedImages)
+      const results = await cropAllImages(selectedImages, updatedCroppedImages)
 
       // Persist all new cropped URLs into parent state
       results.forEach((url, i) => {
@@ -107,7 +113,6 @@ export const CroppingStep = ({
       <div className={styles.imageArea}>
         <ReactCrop
           crop={crop}
-          locked={true}
           onChange={(_, percentCrop) => setCrop(percentCrop)}
           onComplete={handleCropComplete}
           aspect={aspectRatio ?? undefined}
