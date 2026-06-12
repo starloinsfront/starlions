@@ -5,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog"
 import { useCreatePost } from "../../model/useCreatePost"
 import { CroppingStep } from "./CroppingStep"
 import { FiltersStep } from "./FiltersStep"
+import { PublicationStep } from "./PublicationStep"
 import styles from "./CreatePostModal.module.css"
 import type { CreatePostModalProps } from "./CreatePostModal.types"
 import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhoto"
@@ -17,15 +18,18 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
     step,
     selectedImages,
     croppedImages,
+    selectedFilters,
     isGalleryPanelOpen,
     selectFiles,
     addMoreFiles,
     removeImage,
     setCroppedImage,
+    setFilter,
     toggleGalleryPanel,
     goBack,
     goNext,
     goBackToCropping,
+    goBackToFilters,
     resetCroppedImages,
     reset,
   } = useCreatePost()
@@ -51,7 +55,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
         <Dialog.Overlay className={styles.overlay} />
         <Dialog.Content
           aria-describedby={undefined}
-          className={`${styles.modalContent} ${step === "filters" ? styles.modalContentWide : ""}`}
+          className={`${styles.modalContent} ${step === "filters" || step === "publication" ? styles.modalContentWide : ""}`}
           onPointerDownOutside={handleOverlayClick}
         >
           {step === "upload" && (
@@ -80,9 +84,26 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
             <FiltersStep
               selectedImages={selectedImages}
               croppedImages={croppedImages}
+              selectedFilters={selectedFilters}
               onBack={goBackToCropping}
               onNext={goNext}
               onResetCrop={resetCroppedImages}
+              setFilter={setFilter}
+            />
+          )}
+
+          {step === "publication" && selectedImages.length > 0 && (
+            <PublicationStep
+              selectedImages={selectedImages}
+              croppedImages={croppedImages}
+              selectedFilters={selectedFilters}
+              onBack={goBackToFilters}
+              onPublish={(data) => {
+                console.log("Publishing post:", data)
+                // TODO: call api.createPost(data) here
+                reset()
+                onClose()
+              }}
             />
           )}
 

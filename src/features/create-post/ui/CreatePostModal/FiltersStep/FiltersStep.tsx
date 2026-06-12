@@ -3,7 +3,6 @@ import { useCarousel } from "@/common/components/Carousel/useCarousel"
 import { CarouselNavigation } from "../CroppingStep/CarouselNavigation/CarouselNavigation"
 import { FiltersStepHeader } from "./FiltersStepHeader/FiltersStepHeader"
 import { ResetCropDialog } from "./ResetCropDialog/ResetCropDialog"
-import { useFilters } from "./hooks/useFilters"
 import { FILTER_PRESETS } from "./filters"
 import styles from "./FiltersStep.module.css"
 import type { FiltersStepProps } from "./FiltersStep.types"
@@ -11,12 +10,13 @@ import type { FiltersStepProps } from "./FiltersStep.types"
 export const FiltersStep = ({
   selectedImages,
   croppedImages,
+  selectedFilters,
   onBack,
   onNext,
   onResetCrop,
+  setFilter,
 }: FiltersStepProps) => {
   const { activeIndex, goToSlide, showNext, showPrev } = useCarousel(selectedImages.length)
-  const { selectedFilters, selectFilter, getFilterCss } = useFilters(selectedImages.length)
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
 
   /** Check if any photo has been cropped. */
@@ -57,7 +57,13 @@ export const FiltersStep = ({
   )
 
   const currentDisplayImage = preparedPhotos[activeIndex].displayImage
-  const currentFilterCss = getFilterCss(activeIndex)
+
+  /** Resolve the CSS filter string for the current photo. */
+  const currentFilterCss = useMemo(() => {
+    const filterId = selectedFilters[activeIndex]
+    const preset = FILTER_PRESETS.find((f) => f.id === filterId)
+    return preset?.value ?? "none"
+  }, [selectedFilters, activeIndex])
 
   return (
     <div className={styles.step}>
@@ -94,7 +100,7 @@ export const FiltersStep = ({
                   key={filter.id}
                   type="button"
                   className={`${styles.filterItem} ${isSelected ? styles.filterItemSelected : ""}`}
-                  onClick={() => selectFilter(activeIndex, filter.id)}
+                  onClick={() => setFilter(activeIndex, filter.id)}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL cannot be used with next/image */}
                   <img
