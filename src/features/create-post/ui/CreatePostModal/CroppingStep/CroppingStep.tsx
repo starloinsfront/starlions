@@ -9,6 +9,7 @@ import { MiniGallery } from "./MiniGallery/MiniGallery"
 import { CropOptionsPanel } from "./CropOptionsPanel/CropOptionsPanel"
 import { useFileInput } from "@/common/hooks/useFileInput"
 import { useCropping } from "./hooks/useCropping"
+import { useZoom } from "./hooks/useZoom"
 import styles from "./CroppingStep.module.css"
 import type { CroppingStepProps } from "./CroppingStep.types"
 
@@ -46,6 +47,17 @@ export const CroppingStep = ({
     cropAllImages,
     resetCrop,
   } = useCropping(activeIndex, selectedImages.length)
+
+  const {
+    zoomLevel,
+    isSliderVisible,
+    minZoom,
+    maxZoom,
+    zoomStep,
+    toggleSlider,
+    closeSlider,
+    handleZoomChange,
+  } = useZoom(activeIndex)
 
   const currentImageUrl = selectedImages[activeIndex]
 
@@ -111,21 +123,26 @@ export const CroppingStep = ({
       />
 
       <div className={styles.imageArea}>
-        <ReactCrop
-          crop={crop}
-          onChange={(_, percentCrop) => setCrop(percentCrop)}
-          onComplete={handleCropComplete}
-          aspect={aspectRatio ?? undefined}
-          className={styles.cropWrapper}
+        <div
+          className={styles.zoomContainer}
+          style={{ transform: `scale(${zoomLevel})` }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL cannot be used with next/image */}
-          <img
-            src={currentImageUrl}
-            alt={`Photo ${activeIndex + 1} of ${selectedImages.length}`}
-            className={styles.image}
-            onLoad={handleImageLoad}
-          />
-        </ReactCrop>
+          <ReactCrop
+            crop={crop}
+            onChange={(_, percentCrop) => setCrop(percentCrop)}
+            onComplete={handleCropComplete}
+            aspect={aspectRatio ?? undefined}
+            className={styles.cropWrapper}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL cannot be used with next/image */}
+            <img
+              src={currentImageUrl}
+              alt={`Photo ${activeIndex + 1} of ${selectedImages.length}`}
+              className={styles.image}
+              onLoad={handleImageLoad}
+            />
+          </ReactCrop>
+        </div>
 
         <CarouselNavigation
           count={selectedImages.length}
@@ -140,6 +157,14 @@ export const CroppingStep = ({
           isCropOptionsOpen={isCropOptionsOpen}
           onToggleGallery={handleToggleGallery}
           onToggleCropOptions={handleToggleCrop}
+          zoomLevel={zoomLevel}
+          isSliderVisible={isSliderVisible}
+          minZoom={minZoom}
+          maxZoom={maxZoom}
+          zoomStep={zoomStep}
+          onToggleSlider={toggleSlider}
+          onCloseSlider={closeSlider}
+          onZoomChange={handleZoomChange}
         />
 
         {isCropOptionsOpen && (
