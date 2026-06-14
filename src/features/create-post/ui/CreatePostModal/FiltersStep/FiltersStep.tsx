@@ -2,7 +2,7 @@ import { useMemo, useState, useCallback } from "react"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
 import { CarouselNavigation } from "../CroppingStep/CarouselNavigation/CarouselNavigation"
 import { FiltersStepHeader } from "./FiltersStepHeader/FiltersStepHeader"
-import { ResetCropDialog } from "./ResetCropDialog/ResetCropDialog"
+import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import { FILTER_PRESETS } from "./filters"
 import styles from "./FiltersStep.module.css"
 import type { FiltersStepProps } from "./FiltersStep.types"
@@ -39,7 +39,7 @@ export const FiltersStep = ({
     onBack()
   }, [onResetCrop, onBack])
 
-  const handleCancelReset = useCallback(() => {
+  const handleBackKeepCrop = useCallback(() => {
     setIsResetDialogOpen(false)
     onBack()
   }, [onBack])
@@ -117,11 +117,15 @@ export const FiltersStep = ({
         </div>
       </div>
 
-      <ResetCropDialog
+      <ConfirmationModal
         isOpen={isResetDialogOpen}
+        title="Reset crop?"
+        message="Your current crop settings will be lost. Do you want to continue?"
+        discardBtnText="Yes, reset"
+        confirmBtnText="Go back"
+        onDiscard={handleConfirmReset}
+        onConfirm={handleBackKeepCrop}
         onClose={() => setIsResetDialogOpen(false)}
-        onConfirm={handleConfirmReset}
-        onCancel={handleCancelReset}
       />
     </div>
   )
