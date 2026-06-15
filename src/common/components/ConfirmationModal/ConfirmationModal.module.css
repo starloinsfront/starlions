@@ -44,7 +44,7 @@
 
 .discardButton {
   background-color: transparent;
-  border: none;
+  border: 1px solid var(--accent-500);
   color: var(--accent-500);
 }
 
