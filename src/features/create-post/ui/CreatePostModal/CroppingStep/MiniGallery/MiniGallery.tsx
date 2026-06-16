@@ -74,7 +74,7 @@ export const MiniGallery = ({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png"
         multiple
         hidden
         onChange={onFileChange}

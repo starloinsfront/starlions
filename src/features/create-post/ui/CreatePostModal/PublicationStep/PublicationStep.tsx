@@ -1,9 +1,9 @@
-import { useMemo, useState, useCallback } from "react"
+import { useState, useCallback } from "react"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
-import { CarouselNavigation } from "../CroppingStep/CarouselNavigation/CarouselNavigation"
+import { CarouselNavigation } from "../CarouselNavigation/CarouselNavigation"
 import { PublicationStepHeader } from "./PublicationStepHeader/PublicationStepHeader"
 import { usePublication } from "./hooks/usePublication"
-import { FILTER_PRESETS } from "../FiltersStep/filters"
+import { usePhotoDisplay } from "../hooks/usePhotoDisplay"
 import { DescriptionField } from "./DescriptionField/DescriptionField"
 import { LocationField } from "./LocationField/LocationField"
 import styles from "./PublicationStep.module.css"
@@ -27,23 +27,12 @@ export const PublicationStep = ({
   } = usePublication()
 
   const [isPublishing, setIsPublishing] = useState(false)
-
-  const preparedPhotos = useMemo(
-    () =>
-      selectedImages.map((originalUrl, i) => ({
-        displayImage: croppedImages[i] ?? originalUrl,
-      })),
-    [selectedImages, croppedImages],
+  const { currentDisplayImage, currentFilterCss } = usePhotoDisplay(
+    selectedImages,
+    croppedImages,
+    selectedFilters,
+    activeIndex,
   )
-
-  const currentDisplayImage = preparedPhotos[activeIndex]?.displayImage
-
-  /** Resolve the CSS filter string for the current photo. */
-  const currentFilterCss = useMemo(() => {
-    const filterId = selectedFilters[activeIndex]
-    const preset = FILTER_PRESETS.find((f) => f.id === filterId)
-    return preset?.value ?? "none"
-  }, [selectedFilters, activeIndex])
 
   const handlePublishClick = useCallback(() => {
     setIsPublishing(true)
