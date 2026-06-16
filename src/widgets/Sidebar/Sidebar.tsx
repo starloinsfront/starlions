@@ -69,8 +69,8 @@ export const Sidebar = () => {
 
       <CreatePostModal
         isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onOpenDraft={() => {}}
+        onCloseAction={() => setIsCreateModalOpen(false)}
+        onOpenDraftAction={() => {}}
       />
     </aside>
   )

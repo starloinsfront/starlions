@@ -1,9 +1,8 @@
 "use client"
 
-import { useCallback, useRef, useState } from "react"
-import { toast } from "sonner"
 import * as Dialog from "@radix-ui/react-dialog"
 import { useCreatePost } from "../../model/useCreatePost"
+import { useCloseConfirmation } from "./useCloseConfirmation"
 import { CroppingStep } from "./CroppingStep"
 import { FiltersStep } from "./FiltersStep"
 import { PublicationStep } from "./PublicationStep"
@@ -12,18 +11,7 @@ import styles from "./CreatePostModal.module.css"
 import type { CreatePostModalProps } from "./CreatePostModal.types"
 import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhoto"
 
-const CLOSE_CONFIRM_MESSAGE =
-  "Do you really want to close the creation of a publication?\nIf you close everything will be deleted"
-
-export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModalProps) => {
-  const [isCloseDialogOpen, setIsCloseDialogOpen] = useState(false)
-
-  // Timestamp of the last confirmation-dialog close.
-  // Used to suppress the outer DismissableLayer / onOpenChange that fires
-  // for the SAME pointer event after React has already re-rendered with
-  // isCloseDialogOpen=false (race between state update and Radix event).
-  const closedAtRef = useRef(0)
-
+export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: CreatePostModalProps) => {
   const {
     step,
     selectedImages,
@@ -44,52 +32,16 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
     reset,
   } = useCreatePost()
 
-  // Guard: if the confirmation dialog was closed < 200ms ago (same pointer
-  // event), ignore the trigger — it's a stale event from the outer
-  // DismissableLayer, not a genuine user close attempt.
-  const handleCloseAttempt = useCallback(() => {
-    if (Date.now() - closedAtRef.current < 200) return
-    setIsCloseDialogOpen(true)
-  }, [])
-
-  // "Save draft" → close modal and return home (draft API TODO)
-  const handleSaveDraft = useCallback(() => {
-    closedAtRef.current = Date.now()
-    setIsCloseDialogOpen(false)
-    // TODO: call api.saveDraft(data) here
-    toast.success("Draft saved")
-    reset()
-    onClose()
-  }, [onClose, reset])
-
-  // "Discard" → dismiss everything, close modal without saving
-  const handleDiscard = useCallback(() => {
-    closedAtRef.current = Date.now()
-    setIsCloseDialogOpen(false)
-    reset()
-    onClose()
-  }, [onClose, reset])
-
-  // X / overlay on confirmation dialog → dismiss, stay on the form
-  const handleCancelClose = useCallback(() => {
-    closedAtRef.current = Date.now()
-    setIsCloseDialogOpen(false)
-  }, [])
-
-  const handleOverlayClick = useCallback(
-    (event: Event) => {
-      event.preventDefault()
-      handleCloseAttempt()
-    },
-    [handleCloseAttempt],
-  )
-
-  // When the confirmation dialog is open, suppress outside-interaction
-  // handlers on the outer Dialog.Content so clicking the confirmation
-  // overlay or X doesn't re-trigger handleCloseAttempt.
-  const blockOutsideInteraction = useCallback((event: Event) => {
-    event.preventDefault()
-  }, [])
+  const {
+    isCloseDialogOpen,
+    closeConfirmMessage,
+    handleCloseAttempt,
+    handleSaveDraft,
+    handleDiscard,
+    handleCancelClose,
+    handleOverlayClick,
+    blockOutsideInteraction,
+  } = useCloseConfirmation(onCloseAction, reset)
 
   return (
     <>
@@ -107,7 +59,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
             {step === "upload" && (
               <AddPhoto
                 handleCloseAttempt={handleCloseAttempt}
-                onOpenDraft={onOpenDraft}
+                onOpenDraftAction={onOpenDraftAction}
                 selectFiles={selectFiles}
               />
             )}
@@ -148,7 +100,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
                   console.log("Publishing post:", data)
                   // TODO: call api.createPost(data) here
                   reset()
-                  onClose()
+                  onCloseAction()
                 }}
               />
             )}
@@ -163,7 +115,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
       <ConfirmationModal
         isOpen={isCloseDialogOpen}
         title="Close"
-        message={CLOSE_CONFIRM_MESSAGE}
+        message={closeConfirmMessage}
         discardBtnText="Cancel"
         confirmBtnText="Save draft"
         onDiscard={handleDiscard}

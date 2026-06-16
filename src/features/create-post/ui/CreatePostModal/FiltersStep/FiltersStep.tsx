@@ -1,8 +1,9 @@
 import { useMemo, useState, useCallback } from "react"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
-import { CarouselNavigation } from "../CroppingStep/CarouselNavigation/CarouselNavigation"
+import { CarouselNavigation } from "../CarouselNavigation/CarouselNavigation"
 import { FiltersStepHeader } from "./FiltersStepHeader/FiltersStepHeader"
 import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
+import { usePhotoDisplay } from "../hooks/usePhotoDisplay"
 import { FILTER_PRESETS } from "./filters"
 import styles from "./FiltersStep.module.css"
 import type { FiltersStepProps } from "./FiltersStep.types"
@@ -18,6 +19,12 @@ export const FiltersStep = ({
 }: FiltersStepProps) => {
   const { activeIndex, goToSlide, showNext, showPrev } = useCarousel(selectedImages.length)
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
+  const { currentDisplayImage, currentFilterCss } = usePhotoDisplay(
+    selectedImages,
+    croppedImages,
+    selectedFilters,
+    activeIndex,
+  )
 
   /** Check if any photo has been cropped. */
   const hasAnyCroppedImage = useMemo(
@@ -43,27 +50,6 @@ export const FiltersStep = ({
     setIsResetDialogOpen(false)
     onBack()
   }, [onBack])
-
-  /**
-   * Prepare each photo's display image:
-   * croppedImage takes priority; falls back to original if no crop was made.
-   */
-  const preparedPhotos = useMemo(
-    () =>
-      selectedImages.map((originalUrl, i) => ({
-        displayImage: croppedImages[i] ?? originalUrl,
-      })),
-    [selectedImages, croppedImages],
-  )
-
-  const currentDisplayImage = preparedPhotos[activeIndex].displayImage
-
-  /** Resolve the CSS filter string for the current photo. */
-  const currentFilterCss = useMemo(() => {
-    const filterId = selectedFilters[activeIndex]
-    const preset = FILTER_PRESETS.find((f) => f.id === filterId)
-    return preset?.value ?? "none"
-  }, [selectedFilters, activeIndex])
 
   return (
     <div className={styles.step}>

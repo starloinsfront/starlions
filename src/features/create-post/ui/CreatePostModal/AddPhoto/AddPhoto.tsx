@@ -5,14 +5,14 @@ import { UploadStep } from "@/features/create-post/ui/CreatePostModal/UploadStep
 type AddPhotoType = {
   handleCloseAttempt: () => void
   selectFiles: (files: FileList) => void
-  onOpenDraft: () => void
+  onOpenDraftAction: () => void
 }
 
-const AddPhoto = ({ handleCloseAttempt, selectFiles, onOpenDraft }: AddPhotoType) => {
+const AddPhoto = ({ handleCloseAttempt, selectFiles, onOpenDraftAction }: AddPhotoType) => {
   return (
     <>
       <CreatePostHeader title="Add Photo" onCloseClick={handleCloseAttempt} />
-      <UploadStep onSelectFiles={selectFiles} onOpenDraft={onOpenDraft} />
+      <UploadStep onSelectFilesAction={selectFiles} onOpenDraftAction={onOpenDraftAction} />
     </>
   )
 }

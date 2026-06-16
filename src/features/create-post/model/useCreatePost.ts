@@ -1,101 +1,43 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef } from "react"
-import { toast } from "sonner"
+import { useState, useCallback } from "react"
+import { validateFiles } from "./useFileValidation"
+import { useBlobUrls } from "./useBlobUrls"
+import { useStepNavigation } from "./useStepNavigation"
 
-const MAX_FILE_SIZE = 20 * 1024 * 1024 // 20 MB
-const ALLOWED_TYPES = new Set(["image/jpeg", "image/png"])
-const FILE_VALIDATION_MESSAGE =
-  "The photo must be less than 20 Mb and have JPEG or PNG format"
+export type { Step } from "./useStepNavigation"
 
-function validateFiles(files: FileList): boolean {
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i]
-    if (!ALLOWED_TYPES.has(file.type) || file.size > MAX_FILE_SIZE) {
-      toast.error(FILE_VALIDATION_MESSAGE)
-      return false
-    }
-  }
-  return true
-}
+export function useCreatePost() {
+  const { createBlobUrl, revokeBlobUrl, trackBlobUrl, revokeAllBlobUrls } = useBlobUrls()
+  const {
+    step,
+    goBack: navGoBack,
+    goNext,
+    goToCropping,
+    goBackToCropping,
+    goBackToFilters,
+    resetStep,
+  } = useStepNavigation()
 
-export type Step = "upload" | "cropping" | "filters" | "publication"
-
-type CreatePostState = {
-  step: Step
-  selectedImages: string[]
-  /** Cropped version for each photo; null = not yet cropped. */
-  croppedImages: (string | null)[]
-  /** Selected filter ID per photo; null = no filter (uses "normal"). */
-  selectedFilters: (string | null)[]
-  isGalleryPanelOpen: boolean
-}
-
-type CreatePostActions = {
-  selectFiles: (files: FileList) => void
-  addMoreFiles: (files: FileList) => void
-  removeImage: (index: number) => void
-  replaceImage: (index: number, newUrl: string) => void
-  /** Store a cropped result for a specific photo index. */
-  setCroppedImage: (index: number, url: string) => void
-  /** Set a filter for a specific photo index. */
-  setFilter: (index: number, filterId: string) => void
-  toggleGalleryPanel: () => void
-  goBack: () => void
-  /** Navigate from cropping → filters. */
-  goNext: () => void
-  /** Navigate from filters → cropping (preserves croppedImages). */
-  goBackToCropping: () => void
-  /** Navigate from publication → filters. */
-  goBackToFilters: () => void
-  /** Clear all cropped results and revoke their blob URLs. */
-  resetCroppedImages: () => void
-  reset: () => void
-}
-
-export function useCreatePost(): CreatePostState & CreatePostActions {
-  const [step, setStep] = useState<Step>("upload")
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const [croppedImages, setCroppedImages] = useState<(string | null)[]>([])
   const [selectedFilters, setSelectedFilters] = useState<(string | null)[]>([])
   const [isGalleryPanelOpen, setIsGalleryPanelOpen] = useState(false)
 
-  // Single set tracks ALL blob URLs (originals + cropped) for cleanup
-  const blobUrlsRef = useRef<Set<string>>(new Set())
-
-  useEffect(() => {
-    const urls = blobUrlsRef.current
-    return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url))
-    }
-  }, [])
-
-  const createBlobUrl = useCallback((file: File): string => {
-    const url = URL.createObjectURL(file)
-    blobUrlsRef.current.add(url)
-    return url
-  }, [])
-
-  const revokeBlobUrl = useCallback((url: string) => {
-    URL.revokeObjectURL(url)
-    blobUrlsRef.current.delete(url)
-  }, [])
-
   const selectFiles = useCallback(
     (files: FileList) => {
       if (!validateFiles(files)) return
 
-      blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url))
-      blobUrlsRef.current.clear()
+      revokeAllBlobUrls()
 
       const urls = Array.from(files).map(createBlobUrl)
       setSelectedImages(urls)
       setCroppedImages([])
       setSelectedFilters([])
-      setStep("cropping")
+      goToCropping()
       setIsGalleryPanelOpen(false)
     },
-    [createBlobUrl],
+    [createBlobUrl, revokeAllBlobUrls, goToCropping],
   )
 
   const addMoreFiles = useCallback(
@@ -123,25 +65,25 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
       setSelectedFilters((prev) => prev.filter((_, i) => i !== index))
 
       if (selectedImages.length === 1) {
-        setStep("upload")
+        navGoBack()
         setIsGalleryPanelOpen(false)
       }
     },
-    [selectedImages, croppedImages, revokeBlobUrl],
+    [selectedImages, croppedImages, revokeBlobUrl, navGoBack],
   )
 
   const replaceImage = useCallback(
     (index: number, newUrl: string) => {
       const oldUrl = selectedImages[index]
       revokeBlobUrl(oldUrl)
-      blobUrlsRef.current.add(newUrl)
+      trackBlobUrl(newUrl)
       setSelectedImages((prev) => {
         const updated = [...prev]
         updated[index] = newUrl
         return updated
       })
     },
-    [selectedImages, revokeBlobUrl],
+    [selectedImages, revokeBlobUrl, trackBlobUrl],
   )
 
   const setCroppedImage = useCallback(
@@ -149,13 +91,13 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
       setCroppedImages((prev) => {
         const oldUrl = prev[index]
         if (oldUrl) revokeBlobUrl(oldUrl)
-        blobUrlsRef.current.add(url)
+        trackBlobUrl(url)
         const updated = [...prev]
         updated[index] = url
         return updated
       })
     },
-    [revokeBlobUrl],
+    [revokeBlobUrl, trackBlobUrl],
   )
 
   const setFilter = useCallback((index: number, filterId: string) => {
@@ -171,26 +113,13 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
   }, [])
 
   const goBack = useCallback(() => {
-    blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url))
-    blobUrlsRef.current.clear()
+    revokeAllBlobUrls()
     setSelectedImages([])
     setCroppedImages([])
     setSelectedFilters([])
-    setStep("upload")
+    navGoBack()
     setIsGalleryPanelOpen(false)
-  }, [])
-
-  const goNext = useCallback(() => {
-    setStep((prev) => (prev === "cropping" ? "filters" : "publication"))
-  }, [])
-
-  const goBackToCropping = useCallback(() => {
-    setStep("cropping")
-  }, [])
-
-  const goBackToFilters = useCallback(() => {
-    setStep("filters")
-  }, [])
+  }, [revokeAllBlobUrls, navGoBack])
 
   const resetCroppedImages = useCallback(() => {
     croppedImages.forEach((url) => {
@@ -200,14 +129,13 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
   }, [croppedImages, revokeBlobUrl])
 
   const reset = useCallback(() => {
-    blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url))
-    blobUrlsRef.current.clear()
+    revokeAllBlobUrls()
     setSelectedImages([])
     setCroppedImages([])
     setSelectedFilters([])
-    setStep("upload")
+    resetStep()
     setIsGalleryPanelOpen(false)
-  }, [])
+  }, [revokeAllBlobUrls, resetStep])
 
   return {
     step,

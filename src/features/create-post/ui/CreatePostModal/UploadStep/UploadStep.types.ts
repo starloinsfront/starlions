@@ -1,4 +1,4 @@
 export type UploadStepProps = {
-  onSelectFiles: (files: FileList) => void
-  onOpenDraft: () => void
+  onSelectFilesAction: (files: FileList) => void
+  onOpenDraftAction: () => void
 }
