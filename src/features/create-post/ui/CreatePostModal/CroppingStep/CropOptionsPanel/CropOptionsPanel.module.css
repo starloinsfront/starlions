@@ -1,10 +1,10 @@
 /* Floating crop options panel — Instagram-style dark menu */
 .panel {
   backdrop-filter: blur(5px);
-  background-color: rgb(38 38 38 / 70%);
+  background-color: rgb(from var(--dark-500) r g b / 70%);
   border-radius: 8px;
   bottom: 55px;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 40%);
+  box-shadow: 0 4px 12px rgb(from var(--dark-900) r g b / 40%);
   display: flex;
   flex-direction: column;
   left: 10px;
@@ -19,7 +19,7 @@
   appearance: none;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid rgb(255 255 255 / 12%);
+  border-bottom: 1px solid rgb(from var(--light-100) r g b / 12%);
   color: var(--light-100);
   cursor: pointer;
   display: flex;
@@ -37,15 +37,15 @@
 }
 
 .option:hover {
-  background-color: rgb(255 255 255 / 8%);
+  background-color: rgb(from var(--light-100) r g b / 8%);
 }
 
 .optionSelected {
-  background-color: rgb(255 255 255 / 14%);
+  background-color: rgb(from var(--light-100) r g b / 14%);
 }
 
 .optionSelected:hover {
-  background-color: rgb(255 255 255 / 14%);
+  background-color: rgb(from var(--light-100) r g b / 14%);
 }
 
 .label {

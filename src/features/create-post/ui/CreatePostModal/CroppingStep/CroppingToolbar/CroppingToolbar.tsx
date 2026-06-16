@@ -1,4 +1,5 @@
 import { Icon } from "@/common/components/Icon/Icon"
+import { ZoomControl } from "../ZoomControl/ZoomControl"
 import styles from "./CroppingToolbar.module.css"
 
 type CroppingToolbarProps = {
@@ -6,7 +7,14 @@ type CroppingToolbarProps = {
   isCropOptionsOpen: boolean
   onToggleGallery: () => void
   onToggleCropOptions: () => void
-  onZoom?: () => void
+  zoomLevel: number
+  isSliderVisible: boolean
+  minZoom: number
+  maxZoom: number
+  zoomStep: number
+  onToggleSlider: () => void
+  onCloseSlider: () => void
+  onZoomChange: (value: number[]) => void
 }
 
 export const CroppingToolbar = ({
@@ -14,7 +22,14 @@ export const CroppingToolbar = ({
   isCropOptionsOpen,
   onToggleGallery,
   onToggleCropOptions,
-  onZoom,
+  zoomLevel,
+  isSliderVisible,
+  minZoom,
+  maxZoom,
+  zoomStep,
+  onToggleSlider,
+  onCloseSlider,
+  onZoomChange,
 }: CroppingToolbarProps) => {
   return (
     <div className={styles.toolbar}>
@@ -33,9 +48,17 @@ export const CroppingToolbar = ({
             style={isCropOptionsOpen ? { color: "var(--accent-500)" } : undefined}
           />
         </button>
-        <button className={styles.toolButton} type="button" aria-label="Zoom" onClick={onZoom}>
-          <Icon name="maximizeOutline" width={24} height={24} />
-        </button>
+
+        <ZoomControl
+          zoomLevel={zoomLevel}
+          isSliderVisible={isSliderVisible}
+          minZoom={minZoom}
+          maxZoom={maxZoom}
+          zoomStep={zoomStep}
+          onToggleSlider={onToggleSlider}
+          onCloseSlider={onCloseSlider}
+          onZoomChange={onZoomChange}
+        />
       </div>
 
       <button

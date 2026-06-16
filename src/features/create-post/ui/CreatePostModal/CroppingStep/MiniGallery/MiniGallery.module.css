@@ -1,6 +1,6 @@
 /* Mini-gallery preview panel */
 .galleryPanel {
-  background-color: rgb(0 0 0 / 70%);
+  background-color: rgb(from var(--dark-900) r g b / 70%);
   border-radius: 8px;
   bottom: 64px;
   padding: 8px;
@@ -60,7 +60,7 @@
 .thumbnailRemove {
   align-items: center;
   appearance: none;
-  background-color: rgb(0 0 0 / 60%);
+  background-color: rgb(from var(--dark-900) r g b / 60%);
   border: none;
   border-radius: 100%;
   color: var(--light-100);
@@ -84,7 +84,7 @@
 .addButton {
   align-items: center;
   appearance: none;
-  background-color: rgb(0 0 0 / 55%);
+  background-color: rgb(from var(--dark-900) r g b / 55%);
   border: none;
   border-radius: 4px;
   color: var(--light-100);
@@ -100,7 +100,7 @@
 }
 
 .addButton:hover {
-  background-color: rgb(0 0 0 / 75%);
+  background-color: rgb(from var(--dark-900) r g b / 75%);
 }
 
 .addButton:focus-visible {

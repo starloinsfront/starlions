@@ -1,0 +1,81 @@
+/* ─── z-index overrides for stacking above CreatePostModal (1000/1001) ─── */
+.confirmationOverlay {
+  backdrop-filter: blur(4px);
+  z-index: 1002 !important;
+}
+
+.confirmationContent {
+  max-width: 360px !important;
+  z-index: 1003 !important;
+}
+
+/* Remove the default border-bottom from CompoundModal.Header */
+.noBorderHeader {
+  border-bottom: none !important;
+}
+
+/* ─── Message body ─── */
+.message {
+  color: var(--light-900);
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
+  margin: 0 0 24px;
+  white-space: pre-line;
+}
+
+/* ─── Footer with two buttons ─── */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0 4px;
+}
+
+.discardButton,
+.confirmButton {
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-m);
+  padding: 6px 24px;
+  transition: opacity 150ms;
+}
+
+.discardButton {
+  background-color: transparent;
+  border: 1px solid var(--accent-500);
+  color: var(--accent-500);
+}
+
+.discardButton:hover {
+  color: var(--accent-100);
+}
+
+.discardButton:active {
+  color: var(--accent-700);
+}
+
+.discardButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+.confirmButton {
+  background-color: var(--accent-500);
+  border: none;
+  color: var(--light-100);
+}
+
+.confirmButton:hover {
+  background-color: var(--accent-100);
+}
+
+.confirmButton:active {
+  background-color: var(--accent-700);
+}
+
+.confirmButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}

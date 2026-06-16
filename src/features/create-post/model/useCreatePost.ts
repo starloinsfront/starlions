@@ -1,14 +1,33 @@
 "use client"
 
 import { useState, useCallback, useEffect, useRef } from "react"
+import { toast } from "sonner"
 
-export type Step = "upload" | "cropping" | "filters"
+const MAX_FILE_SIZE = 20 * 1024 * 1024 // 20 MB
+const ALLOWED_TYPES = new Set(["image/jpeg", "image/png"])
+const FILE_VALIDATION_MESSAGE =
+  "The photo must be less than 20 Mb and have JPEG or PNG format"
+
+function validateFiles(files: FileList): boolean {
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    if (!ALLOWED_TYPES.has(file.type) || file.size > MAX_FILE_SIZE) {
+      toast.error(FILE_VALIDATION_MESSAGE)
+      return false
+    }
+  }
+  return true
+}
+
+export type Step = "upload" | "cropping" | "filters" | "publication"
 
 type CreatePostState = {
   step: Step
   selectedImages: string[]
   /** Cropped version for each photo; null = not yet cropped. */
   croppedImages: (string | null)[]
+  /** Selected filter ID per photo; null = no filter (uses "normal"). */
+  selectedFilters: (string | null)[]
   isGalleryPanelOpen: boolean
 }
 
@@ -19,12 +38,16 @@ type CreatePostActions = {
   replaceImage: (index: number, newUrl: string) => void
   /** Store a cropped result for a specific photo index. */
   setCroppedImage: (index: number, url: string) => void
+  /** Set a filter for a specific photo index. */
+  setFilter: (index: number, filterId: string) => void
   toggleGalleryPanel: () => void
   goBack: () => void
   /** Navigate from cropping → filters. */
   goNext: () => void
   /** Navigate from filters → cropping (preserves croppedImages). */
   goBackToCropping: () => void
+  /** Navigate from publication → filters. */
+  goBackToFilters: () => void
   /** Clear all cropped results and revoke their blob URLs. */
   resetCroppedImages: () => void
   reset: () => void
@@ -34,6 +57,7 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
   const [step, setStep] = useState<Step>("upload")
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const [croppedImages, setCroppedImages] = useState<(string | null)[]>([])
+  const [selectedFilters, setSelectedFilters] = useState<(string | null)[]>([])
   const [isGalleryPanelOpen, setIsGalleryPanelOpen] = useState(false)
 
   // Single set tracks ALL blob URLs (originals + cropped) for cleanup
@@ -59,12 +83,15 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
 
   const selectFiles = useCallback(
     (files: FileList) => {
+      if (!validateFiles(files)) return
+
       blobUrlsRef.current.forEach((url) => URL.revokeObjectURL(url))
       blobUrlsRef.current.clear()
 
       const urls = Array.from(files).map(createBlobUrl)
       setSelectedImages(urls)
       setCroppedImages([])
+      setSelectedFilters([])
       setStep("cropping")
       setIsGalleryPanelOpen(false)
     },
@@ -73,9 +100,12 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
 
   const addMoreFiles = useCallback(
     (files: FileList) => {
+      if (!validateFiles(files)) return
+
       const newUrls = Array.from(files).map(createBlobUrl)
       setSelectedImages((prev) => [...prev, ...newUrls])
       setCroppedImages((prev) => [...prev, ...newUrls.map(() => null)])
+      setSelectedFilters((prev) => [...prev, ...newUrls.map(() => null)])
     },
     [createBlobUrl],
   )
@@ -90,6 +120,7 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
 
       setSelectedImages((prev) => prev.filter((_, i) => i !== index))
       setCroppedImages((prev) => prev.filter((_, i) => i !== index))
+      setSelectedFilters((prev) => prev.filter((_, i) => i !== index))
 
       if (selectedImages.length === 1) {
         setStep("upload")
@@ -127,6 +158,14 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
     [revokeBlobUrl],
   )
 
+  const setFilter = useCallback((index: number, filterId: string) => {
+    setSelectedFilters((prev) => {
+      const updated = [...prev]
+      updated[index] = filterId
+      return updated
+    })
+  }, [])
+
   const toggleGalleryPanel = useCallback(() => {
     setIsGalleryPanelOpen((prev) => !prev)
   }, [])
@@ -136,16 +175,21 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
     blobUrlsRef.current.clear()
     setSelectedImages([])
     setCroppedImages([])
+    setSelectedFilters([])
     setStep("upload")
     setIsGalleryPanelOpen(false)
   }, [])
 
   const goNext = useCallback(() => {
-    setStep("filters")
+    setStep((prev) => (prev === "cropping" ? "filters" : "publication"))
   }, [])
 
   const goBackToCropping = useCallback(() => {
     setStep("cropping")
+  }, [])
+
+  const goBackToFilters = useCallback(() => {
+    setStep("filters")
   }, [])
 
   const resetCroppedImages = useCallback(() => {
@@ -160,6 +204,7 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
     blobUrlsRef.current.clear()
     setSelectedImages([])
     setCroppedImages([])
+    setSelectedFilters([])
     setStep("upload")
     setIsGalleryPanelOpen(false)
   }, [])
@@ -168,16 +213,19 @@ export function useCreatePost(): CreatePostState & CreatePostActions {
     step,
     selectedImages,
     croppedImages,
+    selectedFilters,
     isGalleryPanelOpen,
     selectFiles,
     addMoreFiles,
     removeImage,
     replaceImage,
     setCroppedImage,
+    setFilter,
     toggleGalleryPanel,
     goBack,
     goNext,
     goBackToCropping,
+    goBackToFilters,
     resetCroppedImages,
     reset,
   }
