@@ -11,7 +11,7 @@ import styles from "./CreatePostModal.module.css"
 import type { CreatePostModalProps } from "./CreatePostModal.types"
 import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhoto"
 
-export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModalProps) => {
+export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: CreatePostModalProps) => {
   const {
     step,
     selectedImages,
@@ -41,7 +41,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
     handleCancelClose,
     handleOverlayClick,
     blockOutsideInteraction,
-  } = useCloseConfirmation(onClose, reset)
+  } = useCloseConfirmation(onCloseAction, reset)
 
   return (
     <>
@@ -59,7 +59,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
             {step === "upload" && (
               <AddPhoto
                 handleCloseAttempt={handleCloseAttempt}
-                onOpenDraft={onOpenDraft}
+                onOpenDraft={onOpenDraftAction}
                 selectFiles={selectFiles}
               />
             )}
@@ -100,7 +100,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
                   console.log("Publishing post:", data)
                   // TODO: call api.createPost(data) here
                   reset()
-                  onClose()
+                  onCloseAction()
                 }}
               />
             )}
