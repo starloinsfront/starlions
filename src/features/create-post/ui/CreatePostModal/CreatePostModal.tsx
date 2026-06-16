@@ -59,7 +59,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
             {step === "upload" && (
               <AddPhoto
                 handleCloseAttempt={handleCloseAttempt}
-                onOpenDraft={onOpenDraftAction}
+                onOpenDraftAction={onOpenDraftAction}
                 selectFiles={selectFiles}
               />
             )}

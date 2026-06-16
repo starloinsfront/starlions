@@ -6,9 +6,9 @@ import { useFileInput } from "@/common/hooks/useFileInput"
 import styles from "./UploadStep.module.css"
 import type { UploadStepProps } from "./UploadStep.types"
 
-export const UploadStep = ({ onSelectFiles, onOpenDraft }: UploadStepProps) => {
+export const UploadStep = ({ onSelectFilesAction, onOpenDraftAction }: UploadStepProps) => {
   const { fileInputRef, triggerFileInput, handleFileChange } = useFileInput({
-    onFilesSelected: onSelectFiles,
+    onFilesSelected: onSelectFilesAction,
   })
 
   return (
@@ -45,7 +45,7 @@ export const UploadStep = ({ onSelectFiles, onOpenDraft }: UploadStepProps) => {
         <Button
           variant="outline"
           fullWidth
-          onClick={onOpenDraft}
+          onClick={onOpenDraftAction}
           type="button"
         >
           Open Draft
