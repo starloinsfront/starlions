@@ -62,11 +62,13 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
     onClose()
   }, [onClose, reset])
 
-  // "Discard" → dismiss dialog, stay on the form
+  // "Discard" → dismiss everything, close modal without saving
   const handleDiscard = useCallback(() => {
     closedAtRef.current = Date.now()
     setIsCloseDialogOpen(false)
-  }, [])
+    reset()
+    onClose()
+  }, [onClose, reset])
 
   // X / overlay on confirmation dialog → dismiss, stay on the form
   const handleCancelClose = useCallback(() => {
@@ -97,9 +99,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
           <Dialog.Content
             aria-describedby={undefined}
             className={`${styles.modalContent} ${step === "filters" || step === "publication" ? styles.modalContentWide : ""}`}
-            onPointerDownOutside={
-              isCloseDialogOpen ? blockOutsideInteraction : handleOverlayClick
-            }
+            onPointerDownOutside={isCloseDialogOpen ? blockOutsideInteraction : handleOverlayClick}
             onFocusOutside={(event: Event) => {
               if (isCloseDialogOpen) event.preventDefault()
             }}
@@ -164,7 +164,7 @@ export const CreatePostModal = ({ isOpen, onClose, onOpenDraft }: CreatePostModa
         isOpen={isCloseDialogOpen}
         title="Close"
         message={CLOSE_CONFIRM_MESSAGE}
-        discardBtnText="Discard"
+        discardBtnText="Cancel"
         confirmBtnText="Save draft"
         onDiscard={handleDiscard}
         onConfirm={handleSaveDraft}
