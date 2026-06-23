@@ -3,10 +3,44 @@ import { handleApiResponse } from "@/common/utils/api/error/handleApiResponse"
 import { getAuthHeaders } from "@/features/auth/api/apiAuth"
 import type {
   SchemaPresignImagesRequestDto,
-  SchemaPresignImagesResponseDto,
   SchemaCreatePostRequestDto,
   SchemaCreatePostResponseDto,
 } from "@/common/api/schema"
+
+type PresignedImageItem = {
+  imageId: string
+  uploadUrl: string
+}
+
+type PresignImagesResponse = {
+  items: PresignedImageItem[]
+}
+
+type LegacyPresignedImageItem = {
+  imageId: string
+  presignedUrl: string
+}
+
+type LegacyPresignImagesResponse = {
+  images: LegacyPresignedImageItem[]
+}
+
+const normalizePresignResponse = (
+  response: PresignImagesResponse | LegacyPresignImagesResponse | undefined,
+): PresignImagesResponse | undefined => {
+  if (!response) return undefined
+
+  if ("items" in response) {
+    return response
+  }
+
+  return {
+    items: response.images.map((item) => ({
+      imageId: item.imageId,
+      uploadUrl: item.presignedUrl,
+    })),
+  }
+}
 
 /**
  * Requests presigned upload URLs for a batch of image files.
@@ -20,10 +54,12 @@ const requestPresignedUrls = async (files: SchemaPresignImagesRequestDto["files"
     headers: getAuthHeaders(),
   })
 
-  return handleApiResponse<SchemaPresignImagesResponseDto, unknown>(
+  const response = handleApiResponse<PresignImagesResponse | LegacyPresignImagesResponse, unknown>(
     result,
     "Failed to get presigned URLs",
   )
+
+  return normalizePresignResponse(response)
 }
 
 /**
