@@ -3,6 +3,7 @@
 import * as Dialog from "@radix-ui/react-dialog"
 import { useCreatePost } from "../../model/useCreatePost"
 import { useCloseConfirmation } from "./useCloseConfirmation"
+import { useCreatePostMutation } from "../../api/useCreatePostMutation"
 import { CroppingStep } from "./CroppingStep"
 import { FiltersStep } from "./FiltersStep"
 import { PublicationStep } from "./PublicationStep"
@@ -15,6 +16,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
   const {
     step,
     selectedImages,
+    originalFiles,
     croppedImages,
     selectedFilters,
     isGalleryPanelOpen,
@@ -31,6 +33,11 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
     resetCroppedImages,
     reset,
   } = useCreatePost()
+
+  const createPost = useCreatePostMutation(() => {
+    reset()
+    onCloseAction()
+  })
 
   const {
     isCloseDialogOpen,
@@ -96,12 +103,15 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
                 croppedImages={croppedImages}
                 selectedFilters={selectedFilters}
                 onBack={goBackToFilters}
-                onPublish={(data) => {
-                  console.log("Publishing post:", data)
-                  // TODO: call api.createPost(data) here
-                  reset()
-                  onCloseAction()
-                }}
+                onPublish={(data) =>
+                  createPost.mutate({
+                    originalFiles,
+                    croppedImages,
+                    description: data.description,
+                    location: data.location,
+                  })
+                }
+                isPublishing={createPost.isPending}
               />
             )}
 

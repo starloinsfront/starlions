@@ -7,6 +7,8 @@ export type PublicationStepProps = {
   selectedFilters: (string | null)[]
   onBack: () => void
   onPublish: (data: PublicationData) => void
+  /** Whether the publish mutation is currently in flight. */
+  isPublishing?: boolean
 }
 
 export type PublicationData = {

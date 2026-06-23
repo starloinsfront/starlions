@@ -20,6 +20,7 @@ export function useCreatePost() {
   } = useStepNavigation()
 
   const [selectedImages, setSelectedImages] = useState<string[]>([])
+  const [originalFiles, setOriginalFiles] = useState<File[]>([])
   const [croppedImages, setCroppedImages] = useState<(string | null)[]>([])
   const [selectedFilters, setSelectedFilters] = useState<(string | null)[]>([])
   const [isGalleryPanelOpen, setIsGalleryPanelOpen] = useState(false)
@@ -32,6 +33,7 @@ export function useCreatePost() {
 
       const urls = Array.from(files).map(createBlobUrl)
       setSelectedImages(urls)
+      setOriginalFiles(Array.from(files))
       setCroppedImages([])
       setSelectedFilters([])
       goToCropping()
@@ -46,6 +48,7 @@ export function useCreatePost() {
 
       const newUrls = Array.from(files).map(createBlobUrl)
       setSelectedImages((prev) => [...prev, ...newUrls])
+      setOriginalFiles((prev) => [...prev, ...Array.from(files)])
       setCroppedImages((prev) => [...prev, ...newUrls.map(() => null)])
       setSelectedFilters((prev) => [...prev, ...newUrls.map(() => null)])
     },
@@ -61,6 +64,7 @@ export function useCreatePost() {
       if (croppedUrl) revokeBlobUrl(croppedUrl)
 
       setSelectedImages((prev) => prev.filter((_, i) => i !== index))
+      setOriginalFiles((prev) => prev.filter((_, i) => i !== index))
       setCroppedImages((prev) => prev.filter((_, i) => i !== index))
       setSelectedFilters((prev) => prev.filter((_, i) => i !== index))
 
@@ -115,6 +119,7 @@ export function useCreatePost() {
   const goBack = useCallback(() => {
     revokeAllBlobUrls()
     setSelectedImages([])
+    setOriginalFiles([])
     setCroppedImages([])
     setSelectedFilters([])
     navGoBack()
@@ -131,6 +136,7 @@ export function useCreatePost() {
   const reset = useCallback(() => {
     revokeAllBlobUrls()
     setSelectedImages([])
+    setOriginalFiles([])
     setCroppedImages([])
     setSelectedFilters([])
     resetStep()
@@ -140,6 +146,7 @@ export function useCreatePost() {
   return {
     step,
     selectedImages,
+    originalFiles,
     croppedImages,
     selectedFilters,
     isGalleryPanelOpen,
