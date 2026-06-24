@@ -305,6 +305,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/posts/images/presign": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Request presigned URLs for image upload */
+        post: operations["PostsController_presignImages"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a new post */
+        post: operations["PostsController_createPost"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -392,6 +426,46 @@ export interface components {
              */
             password: string;
         };
+        ImageFileMetaDto: {
+            /** @description Original file name */
+            fileName: string;
+            /** @description MIME type of the file */
+            contentType: string;
+            /** @description File size in bytes */
+            size: number;
+        };
+        PresignImagesRequestDto: {
+            /** @description Array of file metadata objects (max 10 files) */
+            files: components["schemas"]["ImageFileMetaDto"][];
+        };
+        PresignedImageDto: {
+            /** @description Presigned URL for uploading the image */
+            uploadUrl: string;
+            /** @description Unique image identifier assigned by the server */
+            imageId: string;
+        };
+        PresignImagesResponseDto: {
+            items: components["schemas"]["PresignedImageDto"][];
+        };
+        CreatePostRequestDto: {
+            /** @description Post description text */
+            description: string;
+            /** @description Array of uploaded image IDs */
+            imageIds: string[];
+            /** @description Publication status */
+            status: "DRAFT" | "PUBLISHED";
+            /** @description Location associated with the post */
+            location?: string;
+        };
+        CreatePostResponseDto: {
+            id: string;
+            authorId: string;
+            description: string;
+            status: string;
+            location: string | null;
+            createdAt: string;
+            imageUrls: string[];
+        };
     };
     responses: never;
     parameters: never;
@@ -405,6 +479,12 @@ export type SchemaEmailInputDto = components['schemas']['EmailInputDto'];
 export type SchemaPasswordRecoveryInputDto = components['schemas']['PasswordRecoveryInputDto'];
 export type SchemaNewPasswordInputDto = components['schemas']['NewPasswordInputDto'];
 export type SchemaSignInInputDto = components['schemas']['SignInInputDto'];
+export type SchemaImageFileMetaDto = components['schemas']['ImageFileMetaDto'];
+export type SchemaPresignImagesRequestDto = components['schemas']['PresignImagesRequestDto'];
+export type SchemaPresignedImageDto = components['schemas']['PresignedImageDto'];
+export type SchemaPresignImagesResponseDto = components['schemas']['PresignImagesResponseDto'];
+export type SchemaCreatePostRequestDto = components['schemas']['CreatePostRequestDto'];
+export type SchemaCreatePostResponseDto = components['schemas']['CreatePostResponseDto'];
 export type $defs = Record<string, never>;
 export interface operations {
     AuthController_register: {
@@ -1181,6 +1261,82 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostsController_presignImages: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PresignImagesRequestDto"];
+            };
+        };
+        responses: {
+            /** @description Presigned URLs generated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PresignImagesResponseDto"];
+                };
+            };
+            /** @description Bad request – invalid file metadata */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostsController_createPost: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePostRequestDto"];
+            };
+        };
+        responses: {
+            /** @description Post created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreatePostResponseDto"];
+                };
+            };
+            /** @description Bad request – invalid data */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };

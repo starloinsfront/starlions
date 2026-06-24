@@ -1,4 +1,7 @@
+import type { CreatePostPhoto } from "@/features/create-post/model/createPost.types"
+
 export type CroppingStepProps = {
+  photos: CreatePostPhoto[]
   selectedImages: string[]
   /** Cropped version for each photo; null = not yet cropped. */
   croppedImages: (string | null)[]

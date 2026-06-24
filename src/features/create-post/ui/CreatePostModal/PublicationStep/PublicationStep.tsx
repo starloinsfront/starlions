@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"
+import { useCallback } from "react"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
 import { CarouselNavigation } from "../CarouselNavigation/CarouselNavigation"
 import { PublicationStepHeader } from "./PublicationStepHeader/PublicationStepHeader"
@@ -15,6 +15,7 @@ export const PublicationStep = ({
   selectedFilters,
   onBack,
   onPublish,
+  isPublishing = false,
 }: PublicationStepProps) => {
   const { activeIndex, goToSlide, showNext, showPrev } = useCarousel(selectedImages.length)
   const {
@@ -26,7 +27,6 @@ export const PublicationStep = ({
     selectLocation,
   } = usePublication()
 
-  const [isPublishing, setIsPublishing] = useState(false)
   const { currentDisplayImage, currentFilterCss } = usePhotoDisplay(
     selectedImages,
     croppedImages,
@@ -35,7 +35,6 @@ export const PublicationStep = ({
   )
 
   const handlePublishClick = useCallback(() => {
-    setIsPublishing(true)
     onPublish({ description, location })
   }, [description, location, onPublish])
 

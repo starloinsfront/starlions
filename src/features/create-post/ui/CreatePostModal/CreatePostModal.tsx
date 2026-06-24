@@ -3,6 +3,7 @@
 import * as Dialog from "@radix-ui/react-dialog"
 import { useCreatePost } from "../../model/useCreatePost"
 import { useCloseConfirmation } from "./useCloseConfirmation"
+import { useCreatePostMutation } from "../../api/useCreatePostMutation"
 import { CroppingStep } from "./CroppingStep"
 import { FiltersStep } from "./FiltersStep"
 import { PublicationStep } from "./PublicationStep"
@@ -14,6 +15,7 @@ import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhot
 export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: CreatePostModalProps) => {
   const {
     step,
+    photos,
     selectedImages,
     croppedImages,
     selectedFilters,
@@ -31,6 +33,11 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
     resetCroppedImages,
     reset,
   } = useCreatePost()
+
+  const createPost = useCreatePostMutation(() => {
+    reset()
+    onCloseAction()
+  })
 
   const {
     isCloseDialogOpen,
@@ -66,6 +73,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
 
             {step === "cropping" && selectedImages.length > 0 && (
               <CroppingStep
+                photos={photos}
                 selectedImages={selectedImages}
                 croppedImages={croppedImages}
                 isGalleryPanelOpen={isGalleryPanelOpen}
@@ -96,12 +104,14 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
                 croppedImages={croppedImages}
                 selectedFilters={selectedFilters}
                 onBack={goBackToFilters}
-                onPublish={(data) => {
-                  console.log("Publishing post:", data)
-                  // TODO: call api.createPost(data) here
-                  reset()
-                  onCloseAction()
-                }}
+                onPublish={(data) =>
+                  createPost.mutate({
+                    photos,
+                    description: data.description,
+                    location: data.location,
+                  })
+                }
+                isPublishing={createPost.isPending}
               />
             )}
 
