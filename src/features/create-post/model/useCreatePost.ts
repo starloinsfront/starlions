@@ -1,9 +1,10 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useMemo } from "react"
 import { validateFiles } from "./useFileValidation"
 import { useBlobUrls } from "./useBlobUrls"
 import { useStepNavigation } from "./useStepNavigation"
+import type { CreatePostPhoto } from "./createPost.types"
 
 export type { Step } from "./useStepNavigation"
 
@@ -19,11 +20,23 @@ export function useCreatePost() {
     resetStep,
   } = useStepNavigation()
 
-  const [selectedImages, setSelectedImages] = useState<string[]>([])
-  const [originalFiles, setOriginalFiles] = useState<File[]>([])
-  const [croppedImages, setCroppedImages] = useState<(string | null)[]>([])
-  const [selectedFilters, setSelectedFilters] = useState<(string | null)[]>([])
+  const [photos, setPhotos] = useState<CreatePostPhoto[]>([])
   const [isGalleryPanelOpen, setIsGalleryPanelOpen] = useState(false)
+
+  const selectedImages = useMemo(
+    () => photos.map((photo) => photo.previewUrl),
+    [photos],
+  )
+
+  const croppedImages = useMemo(
+    () => photos.map((photo) => photo.croppedUrl),
+    [photos],
+  )
+
+  const selectedFilters = useMemo(
+    () => photos.map((photo) => photo.filterId),
+    [photos],
+  )
 
   const selectFiles = useCallback(
     (files: FileList) => {
@@ -31,11 +44,15 @@ export function useCreatePost() {
 
       revokeAllBlobUrls()
 
-      const urls = Array.from(files).map(createBlobUrl)
-      setSelectedImages(urls)
-      setOriginalFiles(Array.from(files))
-      setCroppedImages([])
-      setSelectedFilters([])
+      const nextPhotos = Array.from(files).map((file) => ({
+        id: crypto.randomUUID(),
+        file,
+        previewUrl: createBlobUrl(file),
+        croppedUrl: null,
+        filterId: null,
+      }))
+
+      setPhotos(nextPhotos)
       goToCropping()
       setIsGalleryPanelOpen(false)
     },
@@ -46,58 +63,53 @@ export function useCreatePost() {
     (files: FileList) => {
       if (!validateFiles(files)) return
 
-      const newUrls = Array.from(files).map(createBlobUrl)
-      setSelectedImages((prev) => [...prev, ...newUrls])
-      setOriginalFiles((prev) => [...prev, ...Array.from(files)])
-      setCroppedImages((prev) => [...prev, ...newUrls.map(() => null)])
-      setSelectedFilters((prev) => [...prev, ...newUrls.map(() => null)])
+      const nextPhotos = Array.from(files).map((file) => ({
+        id: crypto.randomUUID(),
+        file,
+        previewUrl: createBlobUrl(file),
+        croppedUrl: null,
+        filterId: null,
+      }))
+
+      setPhotos((prev) => [...prev, ...nextPhotos])
     },
     [createBlobUrl],
   )
 
   const removeImage = useCallback(
     (index: number) => {
-      const urlToRemove = selectedImages[index]
-      revokeBlobUrl(urlToRemove)
+      const photoToRemove = photos[index]
+      if (!photoToRemove) return
 
-      const croppedUrl = croppedImages[index]
-      if (croppedUrl) revokeBlobUrl(croppedUrl)
+      revokeBlobUrl(photoToRemove.previewUrl)
+      if (photoToRemove.croppedUrl) {
+        revokeBlobUrl(photoToRemove.croppedUrl)
+      }
 
-      setSelectedImages((prev) => prev.filter((_, i) => i !== index))
-      setOriginalFiles((prev) => prev.filter((_, i) => i !== index))
-      setCroppedImages((prev) => prev.filter((_, i) => i !== index))
-      setSelectedFilters((prev) => prev.filter((_, i) => i !== index))
-
-      if (selectedImages.length === 1) {
+      if (photos.length === 1) {
         navGoBack()
         setIsGalleryPanelOpen(false)
+        return
       }
-    },
-    [selectedImages, croppedImages, revokeBlobUrl, navGoBack],
-  )
 
-  const replaceImage = useCallback(
-    (index: number, newUrl: string) => {
-      const oldUrl = selectedImages[index]
-      revokeBlobUrl(oldUrl)
-      trackBlobUrl(newUrl)
-      setSelectedImages((prev) => {
-        const updated = [...prev]
-        updated[index] = newUrl
-        return updated
-      })
+      setPhotos((prev) => prev.filter((_, i) => i !== index))
     },
-    [selectedImages, revokeBlobUrl, trackBlobUrl],
+    [photos, revokeBlobUrl, navGoBack],
   )
 
   const setCroppedImage = useCallback(
     (index: number, url: string) => {
-      setCroppedImages((prev) => {
-        const oldUrl = prev[index]
-        if (oldUrl) revokeBlobUrl(oldUrl)
+      setPhotos((prev) => {
+        const oldPhoto = prev[index]
+        if (!oldPhoto) return prev
+
+        if (oldPhoto?.croppedUrl) revokeBlobUrl(oldPhoto.croppedUrl)
         trackBlobUrl(url)
         const updated = [...prev]
-        updated[index] = url
+        updated[index] = {
+          ...oldPhoto,
+          croppedUrl: url,
+        }
         return updated
       })
     },
@@ -105,9 +117,14 @@ export function useCreatePost() {
   )
 
   const setFilter = useCallback((index: number, filterId: string) => {
-    setSelectedFilters((prev) => {
+    setPhotos((prev) => {
+      if (!prev[index]) return prev
+
       const updated = [...prev]
-      updated[index] = filterId
+      updated[index] = {
+        ...prev[index],
+        filterId,
+      }
       return updated
     })
   }, [])
@@ -118,42 +135,43 @@ export function useCreatePost() {
 
   const goBack = useCallback(() => {
     revokeAllBlobUrls()
-    setSelectedImages([])
-    setOriginalFiles([])
-    setCroppedImages([])
-    setSelectedFilters([])
+    setPhotos([])
     navGoBack()
     setIsGalleryPanelOpen(false)
   }, [revokeAllBlobUrls, navGoBack])
 
   const resetCroppedImages = useCallback(() => {
-    croppedImages.forEach((url) => {
-      if (url) revokeBlobUrl(url)
-    })
-    setCroppedImages(croppedImages.map(() => null))
-  }, [croppedImages, revokeBlobUrl])
+    setPhotos((prev) =>
+      prev.map((photo) => {
+        if (photo.croppedUrl) {
+          revokeBlobUrl(photo.croppedUrl)
+        }
+
+        return {
+          ...photo,
+          croppedUrl: null,
+        }
+      }),
+    )
+  }, [revokeBlobUrl])
 
   const reset = useCallback(() => {
     revokeAllBlobUrls()
-    setSelectedImages([])
-    setOriginalFiles([])
-    setCroppedImages([])
-    setSelectedFilters([])
+    setPhotos([])
     resetStep()
     setIsGalleryPanelOpen(false)
   }, [revokeAllBlobUrls, resetStep])
 
   return {
     step,
+    photos,
     selectedImages,
-    originalFiles,
     croppedImages,
     selectedFilters,
     isGalleryPanelOpen,
     selectFiles,
     addMoreFiles,
     removeImage,
-    replaceImage,
     setCroppedImage,
     setFilter,
     toggleGalleryPanel,

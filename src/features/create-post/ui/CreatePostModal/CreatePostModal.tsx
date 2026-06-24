@@ -15,8 +15,8 @@ import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhot
 export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: CreatePostModalProps) => {
   const {
     step,
+    photos,
     selectedImages,
-    originalFiles,
     croppedImages,
     selectedFilters,
     isGalleryPanelOpen,
@@ -73,6 +73,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
 
             {step === "cropping" && selectedImages.length > 0 && (
               <CroppingStep
+                photos={photos}
                 selectedImages={selectedImages}
                 croppedImages={croppedImages}
                 isGalleryPanelOpen={isGalleryPanelOpen}
@@ -105,8 +106,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
                 onBack={goBackToFilters}
                 onPublish={(data) =>
                   createPost.mutate({
-                    originalFiles,
-                    croppedImages,
+                    photos,
                     description: data.description,
                     location: data.location,
                   })

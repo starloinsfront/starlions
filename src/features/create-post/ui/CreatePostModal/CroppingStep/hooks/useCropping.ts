@@ -1,15 +1,18 @@
 import { useState, useCallback, useRef, useEffect, type SyntheticEvent } from "react"
 import { type Crop, type PercentCrop } from "react-image-crop"
+import type { CreatePostPhoto } from "@/features/create-post/model/createPost.types"
 import { generateCrop, loadImage, renderCropFromElement } from "./cropUtils"
 
-export const useCropping = (activeIndex: number, photosCount: number) => {
+export const useCropping = (photos: CreatePostPhoto[], activeIndex: number) => {
   const [isCropOptionsOpen, setIsCropOptionsOpen] = useState(false)
   const [aspectRatio, setAspectRatioState] = useState<number | null>(null)
   const [crop, setCropState] = useState<Crop | undefined>(undefined)
 
-  // Per-photo crop storage: one PercentCrop per photo (null = no crop set)
-  const cropsRef = useRef<(PercentCrop | null)[]>(Array(photosCount).fill(null))
+  // Per-photo crop storage keyed by photo id.
+  const cropsRef = useRef<Record<string, PercentCrop | null>>({})
   const imgElementRef = useRef<HTMLImageElement | null>(null)
+  const activePhoto = photos[activeIndex]
+  const activePhotoId = activePhoto?.id
 
   // Derive selectedRatioId from aspectRatio
   const selectedRatioId =
@@ -25,18 +28,18 @@ export const useCropping = (activeIndex: number, photosCount: number) => {
   const setCrop = useCallback(
     (newCrop: Crop | undefined) => {
       setCropState(newCrop)
-      if (newCrop && newCrop.unit === "%") {
-        cropsRef.current[activeIndex] = newCrop as PercentCrop
+      if (newCrop && newCrop.unit === "%" && activePhotoId) {
+        cropsRef.current[activePhotoId] = newCrop as PercentCrop
       }
     },
-    [activeIndex],
+    [activePhotoId],
   )
 
-  // When activeIndex changes, restore the saved crop for the new photo
+  // When the active photo changes, restore its saved crop.
   useEffect(() => {
-    const savedCrop = cropsRef.current[activeIndex]
+    const savedCrop = activePhotoId ? cropsRef.current[activePhotoId] : null
     setCropState(savedCrop ?? undefined)
-  }, [activeIndex])
+  }, [activePhotoId])
 
   // Toggle crop options menu
   const toggleCropOptions = useCallback(() => {
@@ -72,30 +75,32 @@ export const useCropping = (activeIndex: number, photosCount: number) => {
       imgElementRef.current = e.currentTarget
 
       // If this photo already has a saved crop, it will be restored by the
-      // activeIndex useEffect above. Only generate a new crop if:
+      // activePhotoId useEffect above. Only generate a new crop if:
       // 1. No saved crop for this photo AND
       // 2. A fixed ratio is selected
-      const savedCrop = cropsRef.current[activeIndex]
+      const savedCrop = activePhotoId ? cropsRef.current[activePhotoId] : null
       if (!savedCrop && aspectRatio !== null) {
         const { naturalWidth, naturalHeight } = e.currentTarget
         setCrop(generateCrop(naturalWidth, naturalHeight, aspectRatio))
       }
     },
-    [aspectRatio, activeIndex, setCrop],
+    [aspectRatio, activePhotoId, setCrop],
   )
 
   // Handle crop complete — save to per-photo storage
   const handleCropComplete = useCallback(
     (_: Crop, percentCrop: PercentCrop) => {
-      cropsRef.current[activeIndex] = percentCrop
+      if (activePhotoId) {
+        cropsRef.current[activePhotoId] = percentCrop
+      }
     },
-    [activeIndex],
+    [activePhotoId],
   )
 
   // Confirm crop and generate cropped image via Canvas
   // Returns the cropped URL or null if no crop was applied
   const handleConfirmCrop = useCallback(async (): Promise<string | null> => {
-    const percentCrop = cropsRef.current[activeIndex]
+    const percentCrop = activePhotoId ? cropsRef.current[activePhotoId] : null
     const imgElement = imgElementRef.current
     if (!percentCrop || !imgElement) return null
 
@@ -103,12 +108,14 @@ export const useCropping = (activeIndex: number, photosCount: number) => {
     if (!croppedUrl) return null
 
     // Clear this photo's crop state (it's now baked into croppedImages)
-    cropsRef.current[activeIndex] = null
+    if (activePhotoId) {
+      cropsRef.current[activePhotoId] = null
+    }
     setCropState(undefined)
     setIsCropOptionsOpen(false)
 
     return croppedUrl
-  }, [activeIndex])
+  }, [activePhotoId])
 
   /**
    * Batch-crop all photos using the current aspect ratio.
@@ -120,21 +127,22 @@ export const useCropping = (activeIndex: number, photosCount: number) => {
    */
   const cropAllImages = useCallback(
     async (
-      imageUrls: string[],
+      photosToCrop: CreatePostPhoto[],
       existingCropped: (string | null)[],
     ): Promise<(string | null)[]> => {
       const results = [...existingCropped]
 
-      for (let i = 0; i < imageUrls.length; i++) {
+      for (let i = 0; i < photosToCrop.length; i++) {
         if (existingCropped[i]) continue
 
-        const imgElement = await loadImage(imageUrls[i])
+        const photo = photosToCrop[i]
+        const imgElement = await loadImage(photo.previewUrl)
         const { naturalWidth, naturalHeight } = imgElement
 
         // Use saved per-photo crop if exists, otherwise generate centered
-        let percentCrop: PercentCrop = cropsRef.current[i] ?? null as unknown as PercentCrop
+        let percentCrop: PercentCrop = cropsRef.current[photo.id] ?? null as unknown as PercentCrop
 
-        if (!cropsRef.current[i]) {
+        if (!cropsRef.current[photo.id]) {
           if (aspectRatio !== null) {
             percentCrop = generateCrop(naturalWidth, naturalHeight, aspectRatio)
           } else {
@@ -157,7 +165,7 @@ export const useCropping = (activeIndex: number, photosCount: number) => {
     setIsCropOptionsOpen(false)
     setAspectRatioState(null)
     setCropState(undefined)
-    cropsRef.current = cropsRef.current.map(() => null)
+    cropsRef.current = {}
     imgElementRef.current = null
   }, [])
 

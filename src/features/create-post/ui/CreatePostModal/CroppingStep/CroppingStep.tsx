@@ -14,6 +14,7 @@ import styles from "./CroppingStep.module.css"
 import type { CroppingStepProps } from "./CroppingStep.types"
 
 export const CroppingStep = ({
+  photos,
   selectedImages,
   croppedImages,
   isGalleryPanelOpen,
@@ -46,7 +47,7 @@ export const CroppingStep = ({
     handleConfirmCrop,
     cropAllImages,
     resetCrop,
-  } = useCropping(activeIndex, selectedImages.length)
+  } = useCropping(photos, activeIndex)
 
   const {
     zoomLevel,
@@ -86,7 +87,7 @@ export const CroppingStep = ({
       }
 
       // Then batch-crop any remaining uncropped images
-      const results = await cropAllImages(selectedImages, updatedCroppedImages)
+      const results = await cropAllImages(photos, updatedCroppedImages)
 
       // Persist all new cropped URLs into parent state
       results.forEach((url, i) => {
@@ -103,7 +104,7 @@ export const CroppingStep = ({
     handleConfirmCrop,
     cropAllImages,
     activeIndex,
-    selectedImages,
+    photos,
     croppedImages,
     onCropImage,
     onNext,

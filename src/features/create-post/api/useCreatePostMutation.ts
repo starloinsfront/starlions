@@ -3,10 +3,10 @@ import { toast } from "sonner"
 import { postApi } from "./postApi"
 import { blobUrlToFile } from "../model/blobUrlToFile"
 import type { SchemaImageFileMetaDto } from "@/common/api/schema"
+import type { CreatePostPhoto } from "../model/createPost.types"
 
 export type CreatePostVariables = {
-  originalFiles: File[]
-  croppedImages: (string | null)[]
+  photos: CreatePostPhoto[]
   description: string
   location: string
 }
@@ -22,16 +22,16 @@ export type CreatePostVariables = {
 export const useCreatePostMutation = (onSuccess?: () => void) => {
   return useMutation({
     mutationFn: async ({
-      originalFiles,
-      croppedImages,
+      photos,
       description,
       location,
     }: CreatePostVariables) => {
       // Step 1 – resolve final files: use cropped version if available
       const files: File[] = await Promise.all(
-        originalFiles.map((file, i) => {
-          const cropped = croppedImages[i]
-          return cropped ? blobUrlToFile(cropped, file) : Promise.resolve(file)
+        photos.map((photo) => {
+          return photo.croppedUrl
+            ? blobUrlToFile(photo.croppedUrl, photo.file)
+            : Promise.resolve(photo.file)
         }),
       )
 
