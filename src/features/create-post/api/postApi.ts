@@ -2,9 +2,10 @@ import { client } from "@/common/api/client"
 import { handleApiResponse } from "@/common/utils/api/error/handleApiResponse"
 import { getAuthHeaders } from "@/features/auth/api/apiAuth"
 import type {
-  SchemaPresignImagesRequestDto,
-  SchemaCreatePostRequestDto,
-  SchemaCreatePostResponseDto,
+  SchemaPresignFileInputDto,
+  SchemaPresignInputDto,
+  SchemaCreatePostInputDto,
+  SchemaPostViewResponseDto,
 } from "@/common/api/schema"
 
 type PresignedImageItem = {
@@ -48,7 +49,7 @@ const normalizePresignResponse = (
  * The server validates format (JPEG/PNG), size (≤ 20 MB) and count (≤ 10),
  * then returns temporary presigned URLs together with unique image IDs.
  */
-const requestPresignedUrls = async (files: SchemaPresignImagesRequestDto["files"]) => {
+const requestPresignedUrls = async (files: SchemaPresignInputDto["files"]) => {
   const result = await client.POST("/api/v1/posts/images/presign", {
     body: { files },
     headers: getAuthHeaders(),
@@ -85,13 +86,13 @@ const uploadToPresignedUrl = async (presignedUrl: string, file: File) => {
  *
  * The server links the previously uploaded images (by ID) to the new post.
  */
-const createPost = async (data: SchemaCreatePostRequestDto) => {
+const createPost = async (data: SchemaCreatePostInputDto) => {
   const result = await client.POST("/api/v1/posts", {
     body: data,
     headers: getAuthHeaders(),
   })
 
-  return handleApiResponse<SchemaCreatePostResponseDto, unknown>(
+  return handleApiResponse<SchemaPostViewResponseDto, unknown>(
     result,
     "Failed to create post",
   )

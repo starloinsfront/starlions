@@ -1,0 +1,77 @@
+.header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.avatar {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgb(57 125 246 / 85%), rgb(57 125 246 / 20%)), var(--dark-300);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 50%;
+  color: var(--light-100);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 28px;
+  font-weight: var(--font-weight-bold);
+  height: 120px;
+  justify-content: center;
+  width: 120px;
+}
+
+.info {
+  display: grid;
+  flex: 1;
+  gap: 16px;
+  min-width: 240px;
+}
+
+.username {
+  color: var(--light-100);
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.about {
+  display: grid;
+  gap: 6px;
+}
+
+.aboutLabel {
+  color: var(--light-900);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semi-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.aboutText {
+  color: var(--light-700);
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
+  max-width: 52ch;
+}
+
+.settingsButton {
+  justify-self: start;
+}
+
+@media (width <= 640px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .info {
+    justify-items: center;
+  }
+
+  .settingsButton {
+    justify-self: center;
+  }
+}

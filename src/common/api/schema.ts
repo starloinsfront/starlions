@@ -257,6 +257,88 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/posts/images/presign": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Batch presign for image uploads (UC-1)
+         * @description Validates JPEG/PNG, ≤20MB, ≤10 files. Returns presigned upload URLs.
+         */
+        post: operations["PostController_presign"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create post (UC-1)
+         * @description Confirms uploaded images (pending→posts) and creates the post.
+         */
+        post: operations["PostController_createPost"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Post detail view (UC-2/3)
+         * @description Public endpoint. JWT is optional.
+         */
+        get: operations["PostController_getPostById"];
+        put?: never;
+        post?: never;
+        /** Delete post by id */
+        delete: operations["PostController_deletePost"];
+        options?: never;
+        head?: never;
+        /**
+         * Edit post — description only (UC-2)
+         * @description Owner only. Images/order/author are immutable.
+         */
+        patch: operations["PostController_updatePost"];
+        trace?: never;
+    };
+    "/api/v1/posts/user/{userId}/posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get paginated posts of a user */
+        get: operations["PostController_getUserPosts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health/live": {
         parameters: {
             query?: never;
@@ -300,40 +382,6 @@ export interface paths {
         put?: never;
         post?: never;
         delete: operations["TestingController_deleteAll"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/posts/images/presign": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Request presigned URLs for image upload */
-        post: operations["PostsController_presignImages"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/posts": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Create a new post */
-        post: operations["PostsController_createPost"];
-        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -426,45 +474,92 @@ export interface components {
              */
             password: string;
         };
-        ImageFileMetaDto: {
-            /** @description Original file name */
+        PresignFileInputDto: {
+            /**
+             * @description Original file name
+             * @example photo.jpg
+             */
             fileName: string;
-            /** @description MIME type of the file */
-            contentType: string;
-            /** @description File size in bytes */
+            /**
+             * @description MIME type of the file
+             * @example image/jpeg
+             * @enum {string}
+             */
+            contentType: "image/jpeg" | "image/png";
+            /**
+             * @description File size in bytes
+             * @example 204800
+             */
             size: number;
         };
-        PresignImagesRequestDto: {
-            /** @description Array of file metadata objects (max 10 files) */
-            files: components["schemas"]["ImageFileMetaDto"][];
+        PresignInputDto: {
+            /** @description Files to presign (1..10) */
+            files: components["schemas"]["PresignFileInputDto"][];
         };
-        PresignedImageDto: {
-            /** @description Presigned URL for uploading the image */
-            uploadUrl: string;
-            /** @description Unique image identifier assigned by the server */
-            imageId: string;
-        };
-        PresignImagesResponseDto: {
-            items: components["schemas"]["PresignedImageDto"][];
-        };
-        CreatePostRequestDto: {
-            /** @description Post description text */
-            description: string;
-            /** @description Array of uploaded image IDs */
+        CreatePostInputDto: {
+            /**
+             * @description Post description (optional)
+             * @example My first post
+             */
+            description?: string;
+            /**
+             * @description Identifiers of uploaded images (from presign)
+             * @example [
+             *       "3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c"
+             *     ]
+             */
             imageIds: string[];
-            /** @description Publication status */
-            status: "DRAFT" | "PUBLISHED";
-            /** @description Location associated with the post */
-            location?: string;
+            /**
+             * @description Post status (only PUBLISHED is supported for now)
+             * @example PUBLISHED
+             * @enum {string}
+             */
+            status: "PUBLISHED";
         };
-        CreatePostResponseDto: {
-            id: string;
+        AuthorResponseDto: {
+            /**
+             * @description Author identifier (reference to User)
+             * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
+             */
             authorId: string;
-            description: string;
-            status: string;
-            location: string | null;
+            /**
+             * @description Author name (denormalized snapshot at post creation time)
+             * @example john_doe
+             */
+            username: string;
+        };
+        ImageResponseDto: {
+            /**
+             * @description Ready-to-use image URL (CDN)
+             * @example https://cdn.starlions.dev/posts/3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            url: string;
+        };
+        PostViewResponseDto: {
+            /**
+             * @description Post identifier
+             * @example 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
+             */
+            id: string;
+            /**
+             * @description Post description
+             * @example My first post
+             */
+            description: string | null;
+            /**
+             * @description Creation date (ISO 8601)
+             * @example 2026-06-14T09:30:00.000Z
+             */
             createdAt: string;
-            imageUrls: string[];
+            author: components["schemas"]["AuthorResponseDto"];
+            images: components["schemas"]["ImageResponseDto"][];
+        };
+        UpdatePostInputDto: {
+            /**
+             * @description New post description. Empty string clears the description
+             * @example Updated description
+             */
+            description?: string;
         };
     };
     responses: never;
@@ -479,12 +574,13 @@ export type SchemaEmailInputDto = components['schemas']['EmailInputDto'];
 export type SchemaPasswordRecoveryInputDto = components['schemas']['PasswordRecoveryInputDto'];
 export type SchemaNewPasswordInputDto = components['schemas']['NewPasswordInputDto'];
 export type SchemaSignInInputDto = components['schemas']['SignInInputDto'];
-export type SchemaImageFileMetaDto = components['schemas']['ImageFileMetaDto'];
-export type SchemaPresignImagesRequestDto = components['schemas']['PresignImagesRequestDto'];
-export type SchemaPresignedImageDto = components['schemas']['PresignedImageDto'];
-export type SchemaPresignImagesResponseDto = components['schemas']['PresignImagesResponseDto'];
-export type SchemaCreatePostRequestDto = components['schemas']['CreatePostRequestDto'];
-export type SchemaCreatePostResponseDto = components['schemas']['CreatePostResponseDto'];
+export type SchemaPresignFileInputDto = components['schemas']['PresignFileInputDto'];
+export type SchemaPresignInputDto = components['schemas']['PresignInputDto'];
+export type SchemaCreatePostInputDto = components['schemas']['CreatePostInputDto'];
+export type SchemaAuthorResponseDto = components['schemas']['AuthorResponseDto'];
+export type SchemaImageResponseDto = components['schemas']['ImageResponseDto'];
+export type SchemaPostViewResponseDto = components['schemas']['PostViewResponseDto'];
+export type SchemaUpdatePostInputDto = components['schemas']['UpdatePostInputDto'];
 export type $defs = Record<string, never>;
 export interface operations {
     AuthController_register: {
@@ -1015,6 +1111,249 @@ export interface operations {
             };
         };
     };
+    PostController_presign: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PresignInputDto"];
+            };
+        };
+        responses: {
+            /** @description Presigned URLs generated */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid type/size/count */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_createPost: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePostInputDto"];
+            };
+        };
+        responses: {
+            /** @description Post created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostViewResponseDto"];
+                };
+            };
+            /** @description Invalid data / images not uploaded */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_getPostById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: unknown;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Post found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostViewResponseDto"];
+                };
+            };
+            /** @description Post not found / deleted */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_deletePost: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Post has been deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not the author of this post */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Post not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_updatePost: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: unknown;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdatePostInputDto"];
+            };
+        };
+        responses: {
+            /** @description Post updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostViewResponseDto"];
+                };
+            };
+            /** @description Invalid data (e.g. description too long) */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not the post owner */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Post not found / deleted */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_getUserPosts: {
+        parameters: {
+            query?: {
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns paginated list of user posts */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items?: {
+                            /** @example c923e3ec-f555-495c-9975-29bfa5d707fc */
+                            id?: string;
+                            cover?: {
+                                /** @example https://cdn.example.com/image.jpg */
+                                url?: string;
+                            };
+                            /** @example 3 */
+                            imagesCount?: number;
+                        }[];
+                        /** @example eyJpZCI6IjEyMyJ9 */
+                        nextCursor?: string | null;
+                    };
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     HealthController_live: {
         parameters: {
             query?: never;
@@ -1261,82 +1600,6 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    PostsController_presignImages: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PresignImagesRequestDto"];
-            };
-        };
-        responses: {
-            /** @description Presigned URLs generated successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PresignImagesResponseDto"];
-                };
-            };
-            /** @description Bad request – invalid file metadata */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    PostsController_createPost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreatePostRequestDto"];
-            };
-        };
-        responses: {
-            /** @description Post created successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CreatePostResponseDto"];
-                };
-            };
-            /** @description Bad request – invalid data */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized */
-            401: {
                 headers: {
                     [name: string]: unknown;
                 };

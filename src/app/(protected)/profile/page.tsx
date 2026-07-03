@@ -1,18 +1,37 @@
 "use client"
-import s from "../feed/page.module.css"
-import {useMe} from "@/features/auth/api/useMe"
+
+import { Loader } from "@/common/components/Loader/Loader"
+import { useMe } from "@/features/auth/api/useMe"
+import { ProfileHeader } from "@/features/profile/ui/ProfileHeader"
+import { UserPostsGrid } from "@/features/user-posts/ui/UserPostsGrid"
+
+import s from "./page.module.css"
 
 export default function ProfilePage() {
-  const query = useMe()
+  const { data: me, isLoading, isError } = useMe()
+
+  if (isLoading) {
+    return (
+      <section className={s.page}>
+        <div className={s.state}>
+          <Loader />
+        </div>
+      </section>
+    )
+  }
+
+  if (isError || !me?.id) {
+    return (
+      <section className={s.page}>
+        <p className={s.state}>Failed to load profile.</p>
+      </section>
+    )
+  }
+
   return (
     <section className={s.page}>
-      <h1 className={s.title}>My Profile</h1>
-      <p className={s.description}>
-        This protected page is available only for authenticated users and is opened from the sidebar
-        route /profile.
-      </p>
-      <h1>{query.data?.username}</h1>
-      <h1>{query.data?.email}</h1>
+      <ProfileHeader username={me.username} />
+      <UserPostsGrid userId={me.id} />
     </section>
   )
 }

@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { postApi } from "./postApi"
 import { blobUrlToFile } from "../model/blobUrlToFile"
-import type { SchemaImageFileMetaDto } from "@/common/api/schema"
+import type { SchemaPresignFileInputDto } from "@/common/api/schema"
 import type { CreatePostPhoto } from "../model/createPost.types"
 
 export type CreatePostVariables = {
@@ -36,9 +36,9 @@ export const useCreatePostMutation = (onSuccess?: () => void) => {
       )
 
       // Step 2 – request presigned URLs
-      const fileMeta: SchemaImageFileMetaDto[] = files.map((file) => ({
+      const fileMeta: SchemaPresignFileInputDto[] = files.map((file) => ({
         fileName: file.name,
-        contentType: file.type,
+        contentType: file.type as SchemaPresignFileInputDto["contentType"],
         size: file.size,
       }))
 

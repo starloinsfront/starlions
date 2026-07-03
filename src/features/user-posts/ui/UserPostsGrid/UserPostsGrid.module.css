@@ -1,0 +1,42 @@
+.section {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+}
+
+.state {
+  color: var(--light-900);
+  font-size: var(--font-size-m);
+  padding: 32px 0;
+  text-align: center;
+}
+
+.sentinel {
+  height: 1px;
+  width: 100%;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0 32px;
+}
+
+@media (width <= 1279px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 640px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
