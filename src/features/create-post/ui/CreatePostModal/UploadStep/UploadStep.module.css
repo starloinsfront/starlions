@@ -33,3 +33,27 @@
 .hiddenInput {
   display: none;
 }
+
+@media (width < 768px) {
+  .body {
+    gap: 20px;
+    padding: 24px 16px;
+  }
+
+  .uploadPlaceholder {
+    height: min(228px, 50vw);
+    width: min(222px, 48vw);
+  }
+
+  .actions {
+    max-width: 280px;
+    width: 100%;
+  }
+}
+
+@media (width < 480px) {
+  .body {
+    gap: 16px;
+    padding: 20px 12px;
+  }
+}

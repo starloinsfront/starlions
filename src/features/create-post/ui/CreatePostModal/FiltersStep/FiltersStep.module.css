@@ -140,5 +140,38 @@
     border-top: 1px solid var(--dark-100);
     flex: none;
     max-height: 200px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .filterGrid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .filterItem {
+    flex-shrink: 0;
+    width: 80px;
+  }
+
+  .thumbnailImage {
+    height: 64px;
+    width: 64px;
+  }
+}
+
+@media (width < 480px) {
+  .filtersPanel {
+    max-height: 160px;
+  }
+
+  .filterItem {
+    width: 72px;
+  }
+
+  .thumbnailImage {
+    height: 56px;
+    width: 56px;
   }
 }
