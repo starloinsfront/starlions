@@ -57,10 +57,6 @@
   padding: 0;
 }
 
-.publishButton:hover:not(:disabled) {
-  color: var(--accent-100);
-}
-
 .publishButton:disabled {
   color: var(--dark-100);
   cursor: not-allowed;
@@ -69,6 +65,10 @@
 .publishButton:focus-visible {
   outline: 2px solid var(--accent-500);
   outline-offset: 2px;
+}
+
+.publishButton:hover:not(:disabled) {
+  color: var(--accent-100);
 }
 
 .headerImage {

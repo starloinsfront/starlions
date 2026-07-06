@@ -140,8 +140,7 @@
     border-top: 1px solid var(--dark-100);
     flex: none;
     max-height: 200px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: auto hidden;
   }
 
   .filterGrid {
