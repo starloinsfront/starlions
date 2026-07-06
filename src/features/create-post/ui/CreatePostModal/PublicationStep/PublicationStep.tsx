@@ -44,6 +44,7 @@ export const PublicationStep = ({
         onBack={onBack}
         onPublish={handlePublishClick}
         isPublishing={isPublishing}
+        imageSrc={currentDisplayImage}
       />
 
       <div className={styles.content}>
