@@ -73,14 +73,3 @@
 .shapeIconSelected {
   border-color: var(--accent-500);
 }
-
-@media (width < 768px) {
-  .panel {
-    bottom: 60px;
-    left: 8px;
-  }
-
-  .option {
-    padding: 12px 14px;
-  }
-}

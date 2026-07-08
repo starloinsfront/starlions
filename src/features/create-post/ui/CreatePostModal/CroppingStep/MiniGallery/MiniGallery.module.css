@@ -107,22 +107,3 @@
   outline: 2px solid var(--accent-500);
   outline-offset: 2px;
 }
-
-@media (width < 768px) {
-  .galleryPanel {
-    left: 8px;
-    max-width: none;
-    right: 8px;
-  }
-
-  .galleryList {
-    max-width: none;
-  }
-}
-
-@media (width < 480px) {
-  .thumbnail {
-    height: 40px;
-    width: 40px;
-  }
-}
