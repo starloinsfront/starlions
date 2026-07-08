@@ -1,9 +1,10 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { postApi } from "./postApi"
 import { blobUrlToFile } from "../model/blobUrlToFile"
 import type { SchemaPresignFileInputDto } from "@/common/api/schema"
 import type { CreatePostPhoto } from "../model/createPost.types"
+import { USER_POSTS_QUERY_KEY } from "@/features/user-posts/model/constants"
 
 export type CreatePostVariables = {
   photos: CreatePostPhoto[]
@@ -20,6 +21,8 @@ export type CreatePostVariables = {
  * 4. Create the post with the resulting image IDs
  */
 export const useCreatePostMutation = (onSuccess?: () => void) => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async ({
       photos,
@@ -64,6 +67,7 @@ export const useCreatePostMutation = (onSuccess?: () => void) => {
     },
 
     onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: [USER_POSTS_QUERY_KEY] })
       toast.success("Post published successfully!")
       onSuccess?.()
     },
