@@ -10,6 +10,7 @@ import { CropOptionsPanel } from "./CropOptionsPanel/CropOptionsPanel"
 import { useFileInput } from "@/common/hooks/useFileInput"
 import { useCropping } from "./hooks/useCropping"
 import { useZoom } from "./hooks/useZoom"
+import { MAX_PHOTOS } from "@/features/create-post/model/useFileValidation"
 import styles from "./CroppingStep.module.css"
 import type { CroppingStepProps } from "./CroppingStep.types"
 
@@ -61,6 +62,7 @@ export const CroppingStep = ({
   } = useZoom(activeIndex)
 
   const currentImageUrl = selectedImages[activeIndex]
+  const isAtLimit = selectedImages.length >= MAX_PHOTOS
 
   const handleToggleGallery = useCallback(() => {
     closeCropOptions()
@@ -184,6 +186,8 @@ export const CroppingStep = ({
             onAddClick={triggerFileInput}
             fileInputRef={fileInputRef}
             onFileChange={handleFileChange}
+            isAtLimit={isAtLimit}
+            currentCount={selectedImages.length}
           />
         )}
       </div>

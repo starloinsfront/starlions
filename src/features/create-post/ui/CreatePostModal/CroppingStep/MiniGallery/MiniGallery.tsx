@@ -1,5 +1,8 @@
 import type { RefObject } from "react"
+import { useCallback } from "react"
+import { toast } from "sonner"
 import { Icon } from "@/common/components/Icon/Icon"
+import { MAX_PHOTOS } from "@/features/create-post/model/useFileValidation"
 import styles from "./MiniGallery.module.css"
 
 type MiniGalleryProps = {
@@ -10,6 +13,8 @@ type MiniGalleryProps = {
   onAddClick: () => void
   fileInputRef: RefObject<HTMLInputElement | null>
   onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  isAtLimit: boolean
+  currentCount: number
 }
 
 export const MiniGallery = ({
@@ -20,7 +25,17 @@ export const MiniGallery = ({
   onAddClick,
   fileInputRef,
   onFileChange,
+  isAtLimit,
+  currentCount,
 }: MiniGalleryProps) => {
+  const handleAddClick = useCallback(() => {
+    if (isAtLimit) {
+      toast.error(`Maximum ${MAX_PHOTOS} images allowed`)
+      return
+    }
+    onAddClick()
+  }, [isAtLimit, onAddClick])
+
   return (
     <div className={styles.galleryPanel}>
       <div className={styles.galleryList}>
@@ -61,13 +76,18 @@ export const MiniGallery = ({
 
         {/* Add button */}
         <button
-          className={styles.addButton}
+          className={`${styles.addButton} ${isAtLimit ? styles.addButtonDisabled : ""}`}
           type="button"
-          aria-label="Add image"
-          onClick={onAddClick}
+          aria-label={`Add image (maximum ${MAX_PHOTOS})`}
+          onClick={handleAddClick}
         >
           <Icon name="plusCircleOutline" width={24} height={24} />
         </button>
+      </div>
+
+      {/* Count display */}
+      <div className={styles.countDisplay}>
+        {currentCount}/{MAX_PHOTOS}
       </div>
 
       {/* Hidden file input */}

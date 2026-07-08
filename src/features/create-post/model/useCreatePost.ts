@@ -40,7 +40,7 @@ export function useCreatePost() {
 
   const selectFiles = useCallback(
     (files: FileList) => {
-      if (!validateFiles(files)) return
+      if (!validateFiles(files, 0)) return
 
       revokeAllBlobUrls()
 
@@ -61,7 +61,7 @@ export function useCreatePost() {
 
   const addMoreFiles = useCallback(
     (files: FileList) => {
-      if (!validateFiles(files)) return
+      if (!validateFiles(files, photos.length)) return
 
       const nextPhotos = Array.from(files).map((file) => ({
         id: crypto.randomUUID(),
@@ -73,7 +73,7 @@ export function useCreatePost() {
 
       setPhotos((prev) => [...prev, ...nextPhotos])
     },
-    [createBlobUrl],
+    [createBlobUrl, photos.length],
   )
 
   const removeImage = useCallback(

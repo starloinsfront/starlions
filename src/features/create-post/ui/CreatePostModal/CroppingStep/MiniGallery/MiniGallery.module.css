@@ -107,3 +107,19 @@
   outline: 2px solid var(--accent-500);
   outline-offset: 2px;
 }
+
+.addButtonDisabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.addButtonDisabled:hover {
+  background-color: rgb(from var(--dark-900) r g b / 55%);
+}
+
+.countDisplay {
+  color: var(--light-100);
+  font-size: var(--font-size-xs);
+  margin-top: 4px;
+  text-align: center;
+}
