@@ -1,3 +1,4 @@
+import { forwardRef } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
 import styles from "./CropOptionsPanel.module.css"
 
@@ -19,37 +20,45 @@ export const ASPECT_RATIOS: AspectRatioOption[] = [
 type CropOptionsPanelProps = {
   selectedOptionId: string
   onSelect: (option: AspectRatioOption) => void
+  isOpen: boolean
 }
 
-export const CropOptionsPanel = ({ selectedOptionId, onSelect }: CropOptionsPanelProps) => {
-  return (
-    <div className={styles.panel}>
-      {ASPECT_RATIOS.map((option) => {
-        const isSelected = option.id === selectedOptionId
-        return (
-          <button
-            key={option.id}
-            type="button"
-            className={`${styles.option} ${isSelected ? styles.optionSelected : ""}`}
-            onClick={() => onSelect(option)}
-          >
-            <span className={styles.label}>{option.label}</span>
-            {option.shape === null ? (
-              <Icon
-                name="imageOutline"
-                width={24}
-                height={24}
-                className={isSelected ? styles.iconSelected : ""}
-              />
-            ) : (
-              <span
-                className={`${styles.shapeIcon} ${isSelected ? styles.shapeIconSelected : ""}`}
-                style={{ aspectRatio: `${option.shape}` }}
-              />
-            )}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
+export const CropOptionsPanel = forwardRef<HTMLDivElement, CropOptionsPanelProps>(
+  ({ selectedOptionId, onSelect, isOpen }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={`${styles.panel} ${isOpen ? styles.panelOpen : ""}`}
+      >
+        {ASPECT_RATIOS.map((option) => {
+          const isSelected = option.id === selectedOptionId
+          return (
+            <button
+              key={option.id}
+              type="button"
+              className={`${styles.option} ${isSelected ? styles.optionSelected : ""}`}
+              onClick={() => onSelect(option)}
+            >
+              <span className={styles.label}>{option.label}</span>
+              {option.shape === null ? (
+                <Icon
+                  name="imageOutline"
+                  width={24}
+                  height={24}
+                  className={isSelected ? styles.iconSelected : ""}
+                />
+              ) : (
+                <span
+                  className={`${styles.shapeIcon} ${isSelected ? styles.shapeIconSelected : ""}`}
+                  style={{ aspectRatio: `${option.shape}` }}
+                />
+              )}
+            </button>
+          )
+        })}
+      </div>
+    )
+  },
+)
+
+CropOptionsPanel.displayName = "CropOptionsPanel"

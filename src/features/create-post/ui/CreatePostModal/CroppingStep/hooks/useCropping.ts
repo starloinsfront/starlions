@@ -3,8 +3,16 @@ import { type Crop, type PercentCrop } from "react-image-crop"
 import type { CreatePostPhoto } from "@/features/create-post/model/createPost.types"
 import { generateCrop, loadImage, renderCropFromElement } from "./cropUtils"
 
-export const useCropping = (photos: CreatePostPhoto[], activeIndex: number) => {
-  const [isCropOptionsOpen, setIsCropOptionsOpen] = useState(false)
+type UseCroppingProps = {
+  isCropOptionsOpen: boolean
+  closeCropOptions: () => void
+}
+
+export const useCropping = (
+  photos: CreatePostPhoto[],
+  activeIndex: number,
+  { isCropOptionsOpen, closeCropOptions }: UseCroppingProps,
+) => {
   const [aspectRatio, setAspectRatioState] = useState<number | null>(null)
   const [crop, setCropState] = useState<Crop | undefined>(undefined)
 
@@ -41,21 +49,11 @@ export const useCropping = (photos: CreatePostPhoto[], activeIndex: number) => {
     setCropState(savedCrop ?? undefined)
   }, [activePhotoId])
 
-  // Toggle crop options menu
-  const toggleCropOptions = useCallback(() => {
-    setIsCropOptionsOpen((prev) => !prev)
-  }, [])
-
-  // Close crop options (called when gallery opens)
-  const closeCropOptions = useCallback(() => {
-    setIsCropOptionsOpen(false)
-  }, [])
-
   // Set aspect ratio, close menu, and generate crop only for fixed ratios
   const setAspectRatio = useCallback(
     (ratio: number | null) => {
       setAspectRatioState(ratio)
-      setIsCropOptionsOpen(false)
+      closeCropOptions()
 
       if (ratio === null) {
         // "Original" — no crop overlay
@@ -112,10 +110,10 @@ export const useCropping = (photos: CreatePostPhoto[], activeIndex: number) => {
       cropsRef.current[activePhotoId] = null
     }
     setCropState(undefined)
-    setIsCropOptionsOpen(false)
+    closeCropOptions()
 
     return croppedUrl
-  }, [activePhotoId])
+  }, [activePhotoId, closeCropOptions])
 
   /**
    * Batch-crop all photos using the current aspect ratio.
@@ -162,20 +160,17 @@ export const useCropping = (photos: CreatePostPhoto[], activeIndex: number) => {
 
   // Reset all crop state
   const resetCrop = useCallback(() => {
-    setIsCropOptionsOpen(false)
+    closeCropOptions()
     setAspectRatioState(null)
     setCropState(undefined)
     cropsRef.current = {}
     imgElementRef.current = null
-  }, [])
+  }, [closeCropOptions])
 
   return {
-    isCropOptionsOpen,
     aspectRatio,
     crop,
     selectedRatioId,
-    toggleCropOptions,
-    closeCropOptions,
     setAspectRatio,
     setCrop,
     handleImageLoad,
