@@ -1,0 +1,35 @@
+.section {
+  min-width: 0;
+  width: 100%;
+}
+
+.desktopGrid {
+  align-items: start;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  min-width: 0;
+  width: 100%;
+}
+
+.mobileFeed {
+  display: none;
+  min-width: 0;
+  width: 100%;
+}
+
+@media (width <= 1100px) {
+  .desktopGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 768px) {
+  .desktopGrid {
+    display: none;
+  }
+
+  .mobileFeed {
+    display: block;
+  }
+}

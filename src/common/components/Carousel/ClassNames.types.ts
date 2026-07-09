@@ -1,3 +1,5 @@
+import type { MouseEvent } from "react"
+
 export type ClassNames = {
   dot?: string
   dots?: string
@@ -8,34 +10,28 @@ export type ClassNames = {
   slide?: string
 }
 
-type BaseSlide = {
-  id: number | string
-  label: string
+export type CardCarouselSlide = {
+  postId: string
+  src: string
 }
 
-export type CardCarouselSlide = BaseSlide & {
-  background: string
-  href: string
-}
-
-export type DetailCarouselSlide = BaseSlide & {
+export type DetailCarouselSlide = {
   src: string
 }
 
 type SharedProps = {
   classNames: ClassNames
-  slides: Array<CardCarouselSlide | DetailCarouselSlide>
 }
 
 export type CardCarouselProps = SharedProps & {
-  labelClassName: string
+  getHref: (slide: CardCarouselSlide) => string
+  labelClassName?: string
+  onNavigate?: (event: MouseEvent<HTMLAnchorElement>, slide: CardCarouselSlide) => void
   slides: CardCarouselSlide[]
   variant: "card"
 }
 
 export type DetailCarouselProps = SharedProps & {
-  imageClassName: string
-  imageSizes: string
   slides: DetailCarouselSlide[]
   variant: "detail"
 }

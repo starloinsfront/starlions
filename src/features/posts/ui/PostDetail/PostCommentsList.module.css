@@ -1,0 +1,160 @@
+.comments {
+  display: grid;
+  gap: 24px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+.comments::-webkit-scrollbar {
+  width: 8px;
+}
+
+.comments::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.comments::-webkit-scrollbar-thumb {
+  background: var(--dark-100);
+  border-radius: 999px;
+}
+
+.comments::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-500);
+}
+
+.rowGroup {
+  display: grid;
+  gap: 14px;
+}
+
+.descriptionRow,
+.comment {
+  align-items: start;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.withLike {
+  grid-template-columns: auto minmax(0, 1fr) 24px;
+}
+
+.commentBody {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.commentText {
+  color: var(--light-100);
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
+  margin: 0;
+}
+
+.commentText strong {
+  margin-right: 6px;
+}
+
+.timestamp,
+.commentMeta {
+  color: var(--light-900);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-s);
+}
+
+.commentMeta {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.commentMeta button,
+.answersButton,
+.likeButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.commentMeta button,
+.answersButton {
+  color: var(--light-900);
+}
+
+.commentMeta button:hover,
+.answersButton:hover {
+  color: var(--accent-300);
+}
+
+.answersButton {
+  align-items: center;
+  display: inline-flex;
+  font-size: var(--font-size-xs);
+  gap: 12px;
+  justify-self: start;
+  line-height: var(--line-height-s);
+}
+
+.answersButton span {
+  background: var(--light-900);
+  display: inline-block;
+  height: 1px;
+  width: 24px;
+}
+
+.likeButton {
+  color: var(--light-100);
+  display: inline-flex;
+  margin-top: 4px;
+}
+
+.likeButton:hover {
+  color: var(--danger-300);
+}
+
+.likedButton {
+  color: var(--danger-500);
+}
+
+.replies {
+  display: grid;
+  gap: 14px;
+  padding-left: 48px;
+}
+
+.mobile {
+  gap: 20px;
+  overflow: visible;
+  padding: 16px;
+}
+
+.mobile .descriptionRow {
+  border-bottom: 1px solid var(--dark-100);
+  margin: 0 -16px;
+  padding: 0 16px 20px;
+}
+
+.mobile .commentText {
+  line-height: 22px;
+}
+
+@media (width <= 640px) {
+  .comments {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .commentText {
+    font-size: var(--font-size-s);
+    line-height: 22px;
+  }
+
+  .replies {
+    padding-left: 44px;
+  }
+}

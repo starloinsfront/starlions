@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
-import { PostDetail } from "@/common/components/PostDetail/PostDetail"
-import { getPostDetailById } from "@/common/components/PostDetail/PostDetail.data"
+
+import { getPostDetailData } from "@/features/posts/api/postsApi"
+import { PostDetailPage } from "@/features/posts/ui/PostDetail/PostDetailPage"
 
 type Props = {
   params: Promise<{
@@ -10,17 +11,11 @@ type Props = {
 
 export default async function PostPage({ params }: Props) {
   const { id } = await params
-  const postId = Number(id)
-
-  if (!Number.isInteger(postId)) {
-    notFound()
-  }
-
-  const post = getPostDetailById(postId)
+  const post = await getPostDetailData(id)
 
   if (!post) {
     notFound()
   }
 
-  return <PostDetail post={post} />
+  return <PostDetailPage post={post} />
 }
