@@ -1,5 +1,6 @@
 .header {
   align-items: center;
+  background: var(--dark-700);
   border-bottom: 1px solid var(--dark-100);
   display: flex;
   grid-area: header;
@@ -8,12 +9,15 @@
   padding: 0 60px;
   position: sticky;
   top: 0;
+  z-index: 20;
 }
 
 .logo {
   color: var(--light-100);
-  font-size: 32px;
-  font-weight: 700;
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: 1;
+  text-decoration: none;
 }
 
 .inner {
