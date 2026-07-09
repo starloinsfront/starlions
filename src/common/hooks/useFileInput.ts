@@ -1,7 +1,7 @@
 import { useRef, useCallback, ChangeEvent } from "react"
 
 type UseFileInputOptions = {
-  onFilesSelected: (files: FileList) => void
+  onFilesSelected: (files: File[]) => void
 }
 
 export const useFileInput = ({ onFilesSelected }: UseFileInputOptions) => {
@@ -15,7 +15,8 @@ export const useFileInput = ({ onFilesSelected }: UseFileInputOptions) => {
     (event: ChangeEvent<HTMLInputElement>) => {
       const files = event.target.files
       if (files && files.length > 0) {
-        onFilesSelected(files)
+        // Copy to array — FileList is live and clears when input resets
+        onFilesSelected(Array.from(files))
       }
       // Reset input so selecting the same file again triggers onChange
       event.target.value = ""
