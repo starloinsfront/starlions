@@ -11,14 +11,14 @@ type Props = {
   isAuthorized?: boolean
   isOpen: boolean
   likes: PostDetailLike[]
-  onClose: () => void
+  onCloseAction: () => void
 }
 
-export const PostLikesModal = ({ isAuthorized = true, isOpen, likes, onClose }: Props) => {
+export const PostLikesModal = ({ isAuthorized = true, isOpen, likes, onCloseAction }: Props) => {
   const descriptionId = useId()
 
   return (
-    <CompoundModal.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <CompoundModal.Root open={isOpen} onOpenChange={(open) => !open && onCloseAction()}>
       <CompoundModal.Portal>
         <CompoundModal.Overlay className={s.overlay} />
         <CompoundModal.Content

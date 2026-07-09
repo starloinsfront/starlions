@@ -38,9 +38,9 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
         activePanel={mobilePanel}
         isAuthorized={isAuthorized}
         isOwnPost={isOwnPost}
-        onOpenComments={handleOpenComments}
-        onOpenLikes={handleOpenLikes}
-        onResetPanel={handleResetPanel}
+        onOpenCommentsAction={handleOpenComments}
+        onOpenLikesAction={handleOpenLikes}
+        onResetPanelAction={handleResetPanel}
         post={post}
         showAppBar={isModal}
       />
@@ -63,7 +63,7 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
         isAuthorized={isAuthorized}
         isOpen={isLikesModalOpen}
         likes={post.likes}
-        onClose={() => setIsLikesModalOpen(false)}
+        onCloseAction={() => setIsLikesModalOpen(false)}
       />
     </article>
   )
