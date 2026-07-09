@@ -46,7 +46,7 @@ export const PostCard = ({
           canExpand={canExpand}
           description={description}
           isExpanded={isExpanded}
-          onToggle={toggleExpanded}
+          onToggleAction={toggleExpanded}
           previewDescription={previewDescription}
           time={formatRelativeTime(createdAt)}
         />

@@ -11,7 +11,7 @@ type Props = {
   children: ReactNode
   description: string
   isOpen: boolean
-  onClose: () => void
+  onCloseAction: () => void
   reserveBottomNavigation?: boolean
   title: string
 }
@@ -20,7 +20,7 @@ export const PostMobilePanelModal = ({
   children,
   description,
   isOpen,
-  onClose,
+  onCloseAction,
   reserveBottomNavigation = false,
   title,
 }: Props) => {
@@ -30,12 +30,12 @@ export const PostMobilePanelModal = ({
   const overlayClassName = clsx(s.overlay, reserveBottomNavigation && s.overlayWithBottomNavigation)
 
   return (
-    <CompoundModal.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <CompoundModal.Root open={isOpen} onOpenChange={(open) => !open && onCloseAction()}>
       <CompoundModal.Portal>
         <CompoundModal.Overlay className={overlayClassName} />
         <CompoundModal.Content aria-describedby={descriptionId} className={panelClassName} size="lg">
           <CompoundModal.Header className={s.header}>
-            <button aria-label="Back to post" className={s.backButton} onClick={onClose} type="button">
+            <button aria-label="Back to post" className={s.backButton} onClick={onCloseAction} type="button">
               <Icon height={24} name="arrowBackOutline" width={24} />
             </button>
             <CompoundModal.Title className={s.title}>{title}</CompoundModal.Title>

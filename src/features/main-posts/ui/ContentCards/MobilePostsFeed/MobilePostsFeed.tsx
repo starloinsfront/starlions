@@ -156,7 +156,7 @@ export const MobilePostsFeed = ({ posts }: Props) => {
       <PostMobilePanelModal
         description="Post comments."
         isOpen={activePanel?.type === "comments"}
-        onClose={() => setActivePanel(null)}
+        onCloseAction={() => setActivePanel(null)}
         reserveBottomNavigation={isAuthorized}
         title="Comments"
       >
@@ -176,7 +176,7 @@ export const MobilePostsFeed = ({ posts }: Props) => {
       <PostMobilePanelModal
         description="Users who liked this post."
         isOpen={activePanel?.type === "likes"}
-        onClose={() => setActivePanel(null)}
+        onCloseAction={() => setActivePanel(null)}
         reserveBottomNavigation={isAuthorized}
         title="Likes"
       >

@@ -41,7 +41,7 @@
 
 .srOnly {
   border: 0;
-  clip-path: inset(0);
+  clip: rect(0 0 0 0);
   height: 1px;
   margin: -1px;
   overflow: hidden;
@@ -70,27 +70,5 @@
   to {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-@media (width < 992px) {
-  .modalContent {
-    width: min(490px, 95vw);
-  }
-
-  .modalContentWide {
-    width: min(972px, 95vw);
-  }
-}
-
-@media (width < 768px) {
-  .modalContent,
-  .modalContentWide {
-    border-radius: 0;
-    height: 100%;
-    inset: 0;
-    max-height: 100%;
-    transform: none;
-    width: 100%;
   }
 }

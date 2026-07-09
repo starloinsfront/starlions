@@ -9,9 +9,19 @@
   flex-direction: column;
   left: 10px;
   min-width: 156px;
+  opacity: 0;
   overflow: hidden;
+  pointer-events: none;
   position: absolute;
+  transform: translateY(4px);
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
   z-index: 50;
+}
+
+.panelOpen {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .option {
@@ -72,15 +82,4 @@
 
 .shapeIconSelected {
   border-color: var(--accent-500);
-}
-
-@media (width < 768px) {
-  .panel {
-    bottom: 60px;
-    left: 8px;
-  }
-
-  .option {
-    padding: 12px 14px;
-  }
 }

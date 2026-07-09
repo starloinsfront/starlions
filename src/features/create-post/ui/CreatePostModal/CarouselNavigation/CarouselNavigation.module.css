@@ -69,27 +69,3 @@
 .dot[aria-current="true"] {
   background-color: var(--accent-500);
 }
-
-@media (width < 768px) {
-  .navArrow {
-    height: 44px;
-    width: 44px;
-  }
-
-  .navArrowLeft {
-    left: 8px;
-  }
-
-  .navArrowRight {
-    right: 8px;
-  }
-
-  .dot {
-    height: 10px;
-    width: 10px;
-  }
-
-  .pagination {
-    bottom: 48px;
-  }
-}

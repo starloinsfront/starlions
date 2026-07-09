@@ -9,7 +9,7 @@ type Props = {
   canExpand: boolean
   description: string
   isExpanded: boolean
-  onToggle: () => void
+  onToggleAction: () => void
   previewDescription: string
   time: string
 }
@@ -18,7 +18,7 @@ export const PostCardDescription = ({
   canExpand,
   description,
   isExpanded,
-  onToggle,
+  onToggleAction,
   previewDescription,
   time,
 }: Props) => {
@@ -43,7 +43,7 @@ export const PostCardDescription = ({
               <button
                 aria-expanded={isExpanded}
                 className={s.showMore}
-                onClick={onToggle}
+                onClick={onToggleAction}
                 type="button"
               >
                 {toggleLabel}

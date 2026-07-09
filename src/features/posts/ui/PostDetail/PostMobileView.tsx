@@ -18,9 +18,9 @@ type Props = {
   activePanel: MobilePanel
   isAuthorized: boolean
   isOwnPost: boolean
-  onOpenComments: () => void
-  onOpenLikes: () => void
-  onResetPanel: () => void
+  onOpenCommentsAction: () => void
+  onOpenLikesAction: () => void
+  onResetPanelAction: () => void
   post: PostDetailData
   showAppBar?: boolean
 }
@@ -31,9 +31,9 @@ export const PostMobileView = ({
   activePanel,
   isAuthorized,
   isOwnPost,
-  onOpenComments,
-  onOpenLikes,
-  onResetPanel,
+  onOpenCommentsAction,
+  onOpenLikesAction,
+  onResetPanelAction,
   post,
   showAppBar = false,
 }: Props) => {
@@ -64,8 +64,8 @@ export const PostMobileView = ({
             isAuthorized={isAuthorized}
             likes={post.likes}
             likesCount={post.likesCount}
-            onCommentsClick={onOpenComments}
-            onLikesClick={onOpenLikes}
+            onCommentsClick={onOpenCommentsAction}
+            onLikesClick={onOpenLikesAction}
             variant="mobile"
           />
 
@@ -110,7 +110,7 @@ export const PostMobileView = ({
       <PostMobilePanelModal
         description="Post comments."
         isOpen={activePanel === "comments"}
-        onClose={onResetPanel}
+        onCloseAction={onResetPanelAction}
         reserveBottomNavigation={isAuthorized}
         title="Comments"
       >
@@ -128,7 +128,7 @@ export const PostMobileView = ({
       <PostMobilePanelModal
         description="Users who liked this post."
         isOpen={activePanel === "likes"}
-        onClose={onResetPanel}
+        onCloseAction={onResetPanelAction}
         reserveBottomNavigation={isAuthorized}
         title="Likes"
       >

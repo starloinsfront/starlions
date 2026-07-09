@@ -57,6 +57,10 @@
   padding: 0;
 }
 
+.publishButton:hover:not(:disabled) {
+  color: var(--accent-100);
+}
+
 .publishButton:disabled {
   color: var(--dark-100);
   cursor: not-allowed;
@@ -65,38 +69,4 @@
 .publishButton:focus-visible {
   outline: 2px solid var(--accent-500);
   outline-offset: 2px;
-}
-
-.publishButton:hover:not(:disabled) {
-  color: var(--accent-100);
-}
-
-.headerImage {
-  display: none;
-}
-
-@media (width < 768px) {
-  .header {
-    height: auto;
-    min-height: 48px;
-    padding: 8px 12px;
-  }
-
-  .backButton {
-    height: 44px;
-    width: 44px;
-  }
-
-  .headerImage {
-    border-radius: 4px;
-    display: block;
-    flex-shrink: 0;
-    height: 32px;
-    object-fit: cover;
-    width: 32px;
-  }
-
-  .publishButton {
-    padding: 10px 0;
-  }
 }

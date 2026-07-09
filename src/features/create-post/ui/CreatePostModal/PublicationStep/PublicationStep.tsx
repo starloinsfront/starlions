@@ -6,6 +6,7 @@ import { usePublication } from "./hooks/usePublication"
 import { usePhotoDisplay } from "../hooks/usePhotoDisplay"
 import { DescriptionField } from "./DescriptionField/DescriptionField"
 import { LocationField } from "./LocationField/LocationField"
+import { useMe } from "@/features/auth/api/useMe"
 import styles from "./PublicationStep.module.css"
 import type { PublicationStepProps } from "./PublicationStep.types"
 
@@ -17,6 +18,7 @@ export const PublicationStep = ({
   onPublish,
   isPublishing = false,
 }: PublicationStepProps) => {
+  const { data: me } = useMe()
   const { activeIndex, goToSlide, showNext, showPrev } = useCarousel(selectedImages.length)
   const {
     description,
@@ -44,7 +46,6 @@ export const PublicationStep = ({
         onBack={onBack}
         onPublish={handlePublishClick}
         isPublishing={isPublishing}
-        imageSrc={currentDisplayImage}
       />
 
       <div className={styles.content}>
@@ -77,7 +78,7 @@ export const PublicationStep = ({
               alt="User avatar"
               className={styles.avatar}
             />
-            <span className={styles.username}>Username</span>
+            <span className={styles.username}>{me?.username}</span>
           </div>
 
           <DescriptionField
