@@ -1,5 +1,14 @@
-import { Page } from "@/common/components/Page/Page"
+import { getMainPageData } from "@/features/main-posts/api/postsApi"
+import { Main } from "@/widgets/Main/Main"
 
-export default function Home() {
-  return <Page />
+export const revalidate = 60
+
+export default async function Home() {
+  const data = await getMainPageData()
+
+  return (
+    <>
+      <Main data={data} postHrefBase="/" />
+    </>
+  )
 }

@@ -1,17 +1,19 @@
-import { isAuthenticated } from "@/common/utils/isAuth"
-import { AppLayout } from "@/widgets/AppLayout/AppLayout"
-import { ReactNode } from "react"
+import { Suspense, type ReactNode } from "react"
 
-export default async function MainLayout({
-  children,
-}: Readonly<{
+import { PublicAppLayout } from "@/widgets/AppLayout/PublicAppLayout"
+import { PostModalSearchParamsController } from "@/features/posts/ui/PostDetail/PostModalSearchParamsController"
+
+type Props = Readonly<{
   children: ReactNode
-}>) {
-  const isAuth = await isAuthenticated()
+}>
 
+export default function MainLayout({ children }: Props) {
   return (
-    <AppLayout isAuth={isAuth} withSidebar={isAuth} centered={!isAuth}>
+    <PublicAppLayout>
       {children}
-    </AppLayout>
+      <Suspense fallback={null}>
+        <PostModalSearchParamsController />
+      </Suspense>
+    </PublicAppLayout>
   )
 }
