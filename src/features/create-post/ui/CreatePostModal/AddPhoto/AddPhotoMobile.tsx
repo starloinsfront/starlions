@@ -1,7 +1,7 @@
 import React from "react"
 import * as Dialog from "@radix-ui/react-dialog"
 import s from "./AddPhotoMobile.module.css"
-import { Icon } from "@/common/components/Icon/Icon"
+import { AddPhotoMobileHeader } from "./AddPhotoMobileHeader"
 
 type AddPhotoMobileType = {
   open: boolean
@@ -21,23 +21,9 @@ export const AddPhotoMobile = ({ open, handleCloseAttempt }: AddPhotoMobileType)
           onPointerDownOutside={(e) => e.preventDefault()}
         >
           <Dialog.Title className={s.srOnly}>New Publication</Dialog.Title>
-          <div className={s.header}>
-            <button
-              className={s.closeButton}
-              type="button"
-              aria-label="Close"
-              onClick={handleCloseAttempt}
-            >
-              <Icon name="closeOutline" width={24} height={24} />
-            </button>
-            <span className={s.title}>New Publication</span>
-            <button className={s.nextButton} type="button">
-              Next
-            </button>
-          </div>
+          <AddPhotoMobileHeader onClose={handleCloseAttempt} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
   )
 }
-
