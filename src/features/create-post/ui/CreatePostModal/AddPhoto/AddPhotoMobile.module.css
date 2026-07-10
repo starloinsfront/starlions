@@ -7,7 +7,7 @@
   z-index: 1000;
 }
 
-.modalContent {
+.content {
   animation: content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   background-color: var(--dark-300);
   border: 1px solid var(--dark-100);
@@ -17,30 +17,18 @@
     rgb(from var(--dark-900) r g b / 20%) 0 10px 20px -15px;
   display: flex;
   flex-direction: column;
-  height: 560px;
-  left: 50%;
-  max-height: 85vh;
+  height: 100vh;
+  left: 0;
+  max-height: 100vh;
   overflow: hidden;
   position: fixed;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 490px;
+  top: 0;
+  width: 100vw;
   z-index: 1001;
 }
 
-/* Wider modal for the filters step (two-column layout) */
-
-.modalContentWide {
-  max-width: 95vw;
-  width: 972px;
-}
-
-.modalContent:focus {
+.content:focus {
   outline: none;
-}
-
-.hidden {
-  display: none;
 }
 
 .srOnly {
@@ -68,11 +56,11 @@
 @keyframes content-show {
   from {
     opacity: 0;
-    transform: translate(-50%, -48%) scale(0.96);
+    transform: translateY(8px);
   }
 
   to {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateY(0);
   }
 }
