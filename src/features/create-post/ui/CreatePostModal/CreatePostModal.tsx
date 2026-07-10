@@ -11,7 +11,7 @@ import { ConfirmationModal } from "@/common/components/ConfirmationModal/Confirm
 import styles from "./CreatePostModal.module.css"
 import type { CreatePostModalProps } from "./CreatePostModal.types"
 import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhoto"
-import { AddPhotoMobile } from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhotoMobile"
+import { AddPhotoMobile } from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhotoMobile/AddPhotoMobile"
 import { useMediaQuery } from "@/common/hooks/useMediaQuery"
 
 export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: CreatePostModalProps) => {
@@ -127,6 +127,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
       <AddPhotoMobile
         open={isOpen && step === "upload" && isMobile}
         handleCloseAttempt={handleCloseAttempt}
+        photos={photos}
         selectFiles={selectFiles}
         onOpenDraftAction={onOpenDraftAction}
       />
