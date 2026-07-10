@@ -1,14 +1,12 @@
 import React from "react"
 import * as Dialog from "@radix-ui/react-dialog"
+import { Icon } from "@/common/components/Icon/Icon"
+import { UploadStep } from "@/features/create-post/ui/CreatePostModal/UploadStep"
 import s from "./AddPhotoMobile.module.css"
-import { AddPhotoMobileHeader } from "./AddPhotoMobileHeader/AddPhotoMobileHeader"
-import { AddPhotoMobileGallery } from "./AddPhotoMobileGallery/AddPhotoMobileGallery"
-import type { CreatePostPhoto } from "@/features/create-post/model/createPost.types"
 
 type AddPhotoMobileType = {
   open: boolean
   handleCloseAttempt: () => void
-  photos: CreatePostPhoto[]
   selectFiles: (files: File[]) => void
   onOpenDraftAction: () => void
 }
@@ -16,8 +14,8 @@ type AddPhotoMobileType = {
 export const AddPhotoMobile = ({
   open,
   handleCloseAttempt,
-  photos,
   selectFiles,
+  onOpenDraftAction,
 }: AddPhotoMobileType) => {
   return (
     <Dialog.Root open={open} onOpenChange={(isOpen) => !isOpen && handleCloseAttempt()}>
@@ -28,9 +26,19 @@ export const AddPhotoMobile = ({
           className={s.content}
           onPointerDownOutside={(e) => e.preventDefault()}
         >
-          <Dialog.Title className={s.srOnly}>New Publication</Dialog.Title>
-          <AddPhotoMobileHeader onClose={handleCloseAttempt} />
-          <AddPhotoMobileGallery photos={photos} onSelectFiles={selectFiles} />
+          <Dialog.Title className={s.srOnly}>Add Photo</Dialog.Title>
+          <div className={s.header}>
+            <span className={s.title}>Add Photo</span>
+            <button
+              className={s.closeButton}
+              type="button"
+              aria-label="Close"
+              onClick={handleCloseAttempt}
+            >
+              <Icon name="closeOutline" width={24} height={24} />
+            </button>
+          </div>
+          <UploadStep onSelectFilesAction={selectFiles} onOpenDraftAction={onOpenDraftAction} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
