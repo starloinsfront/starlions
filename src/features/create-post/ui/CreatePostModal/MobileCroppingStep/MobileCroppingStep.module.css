@@ -12,4 +12,39 @@
   flex-direction: column;
   overflow: hidden;
   padding-left: 15px;
+  position: relative;
+}
+
+.toolbar {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  padding: 8px 16px;
+}
+
+.toolbarButton {
+  align-items: center;
+  all: unset;
+  background-color: transparent;
+  border-radius: 4px;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.toolbarButton:hover {
+  background-color: var(--dark-500);
+}
+
+.toolbarButtonActive {
+  color: var(--accent-500);
+}
+
+.toolbarButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
 }
