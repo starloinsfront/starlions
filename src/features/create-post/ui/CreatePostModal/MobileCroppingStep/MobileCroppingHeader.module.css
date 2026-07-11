@@ -1,0 +1,68 @@
+.header {
+  align-items: center;
+  background-color: var(--dark-700);
+  border-bottom: 1px solid var(--dark-500);
+  box-sizing: border-box;
+  display: flex;
+  height: 48px;
+  justify-content: space-between;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.backButton {
+  align-items: center;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 100%;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 24px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 24px;
+}
+
+.backButton:hover {
+  background-color: var(--dark-100);
+}
+
+.backButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+.title {
+  color: var(--light-100);
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-m);
+  margin: 0;
+}
+
+.nextButton {
+  appearance: none;
+  background: none;
+  border: none;
+  color: var(--accent-500);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-m);
+  margin: 0;
+  padding: 0;
+}
+
+.nextButton:hover {
+  color: var(--accent-100);
+}
+
+.nextButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}

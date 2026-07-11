@@ -1,0 +1,15 @@
+.step {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content {
+  background-color: var(--dark-700);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  padding-left: 15px;
+}

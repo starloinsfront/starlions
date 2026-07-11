@@ -1,0 +1,53 @@
+.slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 16px 0;
+  scrollbar-width: none;
+}
+
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
+.filterNode {
+  align-items: center;
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.filterNode:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+.previewBox {
+  border-radius: 4px;
+  display: block;
+  height: 100px;
+  overflow: hidden;
+  width: 100px;
+}
+
+.previewImage {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.filterLabel {
+  color: var(--light-300);
+  font-size: var(--font-size-m);
+  line-height: var(--line-height-m);
+  text-align: center;
+}
+
+.filterLabelActive {
+  color: var(--light-100);
+  font-weight: var(--font-weight-semi-bold);
+}

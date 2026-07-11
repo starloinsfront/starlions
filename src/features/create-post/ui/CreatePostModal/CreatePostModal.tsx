@@ -5,6 +5,7 @@ import { useCreatePost } from "../../model/useCreatePost"
 import { useCloseConfirmation } from "./useCloseConfirmation"
 import { useCreatePostMutation } from "../../api/useCreatePostMutation"
 import { CroppingStep } from "./CroppingStep"
+import { MobileCroppingStep } from "./MobileCroppingStep/MobileCroppingStep"
 import { FiltersStep } from "./FiltersStep"
 import { PublicationStep } from "./PublicationStep"
 import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
@@ -60,7 +61,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
           {!hideMainDialog && <Dialog.Overlay className={styles.overlay} />}
           <Dialog.Content
             aria-describedby={undefined}
-            className={`${styles.modalContent} ${step === "filters" || step === "publication" ? styles.modalContentWide : ""} ${hideMainDialog ? styles.hidden : ""}`}
+            className={`${styles.modalContent} ${step === "filters" || step === "publication" ? styles.modalContentWide : ""} ${hideMainDialog ? styles.hidden : ""} ${isMobile && step !== "upload" ? styles.modalContentMobile : ""}`}
             onPointerDownOutside={isCloseDialogOpen ? blockOutsideInteraction : handleOverlayClick}
             onFocusOutside={(event: Event) => {
               if (isCloseDialogOpen) event.preventDefault()
@@ -75,7 +76,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
               />
             )}
 
-            {step === "cropping" && selectedImages.length > 0 && (
+            {step === "cropping" && selectedImages.length > 0 && !isMobile && (
               <CroppingStep
                 photos={photos}
                 selectedImages={selectedImages}
@@ -85,6 +86,16 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
                 onCropImage={setCroppedImage}
                 onAddMoreFiles={addMoreFiles}
                 onRemoveImage={removeImage}
+              />
+            )}
+
+            {step === "cropping" && selectedImages.length > 0 && isMobile && (
+              <MobileCroppingStep
+                selectedImages={selectedImages}
+                selectedFilters={selectedFilters}
+                onBack={goBack}
+                onNext={goNext}
+                setFilter={setFilter}
               />
             )}
 

@@ -43,6 +43,15 @@
   display: none;
 }
 
+.modalContentMobile {
+  height: calc(100vh - 60px);
+  left: 0;
+  max-height: calc(100vh - 60px);
+  top: 60px;
+  transform: none;
+  width: 100vw;
+}
+
 .srOnly {
   border: 0;
   clip: rect(0 0 0 0);
