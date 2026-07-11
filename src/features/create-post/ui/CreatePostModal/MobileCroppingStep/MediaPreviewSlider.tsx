@@ -1,16 +1,21 @@
 import { useRef, useCallback } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
+import { FILTER_PRESETS } from "../FiltersStep/filters"
 import s from "./MediaPreviewSlider.module.css"
 
 type MediaPreviewSliderProps = {
   images: string[]
+  filters?: (string | null)[]
   filterCss?: string
+  aspectRatio?: number | null
   onSlideChange: (index: number) => void
 }
 
 export const MediaPreviewSlider = ({
   images,
+  filters,
   filterCss = "none",
+  aspectRatio = null,
   onSlideChange,
 }: MediaPreviewSliderProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -27,6 +32,12 @@ export const MediaPreviewSlider = ({
 
   const isSingle = images.length === 1
 
+  const getFilterCss = (filterId: string | null | undefined) => {
+    if (!filterId || filterId === "normal") return "none"
+
+    return FILTER_PRESETS.find((filter) => filter.id === filterId)?.value ?? "none"
+  }
+
   return (
     <div
       ref={containerRef}
@@ -35,13 +46,19 @@ export const MediaPreviewSlider = ({
     >
       {images.map((url, index) => (
         <div key={url} className={`${s.slide} ${isSingle ? s.slideSingle : ""}`}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- blob URL */}
-          <img
-            src={url}
-            alt={`Photo ${index + 1}`}
-            className={s.slideImage}
-            style={{ filter: filterCss }}
-          />
+          {/** Use per-photo filter when available; fall back to a shared filter for older callers. */}
+          <div
+            className={s.cropBox}
+            style={aspectRatio ? { aspectRatio: `${aspectRatio} / 1` } : undefined}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element -- blob URL */}
+            <img
+              src={url}
+              alt={`Photo ${index + 1}`}
+              className={s.slideImage}
+              style={{ filter: filters ? getFilterCss(filters[index]) : filterCss }}
+            />
+          </div>
           <button
             className={s.paletteButton}
             type="button"

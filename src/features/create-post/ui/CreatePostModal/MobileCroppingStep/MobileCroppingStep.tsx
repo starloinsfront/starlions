@@ -2,6 +2,7 @@ import { useMemo, useState } from "react"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
 import { useFileInput } from "@/common/hooks/useFileInput"
 import { useFloatingPanels } from "../CroppingStep/hooks/useFloatingPanels"
+import { ASPECT_RATIOS } from "../CroppingStep/CropOptionsPanel/CropOptionsPanel"
 import { FILTER_PRESETS } from "../FiltersStep/filters"
 import { MAX_PHOTOS } from "@/features/create-post/model/useFileValidation"
 import { CropOptionsPanel } from "../CroppingStep/CropOptionsPanel/CropOptionsPanel"
@@ -11,12 +12,9 @@ import { MediaPreviewSlider } from "./MediaPreviewSlider"
 import { FilterSelectorSlider } from "./FilterSelectorSlider"
 import { Icon } from "@/common/components/Icon/Icon"
 import s from "./MobileCroppingStep.module.css"
-import type { CreatePostPhoto } from "@/features/create-post/model/createPost.types"
 
 type MobileCroppingStepProps = {
-  photos: CreatePostPhoto[]
   selectedImages: string[]
-  croppedImages: (string | null)[]
   selectedFilters: (string | null)[]
   onBack: () => void
   onNext: () => void
@@ -26,7 +24,6 @@ type MobileCroppingStepProps = {
 }
 
 export const MobileCroppingStep = ({
-  photos,
   selectedImages,
   selectedFilters,
   onBack,
@@ -53,10 +50,10 @@ export const MobileCroppingStep = ({
   const currentImage = selectedImages[activeIndex]
   const isAtLimit = selectedImages.length >= MAX_PHOTOS
 
-  const filterCss = useMemo(() => {
-    const preset = FILTER_PRESETS.find((f) => f.id === activeFilterId)
-    return preset?.value ?? "none"
-  }, [activeFilterId])
+  const aspectRatio = useMemo(() => {
+    const option = ASPECT_RATIOS.find((r) => r.id === selectedRatioId)
+    return option?.value ?? null
+  }, [selectedRatioId])
 
   return (
     <div className={s.step}>
@@ -65,7 +62,8 @@ export const MobileCroppingStep = ({
       <div className={s.content}>
         <MediaPreviewSlider
           images={selectedImages}
-          filterCss={filterCss}
+          filters={selectedFilters}
+          aspectRatio={aspectRatio}
           onSlideChange={goToSlide}
         />
 

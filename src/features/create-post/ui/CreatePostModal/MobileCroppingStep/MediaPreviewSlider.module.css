@@ -30,6 +30,12 @@
   width: 250px;
 }
 
+.cropBox {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
 .slideImage {
   display: block;
   height: 100%;
