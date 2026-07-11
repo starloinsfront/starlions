@@ -1,6 +1,7 @@
 .slider {
   display: flex;
   gap: 8px;
+  height: 100%;
   overflow-x: auto;
   padding: 15px 16px 0;
   scroll-snap-type: x mandatory;
@@ -19,7 +20,7 @@
 .slide {
   border-radius: 4px;
   flex: 0 0 250px;
-  height: 320px;
+  height: 100%;
   overflow: hidden;
   position: relative;
   scroll-snap-align: start;

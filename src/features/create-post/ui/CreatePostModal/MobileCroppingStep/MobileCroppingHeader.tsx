@@ -4,9 +4,10 @@ import s from "./MobileCroppingHeader.module.css"
 type MobileCroppingHeaderProps = {
   onBack: () => void
   onNext: () => void
+  isNextDisabled?: boolean
 }
 
-export const MobileCroppingHeader = ({ onBack, onNext }: MobileCroppingHeaderProps) => {
+export const MobileCroppingHeader = ({ onBack, onNext, isNextDisabled }: MobileCroppingHeaderProps) => {
   return (
     <div className={s.header}>
       <button
@@ -17,8 +18,13 @@ export const MobileCroppingHeader = ({ onBack, onNext }: MobileCroppingHeaderPro
       >
         <Icon name="arrowBackOutline" width={24} height={24} />
       </button>
-      <span className={s.title}>New Publication</span>
-      <button className={s.nextButton} type="button" onClick={onNext}>
+      <span className={s.title}>Cropping</span>
+      <button
+        className={s.nextButton}
+        type="button"
+        onClick={onNext}
+        disabled={isNextDisabled}
+      >
         Next
       </button>
     </div>

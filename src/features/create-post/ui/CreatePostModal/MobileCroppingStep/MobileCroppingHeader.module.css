@@ -62,6 +62,11 @@
   color: var(--accent-100);
 }
 
+.nextButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .nextButton:focus-visible {
   outline: 2px solid var(--accent-500);
   outline-offset: 2px;
