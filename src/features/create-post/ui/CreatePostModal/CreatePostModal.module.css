@@ -7,6 +7,10 @@
   z-index: 1000;
 }
 
+.overlayMobile {
+  top: 60px;
+}
+
 .modalContent {
   animation: content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   background-color: var(--dark-300);

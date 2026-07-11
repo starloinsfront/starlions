@@ -4,12 +4,13 @@ import s from "./MediaPreviewSlider.module.css"
 
 type MediaPreviewSliderProps = {
   images: string[]
-  activeIndex?: number;
+  filterCss?: string
   onSlideChange: (index: number) => void
 }
 
 export const MediaPreviewSlider = ({
   images,
+  filterCss = "none",
   onSlideChange,
 }: MediaPreviewSliderProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -39,6 +40,7 @@ export const MediaPreviewSlider = ({
             src={url}
             alt={`Photo ${index + 1}`}
             className={s.slideImage}
+            style={{ filter: filterCss }}
           />
           <button
             className={s.paletteButton}

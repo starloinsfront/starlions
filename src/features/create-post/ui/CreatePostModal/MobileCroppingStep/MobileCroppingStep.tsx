@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
 import { FILTER_PRESETS } from "../FiltersStep/filters"
 import { MobileCroppingHeader } from "./MobileCroppingHeader"
@@ -25,6 +26,11 @@ export const MobileCroppingStep = ({
   const activeFilterId = selectedFilters[activeIndex] ?? "normal"
   const currentImage = selectedImages[activeIndex]
 
+  const filterCss = useMemo(() => {
+    const preset = FILTER_PRESETS.find((f) => f.id === activeFilterId)
+    return preset?.value ?? "none"
+  }, [activeFilterId])
+
   return (
     <div className={s.step}>
       <MobileCroppingHeader onBack={onBack} onNext={onNext} />
@@ -32,6 +38,7 @@ export const MobileCroppingStep = ({
       <div className={s.content}>
         <MediaPreviewSlider
           images={selectedImages}
+          filterCss={filterCss}
           onSlideChange={goToSlide}
         />
 

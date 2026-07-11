@@ -47,6 +47,10 @@
   text-align: center;
 }
 
+.filterNodeActive .previewBox {
+  border: 2px solid var(--accent-500);
+}
+
 .filterLabelActive {
   color: var(--light-100);
   font-weight: var(--font-weight-semi-bold);

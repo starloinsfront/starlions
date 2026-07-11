@@ -58,7 +58,11 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
     <>
       <Dialog.Root open={isOpen} onOpenChange={(open) => !open && handleCloseAttempt()}>
         <Dialog.Portal>
-          {!hideMainDialog && <Dialog.Overlay className={styles.overlay} />}
+          {!hideMainDialog && (
+            <Dialog.Overlay
+              className={`${styles.overlay} ${isMobile && step !== "upload" ? styles.overlayMobile : ""}`}
+            />
+          )}
           <Dialog.Content
             aria-describedby={undefined}
             className={`${styles.modalContent} ${step === "filters" || step === "publication" ? styles.modalContentWide : ""} ${hideMainDialog ? styles.hidden : ""} ${isMobile && step !== "upload" ? styles.modalContentMobile : ""}`}
