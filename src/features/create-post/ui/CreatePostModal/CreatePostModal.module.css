@@ -8,6 +8,7 @@
 }
 
 .overlayMobile {
+  bottom: calc(60px + env(safe-area-inset-bottom));
   top: 60px;
 }
 
@@ -48,9 +49,9 @@
 }
 
 .modalContentMobile {
-  height: calc(100vh - 60px);
+  bottom: calc(60px + env(safe-area-inset-bottom));
   left: 0;
-  max-height: calc(100vh - 60px);
+  max-height: none;
   top: 60px;
   transform: none;
   width: 100vw;

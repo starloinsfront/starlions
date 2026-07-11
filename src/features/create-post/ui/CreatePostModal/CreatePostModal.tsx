@@ -95,10 +95,13 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
 
             {step === "cropping" && selectedImages.length > 0 && isMobile && (
               <MobileCroppingStep
+                photos={photos}
                 selectedImages={selectedImages}
+                croppedImages={croppedImages}
                 selectedFilters={selectedFilters}
                 onBack={goBack}
                 onNext={goNext}
+                onCropImage={setCroppedImage}
                 setFilter={setFilter}
                 addMoreFiles={addMoreFiles}
                 removeImage={removeImage}
