@@ -6,6 +6,7 @@ import { useCloseConfirmation } from "./useCloseConfirmation"
 import { useCreatePostMutation } from "../../api/useCreatePostMutation"
 import { CroppingStep } from "./CroppingStep"
 import { MobileCroppingStep } from "./MobileCroppingStep/MobileCroppingStep"
+import { MobilePublicationStep } from "./MobilePublicationStep/MobilePublicationStep"
 import { FiltersStep } from "./FiltersStep"
 import { PublicationStep } from "./PublicationStep"
 import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
@@ -29,6 +30,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
     setFilter,
     goBack,
     goNext,
+    goToPublication,
     goBackToCropping,
     goBackToFilters,
     resetCroppedImages,
@@ -100,11 +102,28 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
                 croppedImages={croppedImages}
                 selectedFilters={selectedFilters}
                 onBack={goBack}
-                onNext={goNext}
+                onNext={goToPublication}
                 onCropImage={setCroppedImage}
                 setFilter={setFilter}
                 addMoreFiles={addMoreFiles}
                 removeImage={removeImage}
+              />
+            )}
+
+            {step === "publication" && selectedImages.length > 0 && isMobile && (
+              <MobilePublicationStep
+                selectedImages={selectedImages}
+                croppedImages={croppedImages}
+                selectedFilters={selectedFilters}
+                onBack={goBackToCropping}
+                onPublish={(data) =>
+                  createPost.mutate({
+                    photos,
+                    description: data.description,
+                    location: data.location,
+                  })
+                }
+                isPublishing={createPost.isPending}
               />
             )}
 
@@ -120,7 +139,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
               />
             )}
 
-            {step === "publication" && selectedImages.length > 0 && (
+            {step === "publication" && selectedImages.length > 0 && !isMobile && (
               <PublicationStep
                 selectedImages={selectedImages}
                 croppedImages={croppedImages}

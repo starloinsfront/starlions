@@ -24,6 +24,10 @@ export const useStepNavigation = () => {
     setStep("cropping")
   }, [])
 
+  const goToPublication = useCallback(() => {
+    setStep("publication")
+  }, [])
+
   const goBackToFilters = useCallback(() => {
     setStep("filters")
   }, [])
@@ -38,6 +42,7 @@ export const useStepNavigation = () => {
     goBack,
     goNext,
     goToCropping,
+    goToPublication,
     goBackToCropping,
     goBackToFilters,
     resetStep,
