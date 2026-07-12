@@ -7,54 +7,66 @@
   z-index: 1000;
 }
 
-.overlayMobile {
-  bottom: calc(60px + env(safe-area-inset-bottom));
-  top: 60px;
-}
-
-.modalContent {
+.content {
   animation: content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   background-color: var(--dark-300);
-  border: 1px solid var(--dark-100);
-  border-radius: 2px;
+  border-radius: 8px;
   box-shadow:
     rgb(from var(--dark-900) r g b / 35%) 0 10px 38px -10px,
     rgb(from var(--dark-900) r g b / 20%) 0 10px 20px -15px;
   display: flex;
   flex-direction: column;
-  height: 560px;
   left: 50%;
-  max-height: 85vh;
-  overflow: hidden;
+  max-width: 400px;
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 490px;
+  width: calc(100% - 48px);
   z-index: 1001;
 }
 
-/* Wider modal for the filters step (two-column layout) */
-
-.modalContentWide {
-  max-width: 95vw;
-  width: 972px;
-}
-
-.modalContent:focus {
+.content:focus {
   outline: none;
 }
 
-.hidden {
-  display: none;
+.header {
+  align-items: center;
+  border-bottom: 1px solid var(--dark-100);
+  display: flex;
+  height: 48px;
+  justify-content: space-between;
+  padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.modalContentMobile {
-  bottom: calc(60px + env(safe-area-inset-bottom));
-  left: 0;
-  max-height: none;
-  top: 60px;
-  transform: none;
-  width: 100vw;
+.title {
+  color: var(--light-100);
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-m);
+}
+
+.closeButton {
+  align-items: center;
+  all: unset;
+  background-color: transparent;
+  border-radius: 100%;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+.closeButton:hover {
+  background-color: var(--dark-100);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
 }
 
 .srOnly {

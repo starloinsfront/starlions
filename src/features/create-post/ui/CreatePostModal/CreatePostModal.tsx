@@ -5,12 +5,15 @@ import { useCreatePost } from "../../model/useCreatePost"
 import { useCloseConfirmation } from "./useCloseConfirmation"
 import { useCreatePostMutation } from "../../api/useCreatePostMutation"
 import { CroppingStep } from "./CroppingStep"
+import { MobileCroppingStep } from "./MobileCroppingStep/MobileCroppingStep"
 import { FiltersStep } from "./FiltersStep"
 import { PublicationStep } from "./PublicationStep"
 import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import styles from "./CreatePostModal.module.css"
 import type { CreatePostModalProps } from "./CreatePostModal.types"
 import AddPhoto from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhoto"
+import { AddPhotoMobile } from "@/features/create-post/ui/CreatePostModal/AddPhoto/AddPhotoMobile/AddPhotoMobile"
+import { useMediaQuery } from "@/common/hooks/useMediaQuery"
 
 export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: CreatePostModalProps) => {
   const {
@@ -19,13 +22,11 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
     selectedImages,
     croppedImages,
     selectedFilters,
-    isGalleryPanelOpen,
     selectFiles,
     addMoreFiles,
     removeImage,
     setCroppedImage,
     setFilter,
-    toggleGalleryPanel,
     goBack,
     goNext,
     goBackToCropping,
@@ -50,20 +51,28 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
     blockOutsideInteraction,
   } = useCloseConfirmation(onCloseAction, reset)
 
+  const isMobile = useMediaQuery("(max-width: 530px)")
+  const hideMainDialog = isOpen && isMobile && step === "upload"
+
   return (
     <>
       <Dialog.Root open={isOpen} onOpenChange={(open) => !open && handleCloseAttempt()}>
         <Dialog.Portal>
-          <Dialog.Overlay className={styles.overlay} />
+          {!hideMainDialog && (
+            <Dialog.Overlay
+              className={`${styles.overlay} ${isMobile && step !== "upload" ? styles.overlayMobile : ""}`}
+            />
+          )}
           <Dialog.Content
             aria-describedby={undefined}
-            className={`${styles.modalContent} ${step === "filters" || step === "publication" ? styles.modalContentWide : ""}`}
+            className={`${styles.modalContent} ${step === "filters" || step === "publication" ? styles.modalContentWide : ""} ${hideMainDialog ? styles.hidden : ""} ${isMobile && step !== "upload" ? styles.modalContentMobile : ""}`}
             onPointerDownOutside={isCloseDialogOpen ? blockOutsideInteraction : handleOverlayClick}
             onFocusOutside={(event: Event) => {
               if (isCloseDialogOpen) event.preventDefault()
             }}
           >
-            {step === "upload" && (
+            <Dialog.Title className={styles.srOnly}>Create Post</Dialog.Title>
+            {step === "upload" && !isMobile && (
               <AddPhoto
                 handleCloseAttempt={handleCloseAttempt}
                 onOpenDraftAction={onOpenDraftAction}
@@ -71,7 +80,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
               />
             )}
 
-            {step === "cropping" && selectedImages.length > 0 && (
+            {step === "cropping" && selectedImages.length > 0 && !isMobile && (
               <CroppingStep
                 photos={photos}
                 selectedImages={selectedImages}
@@ -81,6 +90,21 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
                 onCropImage={setCroppedImage}
                 onAddMoreFiles={addMoreFiles}
                 onRemoveImage={removeImage}
+              />
+            )}
+
+            {step === "cropping" && selectedImages.length > 0 && isMobile && (
+              <MobileCroppingStep
+                photos={photos}
+                selectedImages={selectedImages}
+                croppedImages={croppedImages}
+                selectedFilters={selectedFilters}
+                onBack={goBack}
+                onNext={goNext}
+                onCropImage={setCroppedImage}
+                setFilter={setFilter}
+                addMoreFiles={addMoreFiles}
+                removeImage={removeImage}
               />
             )}
 
@@ -119,6 +143,13 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
+      <AddPhotoMobile
+        open={isOpen && step === "upload" && isMobile}
+        handleCloseAttempt={handleCloseAttempt}
+        selectFiles={selectFiles}
+        onOpenDraftAction={onOpenDraftAction}
+      />
 
       <ConfirmationModal
         isOpen={isCloseDialogOpen}

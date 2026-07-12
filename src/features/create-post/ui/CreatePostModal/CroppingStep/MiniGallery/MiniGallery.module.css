@@ -16,7 +16,7 @@
 .galleryPanelOpen {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translateY(-210px);
 }
 
 .galleryList {
@@ -132,4 +132,10 @@
   font-size: var(--font-size-xs);
   margin-top: 4px;
   text-align: center;
+}
+
+@media (width <= 530px) {
+  .galleryPanelOpen {
+    transform: translateY(-210px);
+  }
 }
