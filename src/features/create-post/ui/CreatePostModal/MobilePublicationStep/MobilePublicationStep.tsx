@@ -1,4 +1,5 @@
-import { useCallback, useMemo } from "react"
+import { useCallback, useMemo, useState } from "react"
+import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import { useMe } from "@/features/auth/api/useMe"
 import { usePublication } from "../PublicationStep/hooks/usePublication"
 import { FILTER_PRESETS } from "../FiltersStep/filters"
@@ -27,6 +28,7 @@ export const MobilePublicationStep = ({
   onPublish,
   isPublishing = false,
 }: MobilePublicationStepProps) => {
+  const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState(false)
   const { data: me } = useMe()
   const {
     description,
@@ -53,10 +55,25 @@ export const MobilePublicationStep = ({
     onPublish({ description, location })
   }, [description, location, onPublish])
 
+  const hasContent = description.trim().length > 0 || location.trim().length > 0
+
+  const handleBack = useCallback(() => {
+    if (hasContent) {
+      setIsDiscardDialogOpen(true)
+      return
+    }
+    onBack()
+  }, [hasContent, onBack])
+
+  const handleDiscard = useCallback(() => {
+    setIsDiscardDialogOpen(false)
+    onBack()
+  }, [onBack])
+
   return (
     <div className={s.step}>
       <MobilePublicationHeader
-        onBack={onBack}
+        onBack={handleBack}
         onPublish={handlePublishClick}
         isPublishing={isPublishing}
       />
@@ -107,6 +124,17 @@ export const MobilePublicationStep = ({
           />
         </div>
       </div>
+
+      <ConfirmationModal
+        isOpen={isDiscardDialogOpen}
+        title="Discard post?"
+        message="Your description and location will be lost."
+        discardBtnText="Discard"
+        confirmBtnText="Keep editing"
+        onDiscard={handleDiscard}
+        onConfirm={() => setIsDiscardDialogOpen(false)}
+        onClose={() => setIsDiscardDialogOpen(false)}
+      />
     </div>
   )
 }

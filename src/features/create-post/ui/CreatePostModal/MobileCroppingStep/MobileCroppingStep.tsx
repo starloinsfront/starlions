@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
@@ -12,6 +12,7 @@ import { MAX_PHOTOS } from "@/features/create-post/model/useFileValidation"
 import { CropOptionsPanel } from "../CroppingStep/CropOptionsPanel/CropOptionsPanel"
 import { MiniGallery } from "../CroppingStep/MiniGallery/MiniGallery"
 import { CroppingToolbar } from "../CroppingStep/CroppingToolbar/CroppingToolbar"
+import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import { MobileCroppingHeader } from "./MobileCroppingHeader"
 import { MediaPreviewSlider } from "./MediaPreviewSlider"
 import { FilterSelectorSlider } from "./FilterSelectorSlider"
@@ -44,6 +45,7 @@ export const MobileCroppingStep = ({
   removeImage,
 }: MobileCroppingStepProps) => {
   const [isProcessing, setIsProcessing] = useState(false)
+  const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState(false)
 
   const { activeIndex, goToSlide } = useCarousel(selectedImages.length)
 
@@ -100,6 +102,13 @@ export const MobileCroppingStep = ({
   const isAtLimit = selectedImages.length >= MAX_PHOTOS
   const isMultiple = selectedImages.length > 1
 
+  const hasChanges = useMemo(
+    () =>
+      croppedImages.some((url) => url !== null) ||
+      selectedFilters.some((f) => f !== null && f !== "normal"),
+    [croppedImages, selectedFilters],
+  )
+
   const handleNext = useCallback(async () => {
     setIsProcessing(true)
     try {
@@ -133,6 +142,16 @@ export const MobileCroppingStep = ({
   ])
 
   const handleBack = useCallback(() => {
+    if (hasChanges) {
+      setIsDiscardDialogOpen(true)
+      return
+    }
+    resetCrop()
+    onBack()
+  }, [hasChanges, resetCrop, onBack])
+
+  const handleDiscard = useCallback(() => {
+    setIsDiscardDialogOpen(false)
     resetCrop()
     onBack()
   }, [resetCrop, onBack])
@@ -230,6 +249,17 @@ export const MobileCroppingStep = ({
           onSelect={(filterId) => setFilter(activeIndex, filterId)}
         />
       </div>
+
+      <ConfirmationModal
+        isOpen={isDiscardDialogOpen}
+        title="Discard changes?"
+        message="Your crop and filter settings will be lost."
+        discardBtnText="Discard"
+        confirmBtnText="Keep editing"
+        onDiscard={handleDiscard}
+        onConfirm={() => setIsDiscardDialogOpen(false)}
+        onClose={() => setIsDiscardDialogOpen(false)}
+      />
     </div>
   )
 }
