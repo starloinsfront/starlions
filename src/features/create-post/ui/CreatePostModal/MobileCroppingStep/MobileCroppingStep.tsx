@@ -96,6 +96,7 @@ export const MobileCroppingStep = ({
 
   const currentImage = selectedImages[activeIndex]
   const activeFilterId = selectedFilters[activeIndex] ?? "normal"
+  const activeFilterValue = FILTER_PRESETS.find((f) => f.id === activeFilterId)?.value ?? "none"
   const isAtLimit = selectedImages.length >= MAX_PHOTOS
   const isMultiple = selectedImages.length > 1
 
@@ -178,6 +179,7 @@ export const MobileCroppingStep = ({
                   src={currentImage}
                   alt={`Photo ${activeIndex + 1} of ${selectedImages.length}`}
                   className={s.image}
+                  style={{ filter: activeFilterValue }}
                   onLoad={handleImageLoad}
                 />
               </ReactCrop>
