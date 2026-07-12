@@ -3,9 +3,10 @@
   gap: 8px;
   height: 100%;
   overflow-x: auto;
-  padding: 15px 16px 0;
+  padding: 8px 16px 0;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  align-items: center;
 }
 
 .slider::-webkit-scrollbar {
@@ -18,9 +19,10 @@
 }
 
 .slide {
+  aspect-ratio: 1;
   border-radius: 4px;
-  flex: 0 0 250px;
-  height: 100%;
+  flex: 0 0 auto;
+  max-height: 100%;
   overflow: hidden;
   position: relative;
   scroll-snap-align: start;
@@ -28,7 +30,7 @@
 
 .slideSingle {
   flex: 0 0 auto;
-  width: 250px;
+  max-height: 100%;
 }
 
 .cropBox {
