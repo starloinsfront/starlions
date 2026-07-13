@@ -13,7 +13,6 @@ export function useCreatePost() {
     goNext,
     goToCropping,
     goToPublication,
-    goBackToCropping,
     goBackToFilters,
     resetStep,
   } = useStepNavigation()
@@ -80,7 +79,7 @@ export function useCreatePost() {
     goBack,
     goNext,
     goToPublication,
-    goBackToCropping,
+    goToCropping,
     goBackToFilters,
     resetCroppedImages,
     reset,

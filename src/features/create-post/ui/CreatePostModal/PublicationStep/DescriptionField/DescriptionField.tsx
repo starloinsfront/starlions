@@ -1,4 +1,4 @@
-import styles from "../PublicationStep.module.css"
+import styles from "./DescriptionField.module.css"
 
 type DescriptionFieldProps = {
   description: string

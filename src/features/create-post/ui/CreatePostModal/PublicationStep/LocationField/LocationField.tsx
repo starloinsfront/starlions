@@ -1,6 +1,6 @@
 import { Icon } from "@/common/components/Icon/Icon"
 import { useLocationAutocomplete } from "../hooks/useLocationAutocomplete"
-import styles from "../PublicationStep.module.css"
+import styles from "./LocationField.module.css"
 
 type LocationFieldProps = {
   location: string

@@ -31,7 +31,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
     goBack,
     goNext,
     goToPublication,
-    goBackToCropping,
+    goToCropping,
     goBackToFilters,
     resetCroppedImages,
     reset,
@@ -115,7 +115,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
                 selectedImages={selectedImages}
                 croppedImages={croppedImages}
                 selectedFilters={selectedFilters}
-                onBack={goBackToCropping}
+                onBack={goToCropping}
                 onPublish={(data) =>
                   createPost.mutate({
                     photos,
@@ -132,7 +132,7 @@ export const CreatePostModal = ({ isOpen, onCloseAction, onOpenDraftAction }: Cr
                 selectedImages={selectedImages}
                 croppedImages={croppedImages}
                 selectedFilters={selectedFilters}
-                onBack={goBackToCropping}
+                onBack={goToCropping}
                 onNext={goNext}
                 onResetCrop={resetCroppedImages}
                 setFilter={setFilter}
