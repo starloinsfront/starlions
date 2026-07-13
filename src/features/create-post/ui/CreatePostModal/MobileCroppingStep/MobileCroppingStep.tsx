@@ -5,9 +5,9 @@ import { FILTER_PRESETS } from "../FiltersStep/filters"
 import { CropOptionsPanel } from "../CroppingStep/CropOptionsPanel/CropOptionsPanel"
 import { MiniGallery } from "../CroppingStep/MiniGallery/MiniGallery"
 import { CroppingToolbar } from "../CroppingStep/CroppingToolbar/CroppingToolbar"
+import { CroppingStepHeader } from "../CroppingStep/CroppingStepHeader/CroppingStepHeader"
 import { useCroppingStep } from "../CroppingStep/hooks/useCroppingStep"
 import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
-import { MobileCroppingHeader } from "./MobileCroppingHeader"
 import { MediaPreviewSlider } from "./MediaPreviewSlider"
 import { FilterSelectorSlider } from "./FilterSelectorSlider"
 import type { CreatePostPhoto } from "@/features/create-post/model/createPost.types"
@@ -111,7 +111,7 @@ export const MobileCroppingStep = ({
 
   return (
     <div className={s.step}>
-      <MobileCroppingHeader onBack={handleBack} onNext={handleNext} isNextDisabled={isProcessing} />
+      <CroppingStepHeader onBack={handleBack} onNext={handleNext} isNextDisabled={isProcessing} variant="mobile" />
 
       <div className={s.content}>
         <div className={s.imageArea} ref={imageAreaRef}>

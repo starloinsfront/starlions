@@ -5,10 +5,6 @@ export type Step = "upload" | "cropping" | "filters" | "publication"
 export const useStepNavigation = () => {
   const [step, setStep] = useState<Step>("upload")
 
-  const goBack = useCallback(() => {
-    setStep("upload")
-  }, [])
-
   const goNext = useCallback(() => {
     setStep((prev) => (prev === "cropping" ? "filters" : "publication"))
   }, [])
@@ -31,7 +27,6 @@ export const useStepNavigation = () => {
 
   return {
     step,
-    goBack,
     goNext,
     goToCropping,
     goToPublication,

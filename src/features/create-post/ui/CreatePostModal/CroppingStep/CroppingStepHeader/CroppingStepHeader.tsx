@@ -6,11 +6,19 @@ type CroppingStepHeaderProps = {
   onBack: () => void
   onNext: () => void
   isNextDisabled?: boolean
+  variant?: "desktop" | "mobile"
 }
 
-export const CroppingStepHeader = ({ onBack, onNext, isNextDisabled = false }: CroppingStepHeaderProps) => {
+export const CroppingStepHeader = ({
+  onBack,
+  onNext,
+  isNextDisabled = false,
+  variant = "desktop",
+}: CroppingStepHeaderProps) => {
+  const headerClass = variant === "mobile" ? `${styles.header} ${styles.headerMobile}` : styles.header
+
   return (
-    <div className={styles.header}>
+    <div className={headerClass}>
       <button className={styles.backButton} type="button" aria-label="Go back" onClick={onBack}>
         <Icon name="arrowBackOutline" width={24} height={24} />
       </button>

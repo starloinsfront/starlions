@@ -9,7 +9,6 @@ export type { Step } from "./useStepNavigation"
 export function useCreatePost() {
   const {
     step,
-    goBack: navGoBack,
     goNext,
     goToCropping,
     goToPublication,
@@ -33,7 +32,7 @@ export function useCreatePost() {
     clearPhotos,
   } = usePhotos({
     onLastPhotoRemoved: () => {
-      navGoBack()
+      resetStep()
       setIsGalleryPanelOpen(false)
     },
   })
@@ -49,9 +48,9 @@ export function useCreatePost() {
 
   const goBack = useCallback(() => {
     clearPhotos()
-    navGoBack()
+    resetStep()
     setIsGalleryPanelOpen(false)
-  }, [clearPhotos, navGoBack])
+  }, [clearPhotos, resetStep])
 
   const reset = useCallback(() => {
     clearPhotos()
