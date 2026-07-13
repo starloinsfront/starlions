@@ -1,17 +1,12 @@
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
-import { useCarousel } from "@/common/components/Carousel/useCarousel"
-import { useFileInput } from "@/common/hooks/useFileInput"
-import { useFloatingPanels } from "../CroppingStep/hooks/useFloatingPanels"
-import { useCropping } from "../CroppingStep/hooks/useCropping"
-import { useZoom } from "../CroppingStep/hooks/useZoom"
-import { useClickOutside } from "../CroppingStep/hooks/useClickOutside"
 import { FILTER_PRESETS } from "../FiltersStep/filters"
-import { MAX_PHOTOS } from "@/features/create-post/model/useFileValidation"
 import { CropOptionsPanel } from "../CroppingStep/CropOptionsPanel/CropOptionsPanel"
 import { MiniGallery } from "../CroppingStep/MiniGallery/MiniGallery"
 import { CroppingToolbar } from "../CroppingStep/CroppingToolbar/CroppingToolbar"
+import { useCroppingStep } from "../CroppingStep/hooks/useCroppingStep"
+import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import { MobileCroppingHeader } from "./MobileCroppingHeader"
 import { MediaPreviewSlider } from "./MediaPreviewSlider"
 import { FilterSelectorSlider } from "./FilterSelectorSlider"
@@ -43,29 +38,22 @@ export const MobileCroppingStep = ({
   addMoreFiles,
   removeImage,
 }: MobileCroppingStepProps) => {
-  const [isProcessing, setIsProcessing] = useState(false)
-
-  const { activeIndex, goToSlide } = useCarousel(selectedImages.length)
+  const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState(false)
 
   const {
+    activeIndex,
+    goToSlide,
     isCropOptionsOpen,
     isSliderVisible,
     isGalleryPanelOpen,
     toggleCropOptions,
     toggleSlider,
     toggleGallery,
-    closeAll,
-  } = useFloatingPanels()
-
-  const {
     zoomLevel,
     minZoom,
     maxZoom,
     zoomStep,
     handleZoomChange,
-  } = useZoom(activeIndex)
-
-  const {
     aspectRatio,
     crop,
     selectedRatioId,
@@ -73,73 +61,53 @@ export const MobileCroppingStep = ({
     setCrop,
     handleImageLoad,
     handleCropComplete,
-    handleConfirmCrop,
-    cropAllImages,
-    resetCrop,
-  } = useCropping(photos, activeIndex, {
-    isCropOptionsOpen,
-    closeCropOptions: closeAll,
+    fileInputRef,
+    triggerFileInput,
+    handleFileChange,
+    cropOptionsRef,
+    toolbarRef,
+    galleryRef,
+    imageAreaRef,
+    currentImage,
+    isAtLimit,
+    isMultiple,
+    isProcessing,
+    handleNext,
+    handleBack: baseHandleBack,
+    handleImageAreaMouseDown,
+  } = useCroppingStep({
+    photos,
+    selectedImages,
+    croppedImages,
+    onBack,
+    onNext,
+    onCropImage,
+    addMoreFiles,
+    removeImage,
   })
 
-  const { fileInputRef, triggerFileInput, handleFileChange } = useFileInput({
-    onFilesSelected: addMoreFiles,
-  })
-
-  const cropOptionsRef = useRef<HTMLDivElement>(null)
-  const toolbarRef = useRef<HTMLDivElement>(null)
-  const galleryRef = useRef<HTMLDivElement>(null)
-  const imageAreaRef = useRef<HTMLDivElement>(null)
-
-  useClickOutside(cropOptionsRef, isCropOptionsOpen, closeAll)
-  useClickOutside(toolbarRef, isSliderVisible, closeAll)
-  useClickOutside(galleryRef, isGalleryPanelOpen, closeAll)
-
-  const currentImage = selectedImages[activeIndex]
   const activeFilterId = selectedFilters[activeIndex] ?? "normal"
   const activeFilterValue = FILTER_PRESETS.find((f) => f.id === activeFilterId)?.value ?? "none"
-  const isAtLimit = selectedImages.length >= MAX_PHOTOS
-  const isMultiple = selectedImages.length > 1
 
-  const handleNext = useCallback(async () => {
-    setIsProcessing(true)
-    try {
-      const currentCropUrl = await handleConfirmCrop()
-
-      const updatedCroppedImages = [...croppedImages]
-      if (currentCropUrl) {
-        updatedCroppedImages[activeIndex] = currentCropUrl
-      }
-
-      const results = await cropAllImages(photos, updatedCroppedImages)
-
-      results.forEach((url, i) => {
-        if (url && url !== croppedImages[i]) {
-          onCropImage(i, url)
-        }
-      })
-
-      onNext()
-    } finally {
-      setIsProcessing(false)
-    }
-  }, [
-    handleConfirmCrop,
-    cropAllImages,
-    activeIndex,
-    photos,
-    croppedImages,
-    onCropImage,
-    onNext,
-  ])
+  const hasChanges = useMemo(
+    () =>
+      croppedImages.some((url) => url !== null) ||
+      selectedFilters.some((f) => f !== null && f !== "normal"),
+    [croppedImages, selectedFilters],
+  )
 
   const handleBack = useCallback(() => {
-    resetCrop()
-    onBack()
-  }, [resetCrop, onBack])
+    if (hasChanges) {
+      setIsDiscardDialogOpen(true)
+      return
+    }
+    baseHandleBack()
+  }, [hasChanges, baseHandleBack])
 
-  const handleImageAreaMouseDown = useCallback(() => {
-    closeAll()
-  }, [closeAll])
+  const handleDiscard = useCallback(() => {
+    setIsDiscardDialogOpen(false)
+    baseHandleBack()
+  }, [baseHandleBack])
 
   return (
     <div className={s.step}>
@@ -230,6 +198,17 @@ export const MobileCroppingStep = ({
           onSelect={(filterId) => setFilter(activeIndex, filterId)}
         />
       </div>
+
+      <ConfirmationModal
+        isOpen={isDiscardDialogOpen}
+        title="Discard changes?"
+        message="Your crop and filter settings will be lost."
+        discardBtnText="Discard"
+        confirmBtnText="Keep editing"
+        onDiscard={handleDiscard}
+        onConfirm={() => setIsDiscardDialogOpen(false)}
+        onClose={() => setIsDiscardDialogOpen(false)}
+      />
     </div>
   )
 }

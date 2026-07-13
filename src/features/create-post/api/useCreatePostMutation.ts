@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { postApi } from "./postApi"
 import { blobUrlToFile } from "../model/blobUrlToFile"
-import { FILTER_PRESETS } from "../ui/CreatePostModal/FiltersStep/filters"
+import { applyFilterToImage } from "../model/filterUtils"
 import type { SchemaPresignFileInputDto } from "@/common/api/schema"
 import type { CreatePostPhoto } from "../model/createPost.types"
 
@@ -10,43 +10,6 @@ export type CreatePostVariables = {
   photos: CreatePostPhoto[]
   description: string
   location: string
-}
-
-/**
- * TanStack Query mutation that orchestrates the full post-creation flow:
- *
- * 1. Resolve final files (cropped versions when available, originals otherwise)
- * 2. Request presigned URLs for all image files
- * 3. Upload each image to its presigned URL in parallel
- * 4. Create the post with the resulting image IDs
- */
-async function applyFilterToImage(file: File, filterId: string | null): Promise<File> {
-  if (!filterId || filterId === "normal") return file
-
-  const preset = FILTER_PRESETS.find((f) => f.id === filterId)
-  if (!preset || preset.value === "none") return file
-
-  const img = new Image()
-  const objectUrl = URL.createObjectURL(file)
-  img.src = objectUrl
-  await new Promise<void>((resolve) => {
-    img.onload = () => resolve()
-  })
-
-  const canvas = document.createElement("canvas")
-  canvas.width = img.naturalWidth
-  canvas.height = img.naturalHeight
-  const ctx = canvas.getContext("2d")!
-  ctx.filter = preset.value
-  ctx.drawImage(img, 0, 0)
-
-  URL.revokeObjectURL(objectUrl)
-
-  return new Promise<File>((resolve) => {
-    canvas.toBlob((blob) => {
-      resolve(new File([blob!], file.name, { type: file.type }))
-    }, file.type)
-  })
 }
 
 export const useCreatePostMutation = (onSuccess?: () => void) => {

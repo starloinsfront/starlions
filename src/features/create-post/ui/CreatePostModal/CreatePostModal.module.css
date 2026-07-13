@@ -22,7 +22,7 @@
     rgb(from var(--dark-900) r g b / 20%) 0 10px 20px -15px;
   display: flex;
   flex-direction: column;
-  height: 560px;
+  height: 100%;
   left: 50%;
   max-height: 85vh;
   overflow: hidden;
@@ -36,7 +36,7 @@
 /* Wider modal for the filters step (two-column layout) */
 
 .modalContentWide {
-  max-width: 95vw;
+  /*max-width: 95vw;*/
   width: 972px;
 }
 

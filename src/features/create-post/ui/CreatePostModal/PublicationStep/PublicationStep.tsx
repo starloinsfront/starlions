@@ -1,12 +1,11 @@
 import { useCallback } from "react"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
+import { useMe } from "@/features/auth/api/useMe"
 import { CarouselNavigation } from "../CarouselNavigation/CarouselNavigation"
 import { PublicationStepHeader } from "./PublicationStepHeader/PublicationStepHeader"
+import { PublicationForm } from "./PublicationForm"
 import { usePublication } from "./hooks/usePublication"
 import { usePhotoDisplay } from "../hooks/usePhotoDisplay"
-import { DescriptionField } from "./DescriptionField/DescriptionField"
-import { LocationField } from "./LocationField/LocationField"
-import { useMe } from "@/features/auth/api/useMe"
 import styles from "./PublicationStep.module.css"
 import type { PublicationStepProps } from "./PublicationStep.types"
 
@@ -69,30 +68,15 @@ export const PublicationStep = ({
         </div>
 
         {/* ── Right: form panel ── */}
-        <div className={styles.formPanel}>
-          {/* Profile block */}
-          <div className={styles.profileBlock}>
-            {/* eslint-disable-next-line @next/next/no-img-element -- placeholder avatar */}
-            <img
-              src="/images/auth/email-confirm.svg"
-              alt="User avatar"
-              className={styles.avatar}
-            />
-            <span className={styles.username}>{me?.username}</span>
-          </div>
-
-          <DescriptionField
-            description={description}
-            maxDescriptionLength={maxDescriptionLength}
-            onChange={handleDescriptionChange}
-          />
-
-          <LocationField
-            location={location}
-            onChange={handleLocationChange}
-            onSelectLocation={selectLocation}
-          />
-        </div>
+        <PublicationForm
+          description={description}
+          location={location}
+          maxDescriptionLength={maxDescriptionLength}
+          onDescriptionChange={handleDescriptionChange}
+          onLocationChange={handleLocationChange}
+          onSelectLocation={selectLocation}
+          username={me?.username}
+        />
       </div>
     </div>
   )

@@ -2,9 +2,6 @@ import { useState, useCallback } from "react"
 
 export type Step = "upload" | "cropping" | "filters" | "publication"
 
-/**
- * Manages the multi-step navigation state for the create-post flow.
- */
 export const useStepNavigation = () => {
   const [step, setStep] = useState<Step>("upload")
 
@@ -20,8 +17,8 @@ export const useStepNavigation = () => {
     setStep("cropping")
   }, [])
 
-  const goBackToCropping = useCallback(() => {
-    setStep("cropping")
+  const goToPublication = useCallback(() => {
+    setStep("publication")
   }, [])
 
   const goBackToFilters = useCallback(() => {
@@ -34,11 +31,10 @@ export const useStepNavigation = () => {
 
   return {
     step,
-    setStep,
     goBack,
     goNext,
     goToCropping,
-    goBackToCropping,
+    goToPublication,
     goBackToFilters,
     resetStep,
   }
