@@ -1,10 +1,9 @@
 import { useCallback, useMemo, useState } from "react"
 import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import { useMe } from "@/features/auth/api/useMe"
+import { PublicationForm } from "../PublicationStep/PublicationForm"
 import { usePublication } from "../PublicationStep/hooks/usePublication"
 import { FILTER_PRESETS } from "../FiltersStep/filters"
-import { DescriptionField } from "../PublicationStep/DescriptionField/DescriptionField"
-import { LocationField } from "../PublicationStep/LocationField/LocationField"
 import { MobilePublicationHeader } from "./MobilePublicationHeader"
 import s from "./MobilePublicationStep.module.css"
 import type { PublicationData } from "../PublicationStep/PublicationStep.types"
@@ -100,29 +99,16 @@ export const MobilePublicationStep = ({
           </div>
         </div>
 
-        <div className={s.formPanel}>
-          <div className={s.profileBlock}>
-            {/* eslint-disable-next-line @next/next/no-img-element -- placeholder avatar */}
-            <img
-              src="/images/auth/email-confirm.svg"
-              alt="User avatar"
-              className={s.avatar}
-            />
-            <span className={s.username}>{me?.username}</span>
-          </div>
-
-          <DescriptionField
-            description={description}
-            maxDescriptionLength={maxDescriptionLength}
-            onChange={handleDescriptionChange}
-          />
-
-          <LocationField
-            location={location}
-            onChange={handleLocationChange}
-            onSelectLocation={selectLocation}
-          />
-        </div>
+        <PublicationForm
+          className={s.formPanel}
+          description={description}
+          location={location}
+          maxDescriptionLength={maxDescriptionLength}
+          onDescriptionChange={handleDescriptionChange}
+          onLocationChange={handleLocationChange}
+          onSelectLocation={selectLocation}
+          username={me?.username}
+        />
       </div>
 
       <ConfirmationModal
