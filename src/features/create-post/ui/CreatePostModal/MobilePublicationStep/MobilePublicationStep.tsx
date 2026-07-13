@@ -2,9 +2,9 @@ import { useCallback, useMemo, useState } from "react"
 import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import { useMe } from "@/features/auth/api/useMe"
 import { PublicationForm } from "../PublicationStep/PublicationForm"
+import { PublicationStepHeader } from "../PublicationStep/PublicationStepHeader/PublicationStepHeader"
 import { usePublication } from "../PublicationStep/hooks/usePublication"
 import { FILTER_PRESETS } from "../FiltersStep/filters"
-import { MobilePublicationHeader } from "./MobilePublicationHeader"
 import s from "./MobilePublicationStep.module.css"
 import type { PublicationData } from "../PublicationStep/PublicationStep.types"
 
@@ -71,10 +71,11 @@ export const MobilePublicationStep = ({
 
   return (
     <div className={s.step}>
-      <MobilePublicationHeader
+      <PublicationStepHeader
         onBack={handleBack}
         onPublish={handlePublishClick}
         isPublishing={isPublishing}
+        variant="mobile"
       />
 
       <div className={s.content}>

@@ -9,6 +9,11 @@
   width: 100%;
 }
 
+.headerMobile {
+  background-color: var(--dark-700);
+  border-bottom: 1px solid var(--dark-500);
+}
+
 .backButton {
   align-items: center;
   appearance: none;

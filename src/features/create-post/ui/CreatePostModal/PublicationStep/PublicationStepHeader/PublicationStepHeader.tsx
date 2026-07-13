@@ -6,15 +6,19 @@ type PublicationStepHeaderProps = {
   onBack: () => void
   onPublish: () => void
   isPublishing?: boolean
+  variant?: "desktop" | "mobile"
 }
 
 export const PublicationStepHeader = ({
   onBack,
   onPublish,
   isPublishing = false,
+  variant = "desktop",
 }: PublicationStepHeaderProps) => {
+  const headerClass = variant === "mobile" ? `${styles.header} ${styles.headerMobile}` : styles.header
+
   return (
-    <div className={styles.header}>
+    <div className={headerClass}>
       <button className={styles.backButton} type="button" aria-label="Go back" onClick={onBack}>
         <Icon name="arrowBackOutline" width={24} height={24} />
       </button>
