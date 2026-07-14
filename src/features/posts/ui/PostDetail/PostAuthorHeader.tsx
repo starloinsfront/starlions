@@ -11,9 +11,10 @@ type Props = {
   className?: string
   isAuthorized: boolean
   isOwnPost: boolean
+  postId: string
 }
 
-export const PostAuthorHeader = ({ author, className, isAuthorized, isOwnPost }: Props) => {
+export const PostAuthorHeader = ({ author, className, isAuthorized, isOwnPost, postId}: Props) => {
   return (
     <header className={clsx(s.header, className)}>
       <div className={s.authorInfo}>
@@ -21,7 +22,7 @@ export const PostAuthorHeader = ({ author, className, isAuthorized, isOwnPost }:
         <span className={s.username}>{author.username}</span>
       </div>
 
-      {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} />}
+      {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} postId={postId} />}
     </header>
   )
 }

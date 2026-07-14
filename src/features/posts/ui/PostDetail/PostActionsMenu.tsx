@@ -6,6 +6,9 @@ import { DropdownMenuItem } from "@/common/components/DropdownMenu/DropdownMenu"
 import { MoreActionsDropdown } from "@/common/components/MoreActionsDropdown/MoreActionsDropdown"
 import styles from "@/widgets/Sidebar/NavLink/NavLink.module.css"
 import clsx from "clsx"
+import { useState } from "react"
+import { ConfirmationModal } from "@/common/components/ConfirmationModal"
+import { useDeletePostMutation } from "@/features/posts/api/useDeletePostMutation"
 
 type PostActionId = "copy-link" | "delete" | "edit" | "report"
 
@@ -29,26 +32,50 @@ const otherPostActions: PostActionItem[] = [
 type Props = {
   isOwnPost: boolean
   onAction?: (actionId: PostActionId) => void
+  postId: string
 }
 
-export const PostActionsMenu = ({ isOwnPost, onAction }: Props) => {
+export const PostActionsMenu = ({ isOwnPost, onAction, postId }: Props) => {
   const items = isOwnPost ? ownPostActions : otherPostActions
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const { mutate } = useDeletePostMutation()
 
   return (
-    <MoreActionsDropdown>
-      {items.map((item) => (
-        <DropdownMenuItem
-          data-action-id={item.id}
-          key={item.id}
-          onSelect={() => onAction?.(item.id)}
-          unstyled
-        >
-          <button className={clsx(styles.navLink, "mediumText14", styles.unstyledBtn)}>
-            <Icon height={18} name={item.icon} width={18} />
-            {item.label}
-          </button>
-        </DropdownMenuItem>
-      ))}
-    </MoreActionsDropdown>
+    <>
+      <MoreActionsDropdown>
+        {items.map((item) => (
+          <DropdownMenuItem
+            data-action-id={item.id}
+            key={item.id}
+            onSelect={() => {
+              if (item.id === "delete") {
+                setIsDeleteModalOpen(true)
+              } else {
+                onAction?.(item.id)
+              }
+            }}
+            unstyled
+          >
+            <button className={clsx(styles.navLink, "mediumText14", styles.unstyledBtn)}>
+              <Icon height={18} name={item.icon} width={18} />
+              {item.label}
+            </button>
+          </DropdownMenuItem>
+        ))}
+      </MoreActionsDropdown>
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        message={"Are you sure you want to delete this post?"}
+        title={"Delete post"}
+        discardBtnText={"No"}
+        confirmBtnText={"Yes"}
+        onConfirm={() => {
+          mutate(postId)
+          setIsDeleteModalOpen(false)
+        }}
+        onDiscard={() => setIsDeleteModalOpen(false)}
+      />
+    </>
   )
 }

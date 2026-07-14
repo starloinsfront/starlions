@@ -14,7 +14,7 @@ type Props = {
 export const PostDetailSidebar = ({ isAuthorized, isOwnPost, onOpenLikes, post }: Props) => {
   return (
     <aside className={s.sidebar}>
-      <PostAuthorHeader author={post.author} isAuthorized={isAuthorized} isOwnPost={isOwnPost} />
+      <PostAuthorHeader author={post.author} isAuthorized={isAuthorized} isOwnPost={isOwnPost} postId={post.id}/>
       <PostCommentsList
         author={post.author}
         comments={post.comments}
