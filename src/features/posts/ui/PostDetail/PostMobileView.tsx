@@ -41,7 +41,7 @@ export const PostMobileView = ({
 
   return (
     <section className={s.root}>
-      {showAppBar && <MobileAppBar isAuthorized={isAuthorized} isOwnPost={isOwnPost} />}
+      {showAppBar && <MobileAppBar isAuthorized={isAuthorized} isOwnPost={isOwnPost} postId={post.id}/>}
 
       <article className={s.postCard}>
         <header className={s.postHeader}>
@@ -52,7 +52,7 @@ export const PostMobileView = ({
             <span className={s.username}>{post.author.username}</span>
           </div>
 
-          {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} />}
+          {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} postId={post.id}/>}
         </header>
 
         <PostDetailMedia images={post.images} variant="mobile" />
@@ -143,9 +143,10 @@ export const PostMobileView = ({
 type MobileAppBarProps = {
   isAuthorized: boolean
   isOwnPost: boolean
+  postId: string
 }
 
-const MobileAppBar = ({ isAuthorized, isOwnPost }: MobileAppBarProps) => {
+const MobileAppBar = ({ isAuthorized, isOwnPost, postId }: MobileAppBarProps) => {
   return (
     <header className={s.appBar}>
       <span className={s.logo}>Inctagram</span>
@@ -154,7 +155,7 @@ const MobileAppBar = ({ isAuthorized, isOwnPost }: MobileAppBarProps) => {
           <Icon height={18} name="flagRussiaFilled" width={18} />
           <Icon className={s.languageChevron} height={16} name="arrowIosDownOutline" width={16} />
         </button>
-        {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} />}
+        {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} postId={postId}/>}
       </div>
     </header>
   )
