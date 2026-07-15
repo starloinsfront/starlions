@@ -1,5 +1,5 @@
 # Base стейдж с общими настройками
-FROM node:20.11-alpine as base
+FROM node:22.13-alpine as base
 RUN npm install -g pnpm  
 
 # Устанавливаем зависимости
@@ -16,7 +16,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 RUN pnpm run build:production
 
 # Стейдж запуска
-FROM node:20.11-alpine as runner
+FROM node:22.13-alpine as runner
 WORKDIR /app
 
 ENV NODE_ENV production
