@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { postApi } from "./postApi"
 import { blobUrlToFile } from "../model/blobUrlToFile"
+import { applyFilterToImage } from "../model/filterUtils"
 import type { SchemaPresignFileInputDto } from "@/common/api/schema"
 import type { CreatePostPhoto } from "../model/createPost.types"
 import { USER_POSTS_QUERY_KEY } from "@/features/user-posts/model/constants"
@@ -12,14 +13,6 @@ export type CreatePostVariables = {
   location: string
 }
 
-/**
- * TanStack Query mutation that orchestrates the full post-creation flow:
- *
- * 1. Resolve final files (cropped versions when available, originals otherwise)
- * 2. Request presigned URLs for all image files
- * 3. Upload each image to its presigned URL in parallel
- * 4. Create the post with the resulting image IDs
- */
 export const useCreatePostMutation = (onSuccess?: () => void) => {
   const queryClient = useQueryClient()
 
@@ -29,12 +22,13 @@ export const useCreatePostMutation = (onSuccess?: () => void) => {
       description,
       location,
     }: CreatePostVariables) => {
-      // Step 1 – resolve final files: use cropped version if available
+      // Step 1 – resolve final files: use cropped version if available, then apply filter
       const files: File[] = await Promise.all(
-        photos.map((photo) => {
-          return photo.croppedUrl
-            ? blobUrlToFile(photo.croppedUrl, photo.file)
-            : Promise.resolve(photo.file)
+        photos.map(async (photo) => {
+          const baseFile = photo.croppedUrl
+            ? await blobUrlToFile(photo.croppedUrl, photo.file)
+            : photo.file
+          return applyFilterToImage(baseFile, photo.filterId)
         }),
       )
 

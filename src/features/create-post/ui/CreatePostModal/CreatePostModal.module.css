@@ -7,6 +7,11 @@
   z-index: 1000;
 }
 
+.overlayMobile {
+  bottom: calc(60px + env(safe-area-inset-bottom));
+  top: 60px;
+}
+
 .modalContent {
   animation: content-show 150ms cubic-bezier(0.16, 1, 0.3, 1);
   background-color: var(--dark-300);
@@ -17,7 +22,7 @@
     rgb(from var(--dark-900) r g b / 20%) 0 10px 20px -15px;
   display: flex;
   flex-direction: column;
-  height: 560px;
+  height: 100%;
   left: 50%;
   max-height: 85vh;
   overflow: hidden;
@@ -31,12 +36,25 @@
 /* Wider modal for the filters step (two-column layout) */
 
 .modalContentWide {
-  max-width: 95vw;
+  /*max-width: 95vw;*/
   width: 972px;
 }
 
 .modalContent:focus {
   outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.modalContentMobile {
+  bottom: calc(60px + env(safe-area-inset-bottom));
+  left: 0;
+  max-height: none;
+  top: 60px;
+  transform: none;
+  width: 100vw;
 }
 
 .srOnly {

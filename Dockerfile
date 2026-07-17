@@ -16,7 +16,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 RUN pnpm run build:production
 
 # Стейдж запуска
-FROM node:20.11-alpine as runner
+FROM node:22.13-alpine as runner
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -34,9 +34,9 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 USER nextjs
 
-EXPOSE 3000
+EXPOSE 4297
 
-ENV PORT 3000
+ENV PORT 4297
 ENV HOSTNAME "0.0.0.0"
 
 # Запускаем (фактический путь зависит от структуры standalone)

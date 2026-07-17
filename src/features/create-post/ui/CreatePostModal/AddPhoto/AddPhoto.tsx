@@ -4,7 +4,7 @@ import { UploadStep } from "@/features/create-post/ui/CreatePostModal/UploadStep
 
 type AddPhotoType = {
   handleCloseAttempt: () => void
-  selectFiles: (files: FileList) => void
+  selectFiles: (files: File[]) => void
   onOpenDraftAction: () => void
 }
 

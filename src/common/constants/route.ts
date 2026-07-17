@@ -1,5 +1,8 @@
 export const ROUTES = {
   home: "/",
+  post: "/post",
+  postById: (id: string) => `/post/${encodeURIComponent(id)}`,
+  postModalById: (pathname: string, id: string) => `${pathname}?postId=${encodeURIComponent(id)}`,
 
   feed: "/feed",
   create: "/create",

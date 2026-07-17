@@ -58,6 +58,8 @@ type Props = {
    * md — 492px
    *
    * lg — 644px
+   *
+   * xlg — 972px
    */
   size?: ModalSize
 

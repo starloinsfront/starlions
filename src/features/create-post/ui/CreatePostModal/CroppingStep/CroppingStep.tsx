@@ -1,15 +1,11 @@
-import { useCallback, useState } from "react"
 import ReactCrop from "react-image-crop"
 import "react-image-crop/dist/ReactCrop.css"
-import { useCarousel } from "@/common/components/Carousel/useCarousel"
 import { CroppingStepHeader } from "./CroppingStepHeader/CroppingStepHeader"
 import { CarouselNavigation } from "../CarouselNavigation/CarouselNavigation"
 import { CroppingToolbar } from "./CroppingToolbar/CroppingToolbar"
 import { MiniGallery } from "./MiniGallery/MiniGallery"
 import { CropOptionsPanel } from "./CropOptionsPanel/CropOptionsPanel"
-import { useFileInput } from "@/common/hooks/useFileInput"
-import { useCropping } from "./hooks/useCropping"
-import { useZoom } from "./hooks/useZoom"
+import { useCroppingStep } from "./hooks/useCroppingStep"
 import styles from "./CroppingStep.module.css"
 import type { CroppingStepProps } from "./CroppingStep.types"
 
@@ -17,103 +13,58 @@ export const CroppingStep = ({
   photos,
   selectedImages,
   croppedImages,
-  isGalleryPanelOpen,
   onBack,
   onNext,
-  onToggleGallery,
   onCropImage,
   onAddMoreFiles,
   onRemoveImage,
 }: CroppingStepProps) => {
-
-  const [isProcessing, setIsProcessing] = useState(false)
-
-  const { activeIndex, goToSlide, showNext, showPrev } = useCarousel(selectedImages.length)
-  const { fileInputRef, triggerFileInput, handleFileChange } = useFileInput({
-    onFilesSelected: onAddMoreFiles,
-  })
-
   const {
+    activeIndex,
+    goToSlide,
+    showNext,
+    showPrev,
     isCropOptionsOpen,
+    isSliderVisible,
+    isGalleryPanelOpen,
+    toggleCropOptions,
+    toggleSlider,
+    toggleGallery,
+    zoomLevel,
+    minZoom,
+    maxZoom,
+    zoomStep,
+    handleZoomChange,
     aspectRatio,
     crop,
     selectedRatioId,
-    toggleCropOptions,
-    closeCropOptions,
     setAspectRatio,
     setCrop,
     handleImageLoad,
     handleCropComplete,
-    handleConfirmCrop,
-    cropAllImages,
-    resetCrop,
-  } = useCropping(photos, activeIndex)
-
-  const {
-    zoomLevel,
-    isSliderVisible,
-    minZoom,
-    maxZoom,
-    zoomStep,
-    toggleSlider,
-    closeSlider,
-    handleZoomChange,
-  } = useZoom(activeIndex)
-
-  const currentImageUrl = selectedImages[activeIndex]
-
-  const handleToggleGallery = useCallback(() => {
-    closeCropOptions()
-    onToggleGallery()
-  }, [closeCropOptions, onToggleGallery])
-
-  const handleToggleCrop = useCallback(() => {
-    if (isGalleryPanelOpen) {
-      // Close gallery first (handled by toggleGalleryPanel closing gallery)
-    }
-    toggleCropOptions()
-  }, [isGalleryPanelOpen, toggleCropOptions])
-
-  const handleNext = useCallback(async () => {
-    setIsProcessing(true)
-    try {
-      // First confirm the active image crop (if one is in progress)
-      const currentCropUrl = await handleConfirmCrop()
-
-      // Create updated croppedImages with the current photo's crop result
-      const updatedCroppedImages = [...croppedImages]
-      if (currentCropUrl) {
-        updatedCroppedImages[activeIndex] = currentCropUrl
-      }
-
-      // Then batch-crop any remaining uncropped images
-      const results = await cropAllImages(photos, updatedCroppedImages)
-
-      // Persist all new cropped URLs into parent state
-      results.forEach((url, i) => {
-        if (url && url !== croppedImages[i]) {
-          onCropImage(i, url)
-        }
-      })
-
-      onNext()
-    } finally {
-      setIsProcessing(false)
-    }
-  }, [
-    handleConfirmCrop,
-    cropAllImages,
-    activeIndex,
+    fileInputRef,
+    triggerFileInput,
+    handleFileChange,
+    cropOptionsRef,
+    toolbarRef,
+    galleryRef,
+    imageAreaRef,
+    currentImage,
+    isAtLimit,
+    isProcessing,
+    handleNext,
+    handleBack,
+    handleImageAreaMouseDown,
+  } = useCroppingStep({
     photos,
+    selectedImages,
     croppedImages,
-    onCropImage,
+    onBack,
     onNext,
-  ])
-
-  const handleBack = useCallback(() => {
-    resetCrop()
-    onBack()
-  }, [resetCrop, onBack])
+    onCropImage,
+    addMoreFiles: onAddMoreFiles,
+    removeImage: onRemoveImage,
+  })
 
   return (
     <div className={styles.step}>
@@ -123,10 +74,15 @@ export const CroppingStep = ({
         isNextDisabled={isProcessing}
       />
 
-      <div className={styles.imageArea}>
+      <div
+        className={styles.imageArea}
+        ref={imageAreaRef}
+      >
         <div
           className={styles.zoomContainer}
           style={{ transform: `scale(${zoomLevel})` }}
+          onMouseDown={handleImageAreaMouseDown}
+          onTouchStart={handleImageAreaMouseDown}
         >
           <ReactCrop
             crop={crop}
@@ -137,7 +93,7 @@ export const CroppingStep = ({
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL cannot be used with next/image */}
             <img
-              src={currentImageUrl}
+              src={currentImage}
               alt={`Photo ${activeIndex + 1} of ${selectedImages.length}`}
               className={styles.image}
               onLoad={handleImageLoad}
@@ -154,38 +110,40 @@ export const CroppingStep = ({
         />
 
         <CroppingToolbar
+          ref={toolbarRef}
           isGalleryOpen={isGalleryPanelOpen}
           isCropOptionsOpen={isCropOptionsOpen}
-          onToggleGallery={handleToggleGallery}
-          onToggleCropOptions={handleToggleCrop}
+          onToggleGallery={toggleGallery}
+          onToggleCropOptions={toggleCropOptions}
           zoomLevel={zoomLevel}
           isSliderVisible={isSliderVisible}
           minZoom={minZoom}
           maxZoom={maxZoom}
           zoomStep={zoomStep}
           onToggleSlider={toggleSlider}
-          onCloseSlider={closeSlider}
           onZoomChange={handleZoomChange}
         />
 
-        {isCropOptionsOpen && (
-          <CropOptionsPanel
-            selectedOptionId={selectedRatioId}
-            onSelect={(option) => setAspectRatio(option.value)}
-          />
-        )}
+        <CropOptionsPanel
+          ref={cropOptionsRef}
+          selectedOptionId={selectedRatioId}
+          onSelect={(option) => setAspectRatio(option.value)}
+          isOpen={isCropOptionsOpen}
+        />
 
-        {isGalleryPanelOpen && (
-          <MiniGallery
-            images={selectedImages}
-            activeIndex={activeIndex}
-            onSelectSlide={goToSlide}
-            onRemoveImage={onRemoveImage}
-            onAddClick={triggerFileInput}
-            fileInputRef={fileInputRef}
-            onFileChange={handleFileChange}
-          />
-        )}
+        <MiniGallery
+          ref={galleryRef}
+          images={selectedImages}
+          activeIndex={activeIndex}
+          onSelectSlide={goToSlide}
+          onRemoveImage={onRemoveImage}
+          onAddClick={triggerFileInput}
+          fileInputRef={fileInputRef}
+          onFileChange={handleFileChange}
+          isAtLimit={isAtLimit}
+          currentCount={selectedImages.length}
+          isOpen={isGalleryPanelOpen}
+        />
       </div>
     </div>
   )

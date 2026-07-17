@@ -1,0 +1,82 @@
+.slideLabel {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.navButton {
+  align-items: center;
+  background: rgb(51 51 51 / 55%);
+  border: none;
+  border-radius: 2px;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition:
+    background-color 0.2s ease,
+    opacity 0.18s ease,
+    transform 0.18s ease;
+  width: 24px;
+  z-index: 2;
+}
+
+.navButton:hover {
+  background: rgb(57 125 246 / 72%);
+}
+
+.navPrev {
+  left: 12px;
+}
+
+.navNext {
+  right: 12px;
+}
+
+.dots {
+  background-color: rgb(51 51 51 / 58%);
+  border-radius: 2px;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+  left: 50%;
+  padding: 3px 7px;
+  position: absolute;
+  transform: translateX(-50%);
+  transition: opacity 0.18s ease;
+  z-index: 2;
+}
+
+.dot {
+  background: var(--light-100);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 6px;
+  padding: 0;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+  width: 6px;
+}
+
+.dot:hover,
+.dot[aria-current="true"] {
+  background: var(--accent-500);
+  transform: scale(1.25);
+}
+
+.controlsHidden {
+  opacity: 0;
+  pointer-events: none;
+}
