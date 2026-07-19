@@ -18,6 +18,7 @@ type Props = {
   activePanel: MobilePanel
   isAuthorized: boolean
   isOwnPost: boolean
+  onDescriptionUpdated?: (description: string) => void
   onOpenCommentsAction: () => void
   onOpenLikesAction: () => void
   onResetPanelAction: () => void
@@ -31,6 +32,7 @@ export const PostMobileView = ({
   activePanel,
   isAuthorized,
   isOwnPost,
+  onDescriptionUpdated,
   onOpenCommentsAction,
   onOpenLikesAction,
   onResetPanelAction,
@@ -41,7 +43,15 @@ export const PostMobileView = ({
 
   return (
     <section className={s.root}>
-      {showAppBar && <MobileAppBar isAuthorized={isAuthorized} isOwnPost={isOwnPost} postId={post.id}/>}
+      {showAppBar && (
+        <MobileAppBar
+          description={post.description}
+          isAuthorized={isAuthorized}
+          isOwnPost={isOwnPost}
+          onDescriptionUpdated={onDescriptionUpdated}
+          postId={post.id}
+        />
+      )}
 
       <article className={s.postCard}>
         <header className={s.postHeader}>
@@ -52,7 +62,14 @@ export const PostMobileView = ({
             <span className={s.username}>{post.author.username}</span>
           </div>
 
-          {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} postId={post.id}/>}
+          {isAuthorized && (
+            <PostActionsMenu
+              description={post.description}
+              isOwnPost={isOwnPost}
+              onDescriptionUpdated={onDescriptionUpdated}
+              postId={post.id}
+            />
+          )}
         </header>
 
         <PostDetailMedia images={post.images} variant="mobile" />
@@ -141,12 +158,20 @@ export const PostMobileView = ({
 }
 
 type MobileAppBarProps = {
+  description: string
   isAuthorized: boolean
   isOwnPost: boolean
+  onDescriptionUpdated?: (description: string) => void
   postId: string
 }
 
-const MobileAppBar = ({ isAuthorized, isOwnPost, postId }: MobileAppBarProps) => {
+const MobileAppBar = ({
+  description,
+  isAuthorized,
+  isOwnPost,
+  onDescriptionUpdated,
+  postId,
+}: MobileAppBarProps) => {
   return (
     <header className={s.appBar}>
       <span className={s.logo}>Inctagram</span>
@@ -155,7 +180,14 @@ const MobileAppBar = ({ isAuthorized, isOwnPost, postId }: MobileAppBarProps) =>
           <Icon height={18} name="flagRussiaFilled" width={18} />
           <Icon className={s.languageChevron} height={16} name="arrowIosDownOutline" width={16} />
         </button>
-        {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} postId={postId}/>}
+        {isAuthorized && (
+          <PostActionsMenu
+            description={description}
+            isOwnPost={isOwnPost}
+            onDescriptionUpdated={onDescriptionUpdated}
+            postId={postId}
+          />
+        )}
       </div>
     </header>
   )

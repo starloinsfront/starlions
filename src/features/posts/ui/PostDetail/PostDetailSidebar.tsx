@@ -8,13 +8,27 @@ type Props = {
   isAuthorized: boolean
   isOwnPost: boolean
   onOpenLikes?: () => void
+  onDescriptionUpdated?: (description: string) => void
   post: PostDetailData
 }
 
-export const PostDetailSidebar = ({ isAuthorized, isOwnPost, onOpenLikes, post }: Props) => {
+export const PostDetailSidebar = ({
+  isAuthorized,
+  isOwnPost,
+  onOpenLikes,
+  onDescriptionUpdated,
+  post,
+}: Props) => {
   return (
     <aside className={s.sidebar}>
-      <PostAuthorHeader author={post.author} isAuthorized={isAuthorized} isOwnPost={isOwnPost} postId={post.id}/>
+      <PostAuthorHeader
+        author={post.author}
+        description={post.description}
+        isAuthorized={isAuthorized}
+        isOwnPost={isOwnPost}
+        onDescriptionUpdated={onDescriptionUpdated}
+        postId={post.id}
+      />
       <PostCommentsList
         author={post.author}
         comments={post.comments}

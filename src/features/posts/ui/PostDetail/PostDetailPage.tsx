@@ -9,7 +9,7 @@ type Props = {
 export const PostDetailPage = ({ post }: Props) => {
   return (
     <section className={s.page}>
-      <PostDetail post={post} />
+      <PostDetail key={post.id} post={post} />
     </section>
   )
 }

@@ -11,14 +11,12 @@ import {
   CREATE_POST_ACTION,
   POST_ID_SEARCH_PARAM,
 } from "@/common/utils/modalSearchParams"
+import { POST_DETAIL_QUERY_KEY } from "@/features/posts/model/constants"
 import { getPostDetailData } from "@/features/posts/api/postsApi"
 
 import { PostDetail } from "./PostDetail"
 import { PostDetailModal } from "./PostDetailModal"
-import s from "./PostModalSearchParamsController.module.css"
 import { PostDetailSkeleton } from "./PostDetailSkeleton/PostDetailSkeleton"
-
-const POST_DETAIL_QUERY_KEY = "post-detail"
 
 const buildHrefWithoutSearchParam = (
   pathname: string,
@@ -81,7 +79,7 @@ export const PostModalSearchParamsController = () => {
 
   return (
     <PostDetailModal closeHref={closeHref} mobileHref={ROUTES.postById(post.id)}>
-      <PostDetail isModal post={post} />
+      <PostDetail isModal key={post.id} post={post} />
     </PostDetailModal>
   )
 }

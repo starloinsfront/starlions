@@ -21,12 +21,14 @@ type Props = {
 export const PostDetail = ({ isModal = false, post }: Props) => {
   const { data: me } = useMe()
   const { isMobile } = usePostLayoutMode()
+  const [description, setDescription] = useState(post.description)
 
   const [isLikesModalOpen, setIsLikesModalOpen] = useState(false)
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null)
 
   const isAuthorized = Boolean(me?.id)
   const isOwnPost = Boolean(me?.id && me.id === post.author.authorId)
+  const postWithDescription = { ...post, description }
 
   const handleOpenComments = () => setMobilePanel("comments")
   const handleOpenLikes = () => setMobilePanel("likes")
@@ -38,10 +40,11 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
         activePanel={mobilePanel}
         isAuthorized={isAuthorized}
         isOwnPost={isOwnPost}
+        onDescriptionUpdated={setDescription}
         onOpenCommentsAction={handleOpenComments}
         onOpenLikesAction={handleOpenLikes}
         onResetPanelAction={handleResetPanel}
-        post={post}
+        post={postWithDescription}
         showAppBar={isModal}
       />
     )
@@ -54,8 +57,9 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
         <PostDetailSidebar
           isAuthorized={isAuthorized}
           isOwnPost={isOwnPost}
+          onDescriptionUpdated={setDescription}
           onOpenLikes={() => setIsLikesModalOpen(true)}
-          post={post}
+          post={postWithDescription}
         />
       </div>
 

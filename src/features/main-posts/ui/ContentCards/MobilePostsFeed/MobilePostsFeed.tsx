@@ -59,7 +59,13 @@ export const MobilePostsFeed = ({ posts }: Props) => {
                   <span className={s.username}>{post.author.username}</span>
                 </div>
 
-                {isAuthorized && <PostActionsMenu isOwnPost={isOwnPost} postId={post.id} />}
+                {isAuthorized && (
+                  <PostActionsMenu
+                    description={post.description}
+                    isOwnPost={isOwnPost}
+                    postId={post.id}
+                  />
+                )}
               </header>
 
               <PostDetailMedia images={post.images} variant="mobile" />
