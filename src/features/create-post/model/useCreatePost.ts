@@ -39,7 +39,9 @@ export function useCreatePost() {
 
   const selectFiles = useCallback(
     async (files: File[]) => {
-      await baseSelectFiles(files)
+      const isSelected = await baseSelectFiles(files)
+      if (!isSelected) return
+
       goToCropping()
       setIsGalleryPanelOpen(false)
     },

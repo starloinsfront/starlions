@@ -40,10 +40,11 @@ export const usePhotos = ({ onLastPhotoRemoved }: UsePhotosProps = {}) => {
 
   const selectFiles = useCallback(
     async (files: File[]) => {
-      if (!(await validateFiles(files, 0))) return
+      if (!(await validateFiles(files, 0))) return false
 
       revokeAllBlobUrls()
       setPhotos(createPhotoObjects(files))
+      return true
     },
     [createPhotoObjects, revokeAllBlobUrls],
   )
