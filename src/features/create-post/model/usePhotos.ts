@@ -60,22 +60,24 @@ export const usePhotos = ({ onLastPhotoRemoved }: UsePhotosProps = {}) => {
 
   const removeImage = useCallback(
     (index: number) => {
-      const photoToRemove = photos[index]
-      if (!photoToRemove) return
+      setPhotos((prev) => {
+        const photoToRemove = prev[index]
+        if (!photoToRemove) return prev
 
-      revokeBlobUrl(photoToRemove.previewUrl)
-      if (photoToRemove.croppedUrl) {
-        revokeBlobUrl(photoToRemove.croppedUrl)
-      }
+        revokeBlobUrl(photoToRemove.previewUrl)
+        if (photoToRemove.croppedUrl) {
+          revokeBlobUrl(photoToRemove.croppedUrl)
+        }
 
-      if (photos.length === 1) {
-        onLastPhotoRemoved?.()
-        return
-      }
+        if (prev.length === 1) {
+          onLastPhotoRemoved?.()
+          return []
+        }
 
-      setPhotos((prev) => prev.filter((_, i) => i !== index))
+        return prev.filter((_, i) => i !== index)
+      })
     },
-    [photos, revokeBlobUrl, onLastPhotoRemoved],
+    [revokeBlobUrl, onLastPhotoRemoved],
   )
 
   const setCroppedImage = useCallback(
