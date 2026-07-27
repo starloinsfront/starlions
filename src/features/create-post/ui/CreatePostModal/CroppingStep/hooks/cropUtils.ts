@@ -1,25 +1,4 @@
-import {
-  centerCrop,
-  makeAspectCrop,
-  type PercentCrop,
-  type PixelCrop,
-} from "react-image-crop"
-
-/** Generate a centered crop for a given aspect ratio and image dimensions */
-export function generateCrop(width: number, height: number, ratio: number): PercentCrop {
-  const crop = centerCrop(
-    makeAspectCrop({ unit: "%", width: 90 }, ratio, width, height),
-    width,
-    height,
-  )
-  return {
-    x: crop.x as number,
-    y: crop.y as number,
-    width: crop.width as number,
-    height: crop.height as number,
-    unit: "%",
-  }
-}
+import type { Area } from "react-easy-crop"
 
 /** Load an image URL into an off-screen HTMLImageElement and resolve when ready. */
 export function loadImage(url: string): Promise<HTMLImageElement> {
@@ -35,39 +14,31 @@ export function loadImage(url: string): Promise<HTMLImageElement> {
 /**
  * Render a crop region from an already-loaded image element onto a canvas
  * and return the result as a JPEG blob URL.
+ *
+ * Uses croppedAreaPixels from react-easy-crop's onCropComplete callback,
+ * which provides exact pixel coordinates relative to the natural image.
  */
 export async function renderCropFromElement(
   imgElement: HTMLImageElement,
-  percentCrop: PercentCrop,
+  croppedAreaPixels: Area,
 ): Promise<string | null> {
-  // IMPORTANT: Use naturalWidth/naturalHeight (actual image file size)
-  // because drawImage works with the natural image, not CSS display size
-  const { naturalWidth, naturalHeight } = imgElement
-  const pixelCrop: PixelCrop = {
-    x: (percentCrop.x / 100) * naturalWidth,
-    y: (percentCrop.y / 100) * naturalHeight,
-    width: (percentCrop.width / 100) * naturalWidth,
-    height: (percentCrop.height / 100) * naturalHeight,
-    unit: "px",
-  }
-
   const canvas = document.createElement("canvas")
   const ctx = canvas.getContext("2d")
   if (!ctx) return null
 
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
+  canvas.width = croppedAreaPixels.width
+  canvas.height = croppedAreaPixels.height
 
   ctx.drawImage(
     imgElement,
-    pixelCrop.x,
-    pixelCrop.y,
-    pixelCrop.width,
-    pixelCrop.height,
+    croppedAreaPixels.x,
+    croppedAreaPixels.y,
+    croppedAreaPixels.width,
+    croppedAreaPixels.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height,
+    croppedAreaPixels.width,
+    croppedAreaPixels.height,
   )
 
   const blob = await new Promise<Blob | null>((resolve) =>

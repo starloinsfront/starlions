@@ -1,5 +1,5 @@
-import ReactCrop from "react-image-crop"
-import "react-image-crop/dist/ReactCrop.css"
+import Cropper from "react-easy-crop"
+import "react-easy-crop/react-easy-crop.css"
 import { CroppingStepHeader } from "./CroppingStepHeader/CroppingStepHeader"
 import { CarouselNavigation } from "../CarouselNavigation/CarouselNavigation"
 import { CroppingToolbar } from "./CroppingToolbar/CroppingToolbar"
@@ -30,17 +30,13 @@ export const CroppingStep = ({
     toggleCropOptions,
     toggleSlider,
     toggleGallery,
-    zoomLevel,
-    minZoom,
-    maxZoom,
-    zoomStep,
-    handleZoomChange,
+    zoom,
+    setZoom,
     aspectRatio,
-    crop,
+    cropPosition,
     selectedRatioId,
     setAspectRatio,
-    setCrop,
-    handleImageLoad,
+    handleCropChange,
     handleCropComplete,
     fileInputRef,
     triggerFileInput,
@@ -79,26 +75,26 @@ export const CroppingStep = ({
         ref={imageAreaRef}
       >
         <div
-          className={styles.zoomContainer}
-          style={{ transform: `scale(${zoomLevel})` }}
+          className={styles.cropperContainer}
           onMouseDown={handleImageAreaMouseDown}
           onTouchStart={handleImageAreaMouseDown}
         >
-          <ReactCrop
-            crop={crop}
-            onChange={(_, percentCrop) => setCrop(percentCrop)}
-            onComplete={handleCropComplete}
-            aspect={aspectRatio ?? undefined}
-            className={styles.cropWrapper}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL cannot be used with next/image */}
-            <img
-              src={currentImage}
-              alt={`Photo ${activeIndex + 1} of ${selectedImages.length}`}
-              className={styles.image}
-              onLoad={handleImageLoad}
-            />
-          </ReactCrop>
+          <Cropper
+            image={currentImage}
+            crop={cropPosition}
+            zoom={zoom}
+            aspect={aspectRatio ?? 1}
+            onCropChange={handleCropChange}
+            onZoomChange={setZoom}
+            onCropComplete={handleCropComplete}
+            cropShape="rect"
+            showGrid={false}
+            zoomSpeed={0.1}
+            restrictPosition={false}
+            style={{
+              containerStyle: { width: "100%", height: "100%" },
+            }}
+          />
         </div>
 
         <CarouselNavigation
@@ -115,13 +111,13 @@ export const CroppingStep = ({
           isCropOptionsOpen={isCropOptionsOpen}
           onToggleGallery={toggleGallery}
           onToggleCropOptions={toggleCropOptions}
-          zoomLevel={zoomLevel}
+          zoomLevel={zoom}
           isSliderVisible={isSliderVisible}
-          minZoom={minZoom}
-          maxZoom={maxZoom}
-          zoomStep={zoomStep}
+          minZoom={1}
+          maxZoom={3}
+          zoomStep={0.01}
           onToggleSlider={toggleSlider}
-          onZoomChange={handleZoomChange}
+          onZoomChange={(value) => setZoom(value[0] ?? 1)}
         />
 
         <CropOptionsPanel

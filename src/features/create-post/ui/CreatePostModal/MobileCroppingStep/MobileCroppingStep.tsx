@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react"
-import ReactCrop from "react-image-crop"
-import "react-image-crop/dist/ReactCrop.css"
+import Cropper from "react-easy-crop"
+import "react-easy-crop/react-easy-crop.css"
 import { FILTER_PRESETS } from "../FiltersStep/filters"
 import { CropOptionsPanel } from "../CroppingStep/CropOptionsPanel/CropOptionsPanel"
 import { MiniGallery } from "../CroppingStep/MiniGallery/MiniGallery"
@@ -49,17 +49,13 @@ export const MobileCroppingStep = ({
     toggleCropOptions,
     toggleSlider,
     toggleGallery,
-    zoomLevel,
-    minZoom,
-    maxZoom,
-    zoomStep,
-    handleZoomChange,
+    zoom,
+    setZoom,
     aspectRatio,
-    crop,
+    cropPosition,
     selectedRatioId,
     setAspectRatio,
-    setCrop,
-    handleImageLoad,
+    handleCropChange,
     handleCropComplete,
     fileInputRef,
     triggerFileInput,
@@ -130,27 +126,27 @@ export const MobileCroppingStep = ({
             </div>
           ) : (
             <div
-              className={s.zoomContainer}
-              style={{ transform: `scale(${zoomLevel})` }}
+              className={s.cropperContainer}
               onMouseDown={handleImageAreaMouseDown}
               onTouchStart={handleImageAreaMouseDown}
             >
-              <ReactCrop
-                crop={crop}
-                onChange={(_, percentCrop) => setCrop(percentCrop)}
-                onComplete={handleCropComplete}
-                aspect={aspectRatio ?? undefined}
-                className={s.cropWrapper}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL cannot be used with next/image */}
-                <img
-                  src={currentImage}
-                  alt={`Photo ${activeIndex + 1} of ${selectedImages.length}`}
-                  className={s.image}
-                  style={{ filter: activeFilterValue }}
-                  onLoad={handleImageLoad}
-                />
-              </ReactCrop>
+              <Cropper
+                image={currentImage}
+                crop={cropPosition}
+                zoom={zoom}
+                aspect={aspectRatio ?? 1}
+                onCropChange={handleCropChange}
+                onZoomChange={setZoom}
+                onCropComplete={handleCropComplete}
+                cropShape="rect"
+                showGrid={false}
+                zoomSpeed={0.1}
+                restrictPosition={false}
+                style={{
+                  containerStyle: { width: "100%", height: "100%" },
+                }}
+                mediaProps={{ style: { filter: activeFilterValue } }}
+              />
             </div>
           )}
 
@@ -160,13 +156,13 @@ export const MobileCroppingStep = ({
             isCropOptionsOpen={isCropOptionsOpen}
             onToggleGallery={toggleGallery}
             onToggleCropOptions={toggleCropOptions}
-            zoomLevel={zoomLevel}
+            zoomLevel={zoom}
             isSliderVisible={isSliderVisible}
-            minZoom={minZoom}
-            maxZoom={maxZoom}
-            zoomStep={zoomStep}
+            minZoom={1}
+            maxZoom={3}
+            zoomStep={0.01}
             onToggleSlider={toggleSlider}
-            onZoomChange={handleZoomChange}
+            onZoomChange={(value) => setZoom(value[0] ?? 1)}
           />
 
           <CropOptionsPanel

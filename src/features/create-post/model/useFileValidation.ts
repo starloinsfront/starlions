@@ -6,17 +6,21 @@ export const MAX_PHOTOS = 10
 const FILE_VALIDATION_MESSAGE =
   "The photo must be less than 20 Mb and have JPEG or PNG format"
 const MAX_PHOTOS_MESSAGE = `You can add up to ${MAX_PHOTOS} photos`
-const SQUARE_IMAGE_MESSAGE = "Photo must be square (width must equal height)"
 
 function loadImageDimensions(file: File): Promise<{ width: number; height: number }> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file)
     const img = new Image()
+    const cleanup = () => URL.revokeObjectURL(url)
     img.onload = () => {
       resolve({ width: img.naturalWidth, height: img.naturalHeight })
-      URL.revokeObjectURL(img.src)
+      cleanup()
     }
-    img.onerror = () => resolve({ width: 0, height: 0 })
-    img.src = URL.createObjectURL(file)
+    img.onerror = () => {
+      cleanup()
+      reject(new Error(`Unable to decode ${file.name}`))
+    }
+    img.src = url
   })
 }
 
@@ -36,9 +40,10 @@ export async function validateFiles(
       return false
     }
 
-    const { width, height } = await loadImageDimensions(file)
-    if (width !== height) {
-      toast.error(SQUARE_IMAGE_MESSAGE)
+    try {
+      await loadImageDimensions(file)
+    } catch {
+      toast.error(FILE_VALIDATION_MESSAGE)
       return false
     }
   }

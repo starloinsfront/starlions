@@ -2,7 +2,6 @@ import { useCallback, useRef, useState } from "react"
 import { useCarousel } from "@/common/components/Carousel/useCarousel"
 import { useFileInput } from "@/common/hooks/useFileInput"
 import { useCropping } from "./useCropping"
-import { useZoom } from "./useZoom"
 import { useFloatingPanels } from "./useFloatingPanels"
 import { useClickOutside } from "./useClickOutside"
 import { MAX_PHOTOS } from "@/features/create-post/model/useFileValidation"
@@ -44,20 +43,13 @@ export const useCroppingStep = ({
   } = useFloatingPanels()
 
   const {
-    zoomLevel,
-    minZoom,
-    maxZoom,
-    zoomStep,
-    handleZoomChange,
-  } = useZoom(activeIndex)
-
-  const {
     aspectRatio,
-    crop,
+    zoom,
+    cropPosition,
     selectedRatioId,
     setAspectRatio,
-    setCrop,
-    handleImageLoad,
+    setZoom,
+    handleCropChange,
     handleCropComplete,
     handleConfirmCrop,
     cropAllImages,
@@ -137,17 +129,13 @@ export const useCroppingStep = ({
     toggleSlider,
     toggleGallery,
     closeAll,
-    zoomLevel,
-    minZoom,
-    maxZoom,
-    zoomStep,
-    handleZoomChange,
+    zoom,
+    setZoom,
     aspectRatio,
-    crop,
+    cropPosition,
     selectedRatioId,
     setAspectRatio,
-    setCrop,
-    handleImageLoad,
+    handleCropChange,
     handleCropComplete,
     fileInputRef,
     triggerFileInput,
