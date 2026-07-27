@@ -1,4 +1,6 @@
 :root {
+  --font-inter: "Inter";
+
   /* font-sizes */
   --font-size-xs: 12px; /* small_text, small_link */
   --font-size-s: 14px; /* regular_text_14, bold_text_14 */
