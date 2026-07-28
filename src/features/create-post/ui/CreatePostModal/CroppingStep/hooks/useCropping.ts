@@ -21,6 +21,7 @@ export const useCropping = (
 ) => {
   const [aspectRatio, setAspectRatioState] = useState<number | null>(null)
   const [zoom, setZoom] = useState(1)
+  const [imageAspectRatio, setImageAspectRatio] = useState<number | null>(null)
 
   // Per-photo crop storage keyed by photo id.
   const cropsRef = useRef<Record<string, CropState | null>>({})
@@ -48,7 +49,7 @@ export const useCropping = (
 
   const cropState = getCropState(activePhotoId)
 
-  // When the active photo changes, restore its zoom.
+  // When the active photo changes, restore its zoom and compute image aspect ratio.
   useEffect(() => {
     if (activePhotoId) {
       const saved = cropsRef.current[activePhotoId]
@@ -56,7 +57,18 @@ export const useCropping = (
     } else {
       setZoom(1)
     }
-  }, [activePhotoId])
+
+    const photo = photos[activeIndex]
+    if (photo?.previewUrl) {
+      const img = new Image()
+      img.onload = () => {
+        setImageAspectRatio(img.naturalWidth / img.naturalHeight)
+      }
+      img.src = photo.previewUrl
+    } else {
+      setImageAspectRatio(null)
+    }
+  }, [activePhotoId, activeIndex, photos])
 
   // Set aspect ratio and close menu
   const setAspectRatio = useCallback(
@@ -64,12 +76,12 @@ export const useCropping = (
       setAspectRatioState(ratio)
       closeCropOptions()
 
-      // Reset position and zoom when changing aspect ratio
+      // Reset position, zoom and clear stale crop when changing aspect ratio
       if (activePhotoId) {
         cropsRef.current[activePhotoId] = {
           position: { x: 0, y: 0 },
           zoom: 1,
-          croppedAreaPixels: cropsRef.current[activePhotoId]?.croppedAreaPixels ?? null,
+          croppedAreaPixels: null,
         }
       }
       setZoom(1)
@@ -196,6 +208,7 @@ export const useCropping = (
 
   return {
     aspectRatio,
+    imageAspectRatio,
     zoom,
     selectedRatioId,
     cropPosition: cropState.position,

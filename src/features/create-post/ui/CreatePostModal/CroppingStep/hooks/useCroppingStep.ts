@@ -44,6 +44,7 @@ export const useCroppingStep = ({
 
   const {
     aspectRatio,
+    imageAspectRatio,
     zoom,
     cropPosition,
     selectedRatioId,
@@ -132,6 +133,7 @@ export const useCroppingStep = ({
     zoom,
     setZoom,
     aspectRatio,
+    imageAspectRatio,
     cropPosition,
     selectedRatioId,
     setAspectRatio,

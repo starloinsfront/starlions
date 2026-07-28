@@ -33,6 +33,7 @@ export const CroppingStep = ({
     zoom,
     setZoom,
     aspectRatio,
+    imageAspectRatio,
     cropPosition,
     selectedRatioId,
     setAspectRatio,
@@ -83,7 +84,7 @@ export const CroppingStep = ({
             image={currentImage}
             crop={cropPosition}
             zoom={zoom}
-            aspect={aspectRatio ?? 1}
+            aspect={aspectRatio ?? imageAspectRatio ?? 1}
             onCropChange={handleCropChange}
             onZoomChange={setZoom}
             onCropComplete={handleCropComplete}

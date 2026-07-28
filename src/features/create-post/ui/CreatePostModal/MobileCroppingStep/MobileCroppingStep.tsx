@@ -52,6 +52,7 @@ export const MobileCroppingStep = ({
     zoom,
     setZoom,
     aspectRatio,
+    imageAspectRatio,
     cropPosition,
     selectedRatioId,
     setAspectRatio,
@@ -134,7 +135,7 @@ export const MobileCroppingStep = ({
                 image={currentImage}
                 crop={cropPosition}
                 zoom={zoom}
-                aspect={aspectRatio ?? 1}
+                aspect={aspectRatio ?? imageAspectRatio ?? 1}
                 onCropChange={handleCropChange}
                 onZoomChange={setZoom}
                 onCropComplete={handleCropComplete}
