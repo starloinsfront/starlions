@@ -4,11 +4,11 @@ import { Main } from "@/widgets/Main/Main"
 export const revalidate = 60
 
 export default async function Home() {
-  const data = await getMainPageData()
+  // const data = await getMainPageData()
 
   return (
     <>
-      <Main data={data} postHrefBase="/" />
+      <Main data={null} postHrefBase="/" />
     </>
   )
 }
