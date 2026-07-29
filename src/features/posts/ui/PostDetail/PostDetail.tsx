@@ -20,7 +20,7 @@ type Props = {
 
 export const PostDetail = ({ isModal = false, post }: Props) => {
   const { data: me } = useMe()
-  const { isMobile } = usePostLayoutMode()
+  const { isTabletOrMobile } = usePostLayoutMode()
   const [description, setDescription] = useState(post.description)
 
   const [isLikesModalOpen, setIsLikesModalOpen] = useState(false)
@@ -34,7 +34,7 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
   const handleOpenLikes = () => setMobilePanel("likes")
   const handleResetPanel = () => setMobilePanel(null)
 
-  if (isMobile) {
+  if (isTabletOrMobile) {
     return (
       <PostMobileView
         activePanel={mobilePanel}
@@ -46,6 +46,7 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
         onResetPanelAction={handleResetPanel}
         post={postWithDescription}
         showAppBar={isModal}
+        showBackNavigation={!isModal}
       />
     )
   }

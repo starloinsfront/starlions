@@ -1,8 +1,10 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 
 import { Icon } from "@/common/components/Icon/Icon"
+import { ROUTES } from "@/common/constants/route"
 import { useMe } from "@/features/auth/api/useMe"
 import { formatPostDate } from "@/features/posts/lib/formatPostDate"
 import { getUserInitials } from "@/features/posts/lib/userInitials"
@@ -52,12 +54,16 @@ export const MobilePostsFeed = ({ posts }: Props) => {
           return (
             <article className={s.post} key={post.id}>
               <header className={s.postHeader}>
-                <div className={s.authorInfo}>
+                <Link
+                  aria-label={`Open ${post.author.username} profile`}
+                  className={s.authorInfo}
+                  href={ROUTES.profileById(post.author.authorId)}
+                >
                   <span aria-hidden="true" className={s.avatar}>
                     {getUserInitials(post.author.username)}
                   </span>
                   <span className={s.username}>{post.author.username}</span>
-                </div>
+                </Link>
 
                 {isAuthorized && (
                   <PostActionsMenu

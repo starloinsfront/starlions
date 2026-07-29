@@ -1,39 +1,30 @@
 "use client"
 
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+
 import { Loader } from "@/common/components/Loader/Loader"
+import { ROUTES } from "@/common/constants/route"
 import { useMe } from "@/features/auth/api/useMe"
-import { ProfileHeader } from "@/features/profile/ui/ProfileHeader"
-import { UserPostsGrid } from "@/features/user-posts/ui/UserPostsGrid"
 
-import s from "./page.module.css"
+import s from "./redirect.module.css"
 
-export default function ProfilePage() {
-  const { data: me, isLoading, isError } = useMe()
+export default function MyProfileRedirectPage() {
+  const router = useRouter()
+  const { data: me, isPending } = useMe()
 
-  if (isLoading) {
-    return (
-      <section className={s.page}>
-        <div className={s.state}>
-          <Loader />
-        </div>
-      </section>
-    )
-  }
+  useEffect(() => {
+    if (isPending) {
+      return
+    }
 
-  if (isError || !me?.id) {
-    return (
-      <section className={s.page}>
-        <p className={s.state}>Failed to load profile.</p>
-      </section>
-    )
-  }
+    router.replace(me?.id ? ROUTES.profileById(me.id) : ROUTES.home)
+  }, [isPending, me?.id, router])
 
   return (
-    <>
-      <section className={s.page}>
-        <ProfileHeader username={me.username} />
-        <UserPostsGrid userId={me.id} />
-      </section>
-    </>
+    <section className={s.page} aria-live="polite">
+      <Loader />
+      <p>Opening profile…</p>
+    </section>
   )
 }

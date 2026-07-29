@@ -16,17 +16,17 @@ type Props = {
 export const PostDetailModal = ({ children, closeHref, mobileHref }: Props) => {
   const descriptionId = useId()
   const router = useRouter()
-  const { isMobile } = usePostLayoutMode()
+  const { isTabletOrMobile } = usePostLayoutMode()
   const hasRedirectedToMobileRef = useRef(false)
 
   useEffect(() => {
-    if (!isMobile || !mobileHref || hasRedirectedToMobileRef.current) {
+    if (!isTabletOrMobile || !mobileHref || hasRedirectedToMobileRef.current) {
       return
     }
 
     hasRedirectedToMobileRef.current = true
     window.location.assign(mobileHref)
-  }, [isMobile, mobileHref, router])
+  }, [isTabletOrMobile, mobileHref])
 
   const handleClose = () => {
     if (closeHref) {
@@ -38,7 +38,7 @@ export const PostDetailModal = ({ children, closeHref, mobileHref }: Props) => {
     router.back()
   }
 
-  if (isMobile && mobileHref) {
+  if (isTabletOrMobile && mobileHref) {
     return null
   }
 

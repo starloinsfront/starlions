@@ -11,7 +11,7 @@ import type { PublicPostImage } from "@/features/posts/model/post.types"
 import stylesPostCard from "../PostCard.module.css"
 import s from "./PostCardMedia.module.css"
 
-const MOBILE_POST_MEDIA_QUERY = "(max-width: 768px)"
+const COMPACT_POST_MEDIA_QUERY = "(max-width: 1024px)"
 
 type Props = {
   hideControls?: boolean
@@ -26,13 +26,13 @@ export const PostCardMedia = ({
   postHrefBase = "/",
   postId,
 }: Props) => {
-  const isMobile = useMediaQuery(MOBILE_POST_MEDIA_QUERY)
+  const isCompact = useMediaQuery(COMPACT_POST_MEDIA_QUERY)
   const visibleImages = hideControls ? images.slice(0, 1) : images
   const postModalHref = ROUTES.postModalById(postHrefBase, postId)
   const mobilePostHref = ROUTES.postById(postId)
 
   const handleNavigate = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (!isMobile) {
+    if (!isCompact) {
       return
     }
 

@@ -1,6 +1,5 @@
 import { client } from "@/common/api/client"
 import { handleApiResponse } from "@/common/utils/api/error/handleApiResponse"
-import { getAuthHeaders } from "@/features/auth/api/apiAuth"
 import type { UserPostsPage } from "../model/userPosts.types"
 
 type GetUserPostsParams = {
@@ -17,7 +16,6 @@ const getUserPosts = async (userId: string, params?: GetUserPostsParams) => {
         limit: params?.limit,
       },
     },
-    headers: getAuthHeaders(),
   })
 
   const response = handleApiResponse(result, "Failed to load user posts")

@@ -35,6 +35,11 @@
   display: flex;
   gap: 10px;
   min-width: 0;
+  text-decoration: none;
+}
+
+.authorInfo:hover .username {
+  color: var(--accent-300);
 }
 
 .avatar {
@@ -133,7 +138,11 @@
   font-size: var(--font-size-s);
   line-height: 22px;
   margin: 0;
+  max-width: 100%;
   min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .description strong,

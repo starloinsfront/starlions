@@ -94,6 +94,22 @@
   min-height: 0;
 }
 
+.mobileDetail {
+  aspect-ratio: 1 / 1;
+  height: auto;
+  max-height: none;
+}
+
+.mobileDetail .mediaCarousel,
+.mobileDetail .mediaSlide {
+  width: 100%;
+}
+
+.mobileDetail .mediaSlide {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 @media (max-width: 768px) {
   .navButton {
     height: 36px;

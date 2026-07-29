@@ -10,10 +10,11 @@ import { UserPostTile } from "./UserPostTile"
 import s from "./UserPostsGrid.module.css"
 
 type Props = {
+  isOwner?: boolean
   userId: string
 }
 
-export const UserPostsGrid = ({ userId }: Props) => {
+export const UserPostsGrid = ({ isOwner = false, userId }: Props) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useUserPostsInfiniteQuery(userId)
 
@@ -42,11 +43,15 @@ export const UserPostsGrid = ({ userId }: Props) => {
   }
 
   if (posts.length === 0) {
-    return <p className={s.state}>No publications yet.</p>
+    return (
+      <p className={s.state}>
+        {isOwner ? "You have no publications yet." : "No publications yet."}
+      </p>
+    )
   }
 
   return (
-    <section className={s.section}>
+    <section aria-label="User publications" className={s.section}>
       <div className={s.grid}>
         {posts.map((post) => (
           <UserPostTile
@@ -57,12 +62,14 @@ export const UserPostsGrid = ({ userId }: Props) => {
           />
         ))}
       </div>
+
       <div ref={sentinelRef} aria-hidden className={s.sentinel} />
-      {isFetchingNextPage && (
+
+      {isFetchingNextPage ? (
         <div className={s.loader}>
           <Loader />
         </div>
-      )}
+      ) : null}
     </section>
   )
 }

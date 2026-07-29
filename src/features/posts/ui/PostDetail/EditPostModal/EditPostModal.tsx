@@ -69,6 +69,7 @@ export const EditPostModal = ({ description, isOpen, onClose, onSuccess, postId 
         onPointerDownOutside={isCloseDialogOpen ? blockOutsideInteraction : handleOverlayClick}
         open={isOpen}
         size="sm"
+        className={s.zIndex}
       >
         <form
           className={s.form}

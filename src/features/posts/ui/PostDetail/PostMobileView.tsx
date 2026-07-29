@@ -1,6 +1,10 @@
 "use client"
 
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+
 import { Icon } from "@/common/components/Icon/Icon"
+import { ROUTES } from "@/common/constants/route"
 import { formatPostDate } from "@/features/posts/lib/formatPostDate"
 import { getUserInitials } from "@/features/posts/lib/userInitials"
 import { PostActionsMenu } from "./PostActionsMenu"
@@ -24,6 +28,7 @@ type Props = {
   onResetPanelAction: () => void
   post: PostDetailData
   showAppBar?: boolean
+  showBackNavigation?: boolean
 }
 
 const MOBILE_COMMENTS_PREVIEW_LIMIT = 1
@@ -38,8 +43,20 @@ export const PostMobileView = ({
   onResetPanelAction,
   post,
   showAppBar = false,
+  showBackNavigation = false,
 }: Props) => {
+  const router = useRouter()
   const previewComments = post.comments.slice(0, MOBILE_COMMENTS_PREVIEW_LIMIT)
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back()
+
+      return
+    }
+
+    router.replace(ROUTES.home)
+  }
 
   return (
     <section className={s.root}>
@@ -53,14 +70,33 @@ export const PostMobileView = ({
         />
       )}
 
+      {showBackNavigation ? (
+        <nav aria-label="Post navigation" className={s.navigationBar}>
+          <button
+            aria-label="Go back"
+            className={s.backButton}
+            onClick={handleBack}
+            type="button"
+          >
+            <Icon height={24} name="arrowBackOutline" width={24} />
+          </button>
+          <span className={s.navigationTitle}>Post</span>
+          <span aria-hidden="true" className={s.navigationSpacer} />
+        </nav>
+      ) : null}
+
       <article className={s.postCard}>
         <header className={s.postHeader}>
-          <div className={s.authorInfo}>
+          <Link
+            aria-label={`Open ${post.author.username} profile`}
+            className={s.authorInfo}
+            href={ROUTES.profileById(post.author.authorId)}
+          >
             <span aria-hidden="true" className={s.avatar}>
               {getUserInitials(post.author.username)}
             </span>
             <span className={s.username}>{post.author.username}</span>
-          </div>
+          </Link>
 
           {isAuthorized && (
             <PostActionsMenu
@@ -72,7 +108,7 @@ export const PostMobileView = ({
           )}
         </header>
 
-        <PostDetailMedia images={post.images} variant="mobile" />
+        <PostDetailMedia images={post.images} variant="mobile-detail" />
 
         <div className={s.body}>
           <PostMetaFooter
