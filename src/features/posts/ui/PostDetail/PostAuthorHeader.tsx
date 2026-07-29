@@ -1,10 +1,13 @@
 import clsx from "clsx"
+import Link from "next/link"
 
+import { ROUTES } from "@/common/constants/route"
 import { getUserInitials } from "@/features/posts/lib/userInitials"
+
 import { PostActionsMenu } from "./PostActionsMenu"
 import { PostAvatar } from "./PostAvatar"
+import type { PostDetailAuthor } from "./PostDetail.types"
 import s from "./PostAuthorHeader.module.css"
-import { PostDetailAuthor } from "./PostDetail.types"
 
 type Props = {
   author: PostDetailAuthor
@@ -27,19 +30,23 @@ export const PostAuthorHeader = ({
 }: Props) => {
   return (
     <header className={clsx(s.header, className)}>
-      <div className={s.authorInfo}>
+      <Link
+        aria-label={`Open ${author.username} profile`}
+        className={s.authorInfo}
+        href={ROUTES.profileById(author.authorId)}
+      >
         <PostAvatar label={getUserInitials(author.username)} size="md" />
         <span className={s.username}>{author.username}</span>
-      </div>
+      </Link>
 
-      {isAuthorized && (
+      {isAuthorized ? (
         <PostActionsMenu
           description={description}
           isOwnPost={isOwnPost}
           onDescriptionUpdated={onDescriptionUpdated}
           postId={postId}
         />
-      )}
+      ) : null}
     </header>
   )
 }

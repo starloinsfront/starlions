@@ -3,6 +3,7 @@
   display: flex;
   gap: 12px;
   min-width: 0;
+  text-decoration: none;
 }
 
 .avatar {
@@ -34,4 +35,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.user:hover .userName {
+  color: var(--accent-300);
 }

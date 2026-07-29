@@ -17,16 +17,16 @@ type Props = {
   imagesCount?: number
 }
 
-const MOBILE_POST_MEDIA_QUERY = "(max-width: 768px)"
+const COMPACT_POST_MEDIA_QUERY = "(max-width: 1024px)"
 
 export const UserPostTile = ({ id, coverUrl, imagesCount }: Props) => {
-  const isMobile = useMediaQuery(MOBILE_POST_MEDIA_QUERY)
+  const isCompact = useMediaQuery(COMPACT_POST_MEDIA_QUERY)
   const pathname = usePathname()
   const postModalHref = ROUTES.postModalById(pathname, id)
   const mobilePostHref = ROUTES.postById(id)
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (!isMobile) {
+    if (!isCompact) {
       return
     }
 
@@ -41,7 +41,7 @@ export const UserPostTile = ({ id, coverUrl, imagesCount }: Props) => {
           alt=""
           className={s.image}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1279px) 50vw, 25vw"
+          sizes="(max-width: 768px) 33vw, (max-width: 900px) 33vw, 25vw"
           src={coverUrl}
           unoptimized
         />

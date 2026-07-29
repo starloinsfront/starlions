@@ -7,6 +7,7 @@ export const ROUTES = {
   feed: "/feed",
   create: "/create",
   profile: "/profile",
+  profileById: (userId: string) => `/profile/${encodeURIComponent(userId)}`,
   messenger: "/messenger",
   search: "/search",
   statistics: "/statistics",

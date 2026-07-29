@@ -13,6 +13,11 @@
   display: flex;
   gap: 12px;
   min-width: 0;
+  text-decoration: none;
+}
+
+.authorInfo:hover .username {
+  color: var(--accent-300);
 }
 
 .username {

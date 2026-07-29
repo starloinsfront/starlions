@@ -7,12 +7,22 @@ import { PostDetailImage } from "./PostDetail.types"
 type Props = {
   className?: string
   images: PostDetailImage[]
-  variant?: "desktop" | "mobile"
+  variant?: "desktop" | "mobile" | "mobile-detail"
 }
 
 export const PostDetailMedia = ({ className, images, variant = "desktop" }: Props) => {
+  const isMobile = variant !== "desktop"
+  const isMobileDetail = variant === "mobile-detail"
+
   return (
-    <div className={clsx(s.mediaSection, variant === "mobile" && s.mobile, className)}>
+    <div
+      className={clsx(
+        s.mediaSection,
+        isMobile && s.mobile,
+        isMobileDetail && s.mobileDetail,
+        className,
+      )}
+    >
       <Carousel
         classNames={{
           dot: s.dot,

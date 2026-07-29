@@ -67,7 +67,11 @@ export const PostMetaFooter = ({
           <PostLikesAvatarStack likes={likes} />
           <span>{formatMetric(likesCount)} &quot;Like&quot;</span>
         </button>
-        <p className={s.date}>{formatPostDate(createdAt)}</p>
+        {!isMobile ? (
+          <time className={s.date} dateTime={createdAt}>
+            {formatPostDate(createdAt)}
+          </time>
+        ) : null}
       </div>
 
       {isMobile && commentsCount > 0 ? (
