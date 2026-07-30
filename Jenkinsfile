@@ -62,12 +62,6 @@ pipeline {
              steps {
                  withKubeConfig([credentialsId: 'prod-kubernetes']) {
                     sh 'kubectl apply -f deployment.yaml'
-                    echo "Waiting 15s for pod to start..."
-                    sh 'sleep 15'
-                    sh "kubectl get pods -n ${env.NAMESPACE} -l project=${env.PROJECT}"
-                    sh "kubectl describe pods -n ${env.NAMESPACE} -l project=${env.PROJECT}"
-                    sh "kubectl logs -n ${env.NAMESPACE} -l project=${env.PROJECT} --tail=50 --previous || true"
-                    sh "kubectl logs -n ${env.NAMESPACE} -l project=${env.PROJECT} --tail=50 || true"
                     sh "kubectl rollout status deployment/${env.DEPLOYMENT_NAME} --namespace=${env.NAMESPACE}"
                     sh "kubectl get services -o wide"
                  }

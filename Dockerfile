@@ -1,43 +1,23 @@
-# Base стейдж с общими настройками
-FROM node:22.13-alpine as base
-RUN npm install -g pnpm
-
-# Устанавливаем зависимости
-FROM base as dependencies
+#Устанавливаем зависимости
+FROM node:20.11-alpine as dependencies
 WORKDIR /app
 COPY package*.json ./
-RUN pnpm install --no-frozen-lockfile --ignore-scripts
+RUN npm install
 
-# Билдим приложение
-FROM base as builder
+#Билдим приложение
+#Кэширование зависимостей — если файлы в проекте изменились,
+#но package.json остался неизменным, то стейдж с установкой зависимостей повторно не выполняется, что экономит время.
+FROM node:20.11-alpine as builder
 WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
-RUN pnpm run build:production
+RUN npm run build:production
 
-# Стейдж запуска
-FROM node:22.13-alpine as runner
+#Стейдж запуска
+FROM node:20.11-alpine as runner
+USER node
 WORKDIR /app
-
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-
-# Копируем standalone билд
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-
-# Создаем пользователя
-RUN addgroup --system --gid 1000 nodejs && \
-    adduser --system --uid 1000 nextjs && \
-    chown -R nextjs:nodejs /app
-
-USER nextjs
-
-EXPOSE 4297
-
-ENV PORT 4297
-ENV HOSTNAME "0.0.0.0"
-
-# Запускаем (фактический путь зависит от структуры standalone)
-CMD ["node", "server.js"]
+COPY --from=builder /app/ ./
+EXPOSE 3000
+CMD ["npm", "start"]
