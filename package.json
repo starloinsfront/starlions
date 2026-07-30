@@ -69,7 +69,6 @@
     "prettier": "3.8.3",
     "storybook": "10.3.5",
     "stylelint": "17.8.0",
-    "stylelint-config-prettier": "9.0.5",
     "stylelint-config-standard": "40.0.0",
     "stylelint-order": "8.1.1",
     "typescript": "5",
