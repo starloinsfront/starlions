@@ -16,32 +16,11 @@ spec:
         project: PROJECT
     spec:
       containers:
-         - name: PROJECT
-           image: REGISTRY_HOSTNAME/PROJECT:TAG_VERSION
-           securityContext:
-             allowPrivilegeEscalation: false
-             runAsNonRoot: true
-             runAsUser: 1001
-           ports:
-             - containerPort: PORT_CONTAINER
-           readinessProbe:
-             httpGet:
-               path: /
-               port: PORT_CONTAINER
-             initialDelaySeconds: 10
-             periodSeconds: 10
-             failureThreshold: 3
-           livenessProbe:
-             httpGet:
-               path: /
-               port: PORT_CONTAINER
-             initialDelaySeconds: 15
-             periodSeconds: 20
-             failureThreshold: 3
-           resources:
-             requests:
-               memory: "256Mi"
-               cpu: "100m"
-             limits:
-               memory: "512Mi"
-               cpu: "500m"
+        - name: PROJECT
+          image: REGISTRY_HOSTNAME/PROJECT:TAG_VERSION
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true      # опционально, но хорошая практика
+            runAsUser: 1000         # опционально
+          ports:
+            - containerPort: PORT_CONTAINER
