@@ -1,6 +1,6 @@
 # Base стейдж с общими настройками
 FROM node:22.13-alpine as base
-RUN npm install -g pnpm  
+RUN npm install -g pnpm
 
 # Устанавливаем зависимости
 FROM base as dependencies
@@ -28,8 +28,8 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
 # Создаем пользователя
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs && \
+RUN addgroup --system --gid 1000 nodejs && \
+    adduser --system --uid 1000 nextjs && \
     chown -R nextjs:nodejs /app
 
 USER nextjs
