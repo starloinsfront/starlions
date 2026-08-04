@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.avatar {
+  background-color: var(--dark-300);
+  border-radius: 50%;
+  height: 192px;
+  overflow: hidden;
+  position: relative;
+  width: 192px;
+}
+
+.avatarImage {
+  object-fit: cover;
+}
+
+.avatarFallback {
+  align-items: center;
+  color: var(--light-100);
+  display: flex;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 48px;
+  font-weight: var(--font-weight-bold);
+  height: 100%;
+  justify-content: center;
+  user-select: none;
+}
