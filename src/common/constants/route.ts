@@ -27,7 +27,7 @@ export const ROUTES = {
   emailCheck: "/forgot-password/email-check",
   createNewPassword: "/auth/create-new-password",
   recoveryLinkExpired: "/auth/recovery-link-expired",
-  settings: "/settings",
+  settings: (userId: string) => `/profile/${encodeURIComponent(userId)}/settings`,
   privacyPolicy: "/privacypolicy",
   termsOfService: "/termsofservice",
 } as const
