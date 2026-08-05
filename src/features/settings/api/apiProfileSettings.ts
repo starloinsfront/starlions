@@ -3,6 +3,8 @@ import type { ProfileSettingsFormData } from "../model/profile-settings.schema"
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
+let cachedAvatarUrl: string | null = null
+
 export const fetchProfileSettings = async (): Promise<ProfileSettingsDto> => {
   await delay(300)
 
@@ -15,7 +17,7 @@ export const fetchProfileSettings = async (): Promise<ProfileSettingsDto> => {
     country: null,
     city: null,
     aboutMe: "",
-    avatarUrl: null,
+    avatarUrl: cachedAvatarUrl,
   }
 }
 
@@ -28,6 +30,8 @@ export const updateProfileSettings = async (
     throw new Error("Server is not available")
   }
 
+  cachedAvatarUrl = data.avatarUrl ?? cachedAvatarUrl
+
   return {
     id: "current-user",
     username: data.username,
@@ -37,6 +41,6 @@ export const updateProfileSettings = async (
     country: data.country ?? null,
     city: data.city ?? null,
     aboutMe: data.aboutMe ?? "",
-    avatarUrl: null,
+    avatarUrl: cachedAvatarUrl,
   }
 }

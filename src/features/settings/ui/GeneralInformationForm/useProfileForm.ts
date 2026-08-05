@@ -23,6 +23,7 @@ export const useProfileForm = () => {
     resolver: zodResolver(profileSettingsSchema),
     mode: "onChange",
     defaultValues: {
+      avatarUrl: null,
       username: "",
       firstName: "",
       lastName: "",
@@ -46,6 +47,9 @@ export const useProfileForm = () => {
     setValue("country", profileSettings.country)
     setValue("city", profileSettings.city)
     setValue("aboutMe", profileSettings.aboutMe)
+    if (profileSettings.avatarUrl) {
+      setValue("avatarUrl", profileSettings.avatarUrl)
+    }
   }, [profileSettings, me?.username, setValue])
 
   // Restore draft from sessionStorage (e.g. after visiting Privacy Policy)

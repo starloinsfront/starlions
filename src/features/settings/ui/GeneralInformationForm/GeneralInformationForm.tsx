@@ -4,6 +4,7 @@ import { Controller, type Control, type SubmitHandler } from "react-hook-form"
 
 import { Button } from "@/common/components/Button/Button"
 import { TextArea } from "@/common/components/TextArea/TextArea"
+import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import type { ProfileSettingsFormData } from "../../model/profile-settings.schema"
 
 import { AvatarDisplay } from "../AvatarDisplay"
@@ -12,6 +13,7 @@ import { AgeRestrictionNotice } from "../AgeRestrictionNotice"
 import { ProfileNameFields } from "./ProfileNameFields"
 import { ProfileLocationFields } from "./ProfileLocationFields"
 import { useProfileForm } from "./useProfileForm"
+import { useProfileAvatar } from "./useProfileAvatar"
 
 import s from "./GeneralInformationForm.module.css"
 
@@ -25,6 +27,14 @@ export const GeneralInformationForm = () => {
     fn: SubmitHandler<ProfileSettingsFormData>,
   ) => (e?: React.BaseSyntheticEvent) => Promise<void>
 
+  const {
+    displayAvatarUrl,
+    avatarUploadModal,
+    openUploadModal,
+    requestDelete,
+    deleteConfirmProps,
+  } = useProfileAvatar({ setValue, watch, initialAvatarUrl: avatarUrl })
+
   const selectedCountryId = watch("country")
   const dateOfBirth = watch("dateOfBirth")
 
@@ -34,7 +44,12 @@ export const GeneralInformationForm = () => {
 
   return (
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-      <AvatarDisplay avatarUrl={avatarUrl} username={watch("username")} />
+      <AvatarDisplay
+        avatarUrl={displayAvatarUrl}
+        username={watch("username")}
+        onSelectPhoto={openUploadModal}
+        onDelete={requestDelete}
+      />
 
       <ProfileNameFields register={register} errors={errors} />
 
@@ -78,6 +93,16 @@ export const GeneralInformationForm = () => {
       >
         Save changes
       </Button>
+
+      {avatarUploadModal}
+
+      <ConfirmationModal
+        title="Delete photo"
+        message="Do you really want to delete your profile photo?"
+        discardBtnText="Yes"
+        confirmBtnText="No"
+        {...deleteConfirmProps}
+      />
     </form>
   )
 }

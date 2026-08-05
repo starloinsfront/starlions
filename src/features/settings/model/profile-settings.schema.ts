@@ -3,6 +3,8 @@ import z from "zod"
 const NAME_REGEX = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/
 
 export const profileSettingsSchema = z.object({
+  avatarUrl: z.string().nullable().optional(),
+
   username: z
     .string()
     .min(6, "Minimum number of characters 6")
