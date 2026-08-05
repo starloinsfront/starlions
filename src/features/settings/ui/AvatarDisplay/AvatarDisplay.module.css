@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.avatarWrapper {
+  height: 192px;
+  position: relative;
+  width: 192px;
+}
+
+.avatar {
+  background-color: var(--dark-300);
+  border-radius: 50%;
+  height: 192px;
+  overflow: hidden;
+  position: relative;
+  width: 192px;
+}
+
+.avatarImage {
+  object-fit: cover;
+}
+
+.avatarFallback {
+  align-items: center;
+  color: var(--light-100);
+  display: flex;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 48px;
+  font-weight: var(--font-weight-bold);
+  height: 100%;
+  justify-content: center;
+  user-select: none;
+}
+
+.deleteButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--light-100);
+  cursor: pointer;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 24px;
+  z-index: 1;
+}
+
+.deleteButton:hover {
+  background-color: var(--danger-500);
+  opacity: 0.8;
+}
+
+.selectButton {
+  appearance: none;
+  background: none;
+  border: none;
+  color: var(--accent-500);
+  cursor: pointer;
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-m);
+  padding: 0;
+  text-align: left;
+}
+
+.selectButton:hover {
+  color: var(--accent-300);
+}

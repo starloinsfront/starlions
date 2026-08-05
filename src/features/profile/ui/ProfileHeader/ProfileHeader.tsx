@@ -60,7 +60,7 @@ export const ProfileHeader = ({ isAuthorized, isOwner, profile }: Props) => {
           >
             {isOwner ? (
               <Button asChild className={s.settingsButton} variant="secondary">
-                <Link href={ROUTES.settings}>Profile Settings</Link>
+                <Link href={ROUTES.settings(profile.id)}>Profile Settings</Link>
               </Button>
             ) : null}
 

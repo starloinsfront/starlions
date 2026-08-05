@@ -1,0 +1,1 @@
+export { AgeRestrictionNotice } from "./AgeRestrictionNotice"
