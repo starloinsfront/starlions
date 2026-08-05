@@ -6,25 +6,25 @@ import type { ProfileSettingsFormData } from "../../model/profile-settings.schem
 import { AvatarUploadModal, useAvatarUpload } from "../AvatarUploadModal"
 
 type Props = {
-  setValue: UseFormSetValue<ProfileSettingsFormData>
+  setValueAction: UseFormSetValue<ProfileSettingsFormData>
   watch: UseFormWatch<ProfileSettingsFormData>
   initialAvatarUrl: string | null
 }
 
-export const useProfileAvatar = ({ setValue, watch, initialAvatarUrl }: Props) => {
+export const useProfileAvatar = ({ setValueAction, watch, initialAvatarUrl }: Props) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   const handleAvatarSave = useCallback(
     (blobUrl: string) => {
-      setValue("avatarUrl", blobUrl, { shouldValidate: true })
+      setValueAction("avatarUrl", blobUrl, { shouldValidate: true })
     },
-    [setValue],
+    [setValueAction],
   )
 
   const handleDeleteConfirm = useCallback(() => {
     setShowDeleteConfirm(false)
-    setValue("avatarUrl", null, { shouldValidate: true })
-  }, [setValue])
+    setValueAction("avatarUrl", null, { shouldValidate: true })
+  }, [setValueAction])
 
   const avatarHook = useAvatarUpload(handleAvatarSave)
 

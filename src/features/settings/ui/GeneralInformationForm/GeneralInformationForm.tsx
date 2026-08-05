@@ -33,7 +33,7 @@ export const GeneralInformationForm = () => {
     openUploadModal,
     requestDelete,
     deleteConfirmProps,
-  } = useProfileAvatar({ setValue, watch, initialAvatarUrl: avatarUrl })
+  } = useProfileAvatar({ setValueAction: setValue, watch, initialAvatarUrl: avatarUrl })
 
   const selectedCountryId = watch("country")
   const dateOfBirth = watch("dateOfBirth")
