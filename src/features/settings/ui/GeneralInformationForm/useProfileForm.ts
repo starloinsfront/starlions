@@ -11,6 +11,7 @@ import {
 import { useUpdateProfileMutation } from "../../api/useUpdateProfileMutation"
 import { useProfileSettingsQuery } from "../../api/useProfileSettingsQuery"
 import { useMe } from "@/features/auth/api/useMe"
+import type { SchemaUpdateProfileInputDto } from "@/common/api/schema"
 
 const STORAGE_KEY = "profile-settings-draft"
 
@@ -28,31 +29,29 @@ export const useProfileForm = () => {
       firstName: "",
       lastName: "",
       dateOfBirth: null,
-      country: null,
-      city: null,
+      countryCode: null,
+      cityId: null,
       aboutMe: "",
     },
   })
 
   const { setValue, getValues } = form
 
-  // Pre-fill form once profile data loads
   useEffect(() => {
     if (!profileSettings) return
 
     setValue("username", profileSettings.username || me?.username || "")
-    setValue("firstName", profileSettings.firstName)
-    setValue("lastName", profileSettings.lastName)
+    setValue("firstName", profileSettings.firstName ?? "")
+    setValue("lastName", profileSettings.lastName ?? "")
     setValue("dateOfBirth", profileSettings.dateOfBirth)
-    setValue("country", profileSettings.country)
-    setValue("city", profileSettings.city)
-    setValue("aboutMe", profileSettings.aboutMe)
+    setValue("countryCode", profileSettings.countryCode)
+    setValue("cityId", profileSettings.cityId)
+    setValue("aboutMe", profileSettings.aboutMe ?? "")
     if (profileSettings.avatarUrl) {
       setValue("avatarUrl", profileSettings.avatarUrl)
     }
   }, [profileSettings, me?.username, setValue])
 
-  // Restore draft from sessionStorage (e.g. after visiting Privacy Policy)
   useEffect(() => {
     const draft = sessionStorage.getItem(STORAGE_KEY)
     if (draft) {
@@ -70,7 +69,6 @@ export const useProfileForm = () => {
     }
   }, [setValue])
 
-  // Save draft before unmount (preserves data when navigating to Privacy Policy)
   useEffect(() => {
     return () => {
       const values = getValues()
@@ -84,7 +82,16 @@ export const useProfileForm = () => {
   }, [getValues])
 
   const onSubmit = (data: ProfileSettingsFormData) => {
-    updateProfile(data)
+    const body: SchemaUpdateProfileInputDto = {
+      username: data.username,
+      firstName: data.firstName ?? "",
+      lastName: data.lastName ?? "",
+      dateOfBirth: data.dateOfBirth ?? null,
+      countryCode: data.countryCode ?? null,
+      cityId: data.cityId ?? null,
+      aboutMe: data.aboutMe ?? null,
+    }
+    updateProfile(body)
   }
 
   return {

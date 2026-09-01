@@ -1,11 +1,13 @@
 export type ProfileSettingsDto = {
-  id: string
+  userId: string
   username: string
-  firstName: string
-  lastName: string
+  email: string
+  firstName: string | null
+  lastName: string | null
   dateOfBirth: string | null
-  country: string | null
-  city: string | null
-  aboutMe: string
+  countryCode: string | null
+  cityId: number | null
+  cityName: string | null
+  aboutMe: string | null
   avatarUrl: string | null
 }

@@ -4,23 +4,23 @@ import { useState, useRef, useEffect, useMemo, useCallback } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
 import s from "./LocationSelect.module.css"
 
-type Item = {
-  id: string
+type Item<T extends string | number> = {
+  id: T
   name: string
 }
 
-type Props = {
+type Props<T extends string | number> = {
   label: string
   placeholder: string
-  items: Item[]
-  value: string | null | undefined
-  onChange: (value: string | null) => void
+  items: Item<T>[]
+  value: T | null | undefined
+  onChange: (value: T | null) => void
   disabled?: boolean
   error?: string
   allowFreeText?: boolean
 }
 
-export const LocationSelect = ({
+export const LocationSelect = <T extends string | number>({
   label,
   placeholder,
   items,
@@ -29,7 +29,7 @@ export const LocationSelect = ({
   disabled = false,
   error,
   allowFreeText = false,
-}: Props) => {
+}: Props<T>) => {
   const [query, setQuery] = useState("")
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -38,7 +38,7 @@ export const LocationSelect = ({
   const isFreeText = allowFreeText && value && !selectedItem
 
   const filteredItems = useMemo(() => {
-    const searchQuery = isOpen ? query : (selectedItem ? "" : (value ?? ""))
+    const searchQuery = isOpen ? query : (selectedItem ? "" : String(value ?? ""))
     if (!searchQuery.trim()) return items
     const lowerQuery = searchQuery.toLowerCase()
     return items.filter((item) => item.name.toLowerCase().includes(lowerQuery))
@@ -56,7 +56,7 @@ export const LocationSelect = ({
   )
 
   const handleSelect = useCallback(
-    (item: Item) => {
+    (item: Item<T>) => {
       setQuery("")
       setIsOpen(false)
       onChange(item.id)
@@ -75,7 +75,7 @@ export const LocationSelect = ({
     if (selectedItem) {
       setQuery("")
     } else if (allowFreeText && query.trim()) {
-      onChange(query.trim())
+      onChange(query.trim() as T)
       setQuery("")
     } else if (!allowFreeText) {
       onChange(null)
@@ -90,7 +90,7 @@ export const LocationSelect = ({
         if (selectedItem) {
           setQuery("")
         } else if (allowFreeText && query.trim()) {
-          onChange(query.trim())
+          onChange(query.trim() as T)
           setQuery("")
         } else if (!allowFreeText) {
           onChange(null)
@@ -108,7 +108,7 @@ export const LocationSelect = ({
     : selectedItem
       ? selectedItem.name
       : isFreeText
-        ? value
+        ? String(value)
         : ""
 
   return (
@@ -138,7 +138,7 @@ export const LocationSelect = ({
         {isOpen && filteredItems.length > 0 && (
           <ul className={s.dropdown} role="listbox">
             {filteredItems.map((item) => (
-              <li key={item.id}>
+              <li key={String(item.id)}>
                 <button
                   type="button"
                   className={s.option}

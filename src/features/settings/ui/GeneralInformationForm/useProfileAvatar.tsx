@@ -4,6 +4,7 @@ import { useState, useCallback } from "react"
 import type { UseFormSetValue, UseFormWatch } from "react-hook-form"
 import type { ProfileSettingsFormData } from "../../model/profile-settings.schema"
 import { AvatarUploadModal, useAvatarUpload } from "../AvatarUploadModal"
+import { useAvatarUploadMutation, useAvatarRemoveMutation } from "../../api/useAvatarUploadApi"
 
 type Props = {
   setValueAction: UseFormSetValue<ProfileSettingsFormData>
@@ -13,18 +14,28 @@ type Props = {
 
 export const useProfileAvatar = ({ setValueAction, watch, initialAvatarUrl }: Props) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const uploadMutation = useAvatarUploadMutation()
+  const removeMutation = useAvatarRemoveMutation()
 
   const handleAvatarSave = useCallback(
-    (blobUrl: string) => {
-      setValueAction("avatarUrl", blobUrl, { shouldValidate: true })
+    (file: File) => {
+      uploadMutation.mutate(file, {
+        onSuccess: (avatarUrl) => {
+          setValueAction("avatarUrl", avatarUrl, { shouldValidate: true })
+        },
+      })
     },
-    [setValueAction],
+    [uploadMutation, setValueAction],
   )
 
   const handleDeleteConfirm = useCallback(() => {
     setShowDeleteConfirm(false)
-    setValueAction("avatarUrl", null, { shouldValidate: true })
-  }, [setValueAction])
+    removeMutation.mutate(undefined, {
+      onSuccess: () => {
+        setValueAction("avatarUrl", null, { shouldValidate: true })
+      },
+    })
+  }, [removeMutation, setValueAction])
 
   const avatarHook = useAvatarUpload(handleAvatarSave)
 
@@ -34,6 +45,7 @@ export const useProfileAvatar = ({ setValueAction, watch, initialAvatarUrl }: Pr
 
   return {
     displayAvatarUrl,
+    isUploading: uploadMutation.isPending,
     avatarUploadModal: <AvatarUploadModal hook={avatarHook} />,
     openUploadModal: avatarHook.openModal,
     requestDelete: hasAvatar ? () => setShowDeleteConfirm(true) : undefined,

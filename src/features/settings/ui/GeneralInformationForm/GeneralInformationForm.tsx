@@ -29,13 +29,15 @@ export const GeneralInformationForm = () => {
 
   const {
     displayAvatarUrl,
+    isUploading,
     avatarUploadModal,
     openUploadModal,
     requestDelete,
     deleteConfirmProps,
   } = useProfileAvatar({ setValueAction: setValue, watch, initialAvatarUrl: avatarUrl })
 
-  const selectedCountryId = watch("country")
+  const selectedCountryCode = watch("countryCode")
+  const selectedCityId = watch("cityId")
   const dateOfBirth = watch("dateOfBirth")
 
   if (isLoading) {
@@ -70,10 +72,14 @@ export const GeneralInformationForm = () => {
       <ProfileLocationFields
         control={control}
         errors={errors}
-        selectedCountryId={selectedCountryId}
+        selectedCountryCode={selectedCountryCode}
+        selectedCityId={selectedCityId}
         onCountryChange={(val) => {
-          setValue("country", val)
-          setValue("city", null, { shouldValidate: true })
+          setValue("countryCode", val)
+          setValue("cityId", null, { shouldValidate: true })
+        }}
+        onCityChange={(val) => {
+          setValue("cityId", val, { shouldValidate: true })
         }}
       />
 
@@ -88,7 +94,7 @@ export const GeneralInformationForm = () => {
       <Button
         className={s.saveButton}
         type="submit"
-        disabled={!isValid || isSaving}
+        disabled={!isValid || isSaving || isUploading}
         isLoading={isSaving}
       >
         Save changes

@@ -3,59 +3,65 @@
 import type { Control, FieldErrors } from "react-hook-form"
 import { Controller } from "react-hook-form"
 import { LocationSelect } from "../LocationSelect"
-import { COUNTRIES } from "../../model/countries"
-import { CITIES } from "../../model/cities"
+import { useCountriesQuery } from "../../api/useCountriesQuery"
+import { useCitiesQuery } from "../../api/useCitiesQuery"
 import type { ProfileSettingsFormData } from "../../model/profile-settings.schema"
 
 type Props = {
   control: Control<ProfileSettingsFormData>
   errors: FieldErrors<ProfileSettingsFormData>
-  selectedCountryId: string | null | undefined
+  selectedCountryCode: string | null | undefined
   onCountryChange: (val: string | null) => void
+  onCityChange: (val: number | null) => void
+  selectedCityId: number | null | undefined
 }
 
 export const ProfileLocationFields = ({
   control,
   errors,
-  selectedCountryId,
+  selectedCountryCode,
   onCountryChange,
-}: Props) => (
-  <>
-    <Controller
-      name="country"
-      control={control}
-      render={({ field }) => (
-        <LocationSelect
-          label="Country"
-          placeholder="Select country"
-          items={COUNTRIES}
-          value={field.value}
-          onChange={onCountryChange}
-          error={errors.country?.message}
-          allowFreeText
-        />
-      )}
-    />
+  onCityChange,
+  selectedCityId,
+}: Props) => {
+  const { data: countries = [] } = useCountriesQuery()
+  const { data: cities = [] } = useCitiesQuery(selectedCountryCode)
 
-    <Controller
-      name="city"
-      control={control}
-      render={({ field }) => (
-        <LocationSelect
-          label="City"
-          placeholder="Select city"
-          items={
-            selectedCountryId
-              ? CITIES.filter((c) => c.countryId === selectedCountryId)
-              : CITIES
-          }
-          value={field.value}
-          onChange={field.onChange}
-          disabled={!selectedCountryId}
-          error={errors.city?.message}
-          allowFreeText
-        />
-      )}
-    />
-  </>
-)
+  const countryItems = countries.map((c) => ({ id: c.code, name: c.name }))
+  const cityItems = cities.map((c) => ({ id: c.id, name: c.name }))
+
+  return (
+    <>
+      <Controller
+        name="countryCode"
+        control={control}
+        render={({ field }) => (
+          <LocationSelect
+            label="Country"
+            placeholder="Select country"
+            items={countryItems}
+            value={field.value}
+            onChange={onCountryChange}
+            error={errors.countryCode?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="cityId"
+        control={control}
+        render={() => (
+          <LocationSelect<number>
+            label="City"
+            placeholder="Select city"
+            items={cityItems}
+            value={selectedCityId}
+            onChange={onCityChange}
+            disabled={!selectedCountryCode}
+            error={errors.cityId?.message}
+          />
+        )}
+      />
+    </>
+  )
+}
