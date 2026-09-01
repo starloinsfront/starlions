@@ -4,1677 +4,2304 @@
  */
 
 export interface paths {
-  "/api/v1/auth/registration": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Register a new user */
-    post: operations["AuthController_register"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/registration-confirmation": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Confirm registration */
-    post: operations["AuthController_confirmEmail"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/registration-email-resending": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Resend confirmation email */
-    post: operations["AuthController_emailResending"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/password-recovery": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Send password recovery link to email */
-    post: operations["AuthController_passwordRecovery"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/password-recovery/new-password": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Set new password using recovery token */
-    post: operations["AuthController_newPassword"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/password-recovery/resend": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Resend password recovery link to email */
-    post: operations["AuthController_resendPasswordRecovery"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/google": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["AuthController_googleAuth"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/google/callback": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["AuthController_googleCallback"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/sign-in": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Try login user to the system */
-    post: operations["AuthController_signIn"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/sign-out": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** In cookie client must send correct refreshToken that will be revoked */
-    post: operations["AuthController_signOut"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/refresh-token": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Generate new pair of access and refresh tokens (in cookie client must send correct refreshToken that will be revoked after refreshing) */
-    post: operations["AuthController_refreshToken"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/auth/me": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** Get information about current user */
-    get: operations["AuthController_me"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/security/devices": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** Return all devices with active sessions for current user */
-    get: operations["SessionsController_getActiveSessions"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/security/terminate-all": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    /** Deletes all sessions expect current session */
-    delete: operations["SessionsController_terminateAllSessions"]
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/security/deviceId": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    /** Deletes a session for the authenticated user by sessions ID */
-    delete: operations["SessionsController_terminateDeviceIdSession"]
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/posts/images/presign": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Batch presign for image uploads (UC-1)
-     * @description Validates JPEG/PNG, ≤20MB, ≤10 files. Returns presigned upload URLs.
-     */
-    post: operations["PostController_presign"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/posts": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Create post (UC-1)
-     * @description Confirms uploaded images (pending→posts) and creates the post.
-     */
-    post: operations["PostController_createPost"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/posts/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Post detail view (UC-2/3)
-     * @description Public endpoint. JWT is optional.
-     */
-    get: operations["PostController_getPostById"]
-    put?: never
-    post?: never
-    /** Delete post by id */
-    delete: operations["PostController_deletePost"]
-    options?: never
-    head?: never
-    /**
-     * Edit post — description only (UC-2)
-     * @description Owner only. Images/order/author are immutable.
-     */
-    patch: operations["PostController_updatePost"]
-    trace?: never
-  }
-  "/api/v1/posts/user/{userId}/posts": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** Get paginated posts of a user */
-    get: operations["PostController_getUserPosts"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/health/live": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["HealthController_live"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/health/ready": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["HealthController_ready"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1/testing/all-data": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete: operations["TestingController_deleteAll"]
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/api/v1": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Get home page data: users count and 4 latest posts
-     * @description Public endpoint. Returns total registered users count and the 4 most recently published posts.
-     */
-    get: operations["HomeController_getHomePage"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+    "/api/v1/auth/registration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register a new user */
+        post: operations["AuthController_register"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/registration-confirmation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm registration */
+        post: operations["AuthController_confirmEmail"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/registration-email-resending": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resend confirmation email */
+        post: operations["AuthController_emailResending"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password-recovery": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send password recovery link to email */
+        post: operations["AuthController_passwordRecovery"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password-recovery/new-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Set new password using recovery token */
+        post: operations["AuthController_newPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password-recovery/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resend password recovery link to email */
+        post: operations["AuthController_resendPasswordRecovery"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/google": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["AuthController_googleAuth"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/google/callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["AuthController_googleCallback"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/sign-in": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Try login user to the system */
+        post: operations["AuthController_signIn"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/sign-out": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** In cookie client must send correct refreshToken that will be revoked */
+        post: operations["AuthController_signOut"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/refresh-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Generate new pair of access and refresh tokens (in cookie client must send correct refreshToken that will be revoked after refreshing) */
+        post: operations["AuthController_refreshToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get information about current user */
+        get: operations["AuthController_me"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/security/devices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Return all devices with active sessions for current user */
+        get: operations["SessionsController_getActiveSessions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/security/terminate-all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Deletes all sessions expect current session */
+        delete: operations["SessionsController_terminateAllSessions"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/security/deviceId": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Deletes a session for the authenticated user by sessions ID */
+        delete: operations["SessionsController_terminateDeviceIdSession"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get current user profile
+         * @description Returns the profile of the currently authenticated user (identity fields + editable profile fields).
+         */
+        get: operations["ProfileController_getMyProfile"];
+        /**
+         * Update profile (UC-1, UC-3)
+         * @description Full replace: all fields are sent every time, null clears the value. Username rules: 6-30 chars. Allowed: A-Z a-z 0-9 _ -. Returns the saved profile in the same shape as GET /profile, so the client does not need a follow-up request. Changing username or avatar publishes ProfileUpdated event so posts show up-to-date author data.
+         */
+        put: operations["ProfileController_updateProfile"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profile/avatar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Confirm avatar upload (UC-2)
+         * @description Verifies the uploaded file (HEAD + magic bytes), moves it from pending/ to avatars/ and links it to the profile. Previous avatar is removed from storage.
+         */
+        post: operations["ProfileController_setAvatar"];
+        /**
+         * Remove current user avatar
+         * @description Removes the avatar of the currently authenticated user, if one is set.
+         */
+        delete: operations["ProfileController_removeAvatar"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profile/avatar/presign": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Presign avatar upload
+         * @description Returns a pre-signed upload URL for the avatar image (up to 10MB). Upload the file to the returned URL, then confirm it via POST /profile/avatar.
+         */
+        post: operations["ProfileController_presign"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/countries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Country reference list (UC-1)
+         * @description Returns all ISO 3166-1 countries with English and Russian names, sorted by English name. Static data, no auth required — cache it on the client. The selected code goes to PUT /profile as countryCode.
+         */
+        get: operations["CountriesController_getCountries"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/countries/{code}/cities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * City reference list (UC-1)
+         * @description Returns cities of the given country, sorted by name. Optional search filters by name prefix (case-insensitive); limit caps the result size (default 20, max 100). An unknown country code returns an empty list. Static data, no auth required. The selected id goes to PUT /profile as cityId.
+         */
+        get: operations["CountriesController_getCities"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/users/{id}/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get public profile of a user (UC-4)
+         * @description Public endpoint, no JWT required. Returns the profile header (username, avatar, about me) — full identity/private fields are not exposed.
+         */
+        get: operations["UsersController_getPublicProfile"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts/images/presign": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Batch presign for image uploads (UC-1)
+         * @description Validates JPEG/PNG, ≤20MB, ≤10 files. Returns presigned upload URLs.
+         */
+        post: operations["PostController_presign"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create post (UC-1)
+         * @description Confirms uploaded images (pending→posts) and creates the post.
+         */
+        post: operations["PostController_createPost"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/posts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Post detail view (UC-2/3)
+         * @description Public endpoint. JWT is optional.
+         */
+        get: operations["PostController_getPostById"];
+        put?: never;
+        post?: never;
+        /** Delete post by id */
+        delete: operations["PostController_deletePost"];
+        options?: never;
+        head?: never;
+        /**
+         * Edit post — description only (UC-2)
+         * @description Owner only. Images/order/author are immutable.
+         */
+        patch: operations["PostController_updatePost"];
+        trace?: never;
+    };
+    "/api/v1/posts/user/{userId}/posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get paginated posts of a user
+         * @description Keyset pagination: pass the returned nextCursor back as `cursor`. totalCount is the full number of the author posts and does not depend on the page — it feeds the publications counter on the profile page.
+         */
+        get: operations["PostController_getUserPosts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/health/live": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["HealthController_live"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/health/ready": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["HealthController_ready"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/testing/all-data": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["TestingController_deleteAll"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get home page data: users count and 4 latest posts
+         * @description Public endpoint. Returns total registered users count and the 4 most recently published posts.
+         */
+        get: operations["HomeController_getHomePage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    RegistrationInputDto: {
-      /**
-       * @description 6-30 chars. Allowed: A-Z a-z 0-9 _ -
-       * @example john_doe
-       */
-      username: string
-      /**
-       * @description Valid email, format: example@example.com
-       * @example user@example.com
-       */
-      email: string
-      /**
-       * @description 6-20 chars. Must contain: 0-9, a-z, A-Z. Allowed special: ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
-       * @example Qwerty123!
-       */
-      password: string
-      /**
-       * @description Must be the same as password
-       * @example Qwerty123!
-       */
-      passwordConfirmation: string
-      /**
-       * @description Must accept Terms of Service and Privacy Policy
-       * @example true
-       */
-      isTermsAccepted: boolean
-    }
-    ConfirmEmailInputDto: {
-      /**
-       * Format: uuid
-       * @description Email confirmation code received via email link
-       * @example 550e8400-e29b-41d4-a716-446655440000
-       */
-      code: string
-    }
-    EmailInputDto: {
-      /**
-       * @description Valid email, format: example@example.com
-       * @example user@example.com
-       */
-      email: string
-    }
-    PasswordRecoveryInputDto: {
-      /**
-       * @description Valid email, format: example@example.com
-       * @example user@example.com
-       */
-      email: string
-      /**
-       * @description reCAPTCHA v2 token
-       * @example 03AGdBq...
-       */
-      recaptchaToken: string
-    }
-    NewPasswordInputDto: {
-      /**
-       * @description Password recovery token received via email link
-       * @example 550e8400-e29b-41d4-a716-446655440000
-       */
-      recoveryCode: string
-      /**
-       * @description 6-20 chars. Must contain: 0-9, a-z, A-Z. Allowed special: ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
-       * @example Qwerty123!
-       */
-      newPassword: string
-      /**
-       * @description Must be the same as newPassword
-       * @example Qwerty123!
-       */
-      newPasswordConfirmation: string
-    }
-    SignInInputDto: {
-      /**
-       * @description Email пользователя
-       * @example example@gmail.com
-       */
-      email: string
-      /**
-       * @description Пароль пользователя
-       * @example Password3!
-       */
-      password: string
-    }
-    PresignFileInputDto: {
-      /**
-       * @description Original file name
-       * @example photo.jpg
-       */
-      fileName: string
-      /**
-       * @description MIME type of the file
-       * @example image/jpeg
-       * @enum {string}
-       */
-      contentType: "image/jpeg" | "image/png"
-      /**
-       * @description File size in bytes
-       * @example 204800
-       */
-      size: number
-    }
-    PresignInputDto: {
-      /** @description Files to presign (1..10) */
-      files: components["schemas"]["PresignFileInputDto"][]
-    }
-    CreatePostInputDto: {
-      /**
-       * @description Post description (optional)
-       * @example My first post
-       */
-      description?: string
-      /**
-       * @description Identifiers of uploaded images (from presign)
-       * @example [
-       *       "3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c"
-       *     ]
-       */
-      imageIds: string[]
-      /**
-       * @description Post status (only PUBLISHED is supported for now)
-       * @example PUBLISHED
-       * @enum {string}
-       */
-      status: "PUBLISHED"
-    }
-    AuthorResponseDto: {
-      /**
-       * @description Author identifier (reference to User)
-       * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
-       */
-      authorId: string
-      /**
-       * @description Author name (denormalized snapshot at post creation time)
-       * @example john_doe
-       */
-      username: string
-    }
-    ImageResponseDto: {
-      /**
-       * @description Ready-to-use image URL (CDN)
-       * @example https://cdn.starlions.dev/posts/3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
-       */
-      url: string
-    }
-    PostViewResponseDto: {
-      /**
-       * @description Post identifier
-       * @example 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
-       */
-      id: string
-      /**
-       * @description Post description
-       * @example My first post
-       */
-      description: string | null
-      /**
-       * @description Creation date (ISO 8601)
-       * @example 2026-06-14T09:30:00.000Z
-       */
-      createdAt: string
-      author: components["schemas"]["AuthorResponseDto"]
-      images: components["schemas"]["ImageResponseDto"][]
-    }
-    UpdatePostInputDto: {
-      /**
-       * @description New post description. Empty string clears the description
-       * @example Updated description
-       */
-      description?: string
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+    schemas: {
+        RegistrationInputDto: {
+            /**
+             * @description 6-30 chars. Allowed: A-Z a-z 0-9 _ -
+             * @example john_doe
+             */
+            username: string;
+            /**
+             * @description Valid email, format: example@example.com
+             * @example user@example.com
+             */
+            email: string;
+            /**
+             * @description 6-20 chars. Must contain: 0-9, a-z, A-Z. Allowed special: ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+             * @example Qwerty123!
+             */
+            password: string;
+            /**
+             * @description Must be the same as password
+             * @example Qwerty123!
+             */
+            passwordConfirmation: string;
+            /**
+             * @description Must accept Terms of Service and Privacy Policy
+             * @example true
+             */
+            isTermsAccepted: boolean;
+        };
+        ConfirmEmailInputDto: {
+            /**
+             * Format: uuid
+             * @description Email confirmation code received via email link
+             * @example 550e8400-e29b-41d4-a716-446655440000
+             */
+            code: string;
+        };
+        EmailInputDto: {
+            /**
+             * @description Valid email, format: example@example.com
+             * @example user@example.com
+             */
+            email: string;
+        };
+        PasswordRecoveryInputDto: {
+            /**
+             * @description Valid email, format: example@example.com
+             * @example user@example.com
+             */
+            email: string;
+            /**
+             * @description reCAPTCHA v2 token
+             * @example 03AGdBq...
+             */
+            recaptchaToken: string;
+        };
+        NewPasswordInputDto: {
+            /**
+             * @description Password recovery token received via email link
+             * @example 550e8400-e29b-41d4-a716-446655440000
+             */
+            recoveryCode: string;
+            /**
+             * @description 6-20 chars. Must contain: 0-9, a-z, A-Z. Allowed special: ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+             * @example Qwerty123!
+             */
+            newPassword: string;
+            /**
+             * @description Must be the same as newPassword
+             * @example Qwerty123!
+             */
+            newPasswordConfirmation: string;
+        };
+        SignInInputDto: {
+            /**
+             * @description Email пользователя
+             * @example example@gmail.com
+             */
+            email: string;
+            /**
+             * @description Пароль пользователя
+             * @example Password3!
+             */
+            password: string;
+        };
+        ProfileOutputDto: {
+            /**
+             * @description User identifier
+             * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
+             */
+            userId: string;
+            /**
+             * @description Username
+             * @example john_doe
+             */
+            username: string;
+            /**
+             * @description Email
+             * @example user@example.com
+             */
+            email: string;
+            /**
+             * @description First name
+             * @example John
+             */
+            firstName: string | null;
+            /**
+             * @description Last name
+             * @example Doe
+             */
+            lastName: string | null;
+            /**
+             * @description Date of birth (ISO 8601 date)
+             * @example 1998-04-23
+             */
+            dateOfBirth: string | null;
+            /**
+             * @description ISO 3166-1 alpha-2 country code
+             * @example US
+             */
+            countryCode: string | null;
+            /**
+             * @description City id from the reference book (GET /countries/{code}/cities); used to preselect the value in the edit form and to send it back in PUT /profile
+             * @example 5128581
+             */
+            cityId: number | null;
+            /**
+             * @description City name for display; resolved from cityId
+             * @example New York
+             */
+            cityName: string | null;
+            /**
+             * @description About me
+             * @example Software engineer and coffee lover
+             */
+            aboutMe: string | null;
+            /**
+             * @description Avatar URL (CDN); null if no photo uploaded
+             * @example https://cdn.starlions.dev/avatars/3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            avatarUrl: string | null;
+        };
+        UpdateProfileInputDto: {
+            /**
+             * @description 6-30 chars. Allowed: A-Z a-z 0-9 _ -
+             * @example john_doe
+             */
+            username: string;
+            /**
+             * @description Latin and Cyrillic letters
+             * @example John
+             */
+            firstName: string;
+            /**
+             * @description Latin and Cyrillic letters
+             * @example Doe
+             */
+            lastName: string;
+            /**
+             * @description Date of birth, ISO 8601. Must not be in the future, and the user must be at least 13 years old. Send null to clear.
+             * @example 1998-04-23
+             */
+            dateOfBirth: string | null;
+            /**
+             * @description ISO 3166-1 alpha-2 country code from GET /countries. Required when cityId is set. Send null to clear.
+             * @example US
+             */
+            countryCode: string | null;
+            /**
+             * @description City id from GET /countries/{code}/cities. The city must belong to the country passed in countryCode. Send null to clear.
+             * @example 5128581
+             */
+            cityId: number | null;
+            /**
+             * @description About me. Send null to clear.
+             * @example Software engineer and coffee lover
+             */
+            aboutMe: string | null;
+        };
+        PresignAvatarInputDto: {
+            /**
+             * @description Original file name
+             * @example avatar.jpg
+             */
+            fileName: string;
+            /**
+             * @description MIME type of the file
+             * @example image/jpeg
+             * @enum {string}
+             */
+            contentType: "image/jpeg" | "image/png";
+            /**
+             * @description File size in bytes
+             * @example 204800
+             */
+            size: number;
+        };
+        PresignItemResponseDto: {
+            /**
+             * @description Image id, send it back on confirm (POST /profile/avatar)
+             * @example 3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            imageId: string;
+            /**
+             * @description Presigned URL to upload the file directly to R2
+             * @example https://r2.example.com/pending/...?X-Amz-Signature=...
+             */
+            uploadUrl: string;
+        };
+        SetAvatarInputDto: {
+            /**
+             * @description Image id received from presign
+             * @example 3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            imageId: string;
+        };
+        SetAvatarResponseDto: {
+            /**
+             * @description Public avatar URL
+             * @example https://pub-d4b8eac548004c6f820f1cbb55886fff.r2.dev/avatars/3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            avatarUrl: string;
+        };
+        CountryResponseDto: {
+            /**
+             * @description ISO 3166-1 alpha-2 country code, stored in Profile.countryCode
+             * @example BY
+             */
+            code: string;
+            /**
+             * @description Country name in English
+             * @example Belarus
+             */
+            name: string;
+            /**
+             * @description Country name in Russian; null if translation is missing
+             * @example Беларусь
+             */
+            nameRu: Record<string, never> | null;
+        };
+        CityResponseDto: {
+            /**
+             * @description City id from the reference dataset, stored in Profile.cityId
+             * @example 3041565
+             */
+            id: number;
+            /**
+             * @description City name in English
+             * @example Minsk
+             */
+            name: string;
+        };
+        PublicProfileOutputDto: {
+            /**
+             * @description User identifier
+             * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
+             */
+            userId: string;
+            /**
+             * @description Username
+             * @example john_doe
+             */
+            username: string;
+            /**
+             * @description Avatar URL (CDN); null if no photo uploaded
+             * @example https://cdn.starlions.dev/avatars/3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            avatarUrl: string | null;
+            /**
+             * @description About me
+             * @example Software engineer and coffee lover
+             */
+            aboutMe: string | null;
+        };
+        PresignFileInputDto: {
+            /**
+             * @description Original file name
+             * @example photo.jpg
+             */
+            fileName: string;
+            /**
+             * @description MIME type of the file
+             * @example image/jpeg
+             * @enum {string}
+             */
+            contentType: "image/jpeg" | "image/png";
+            /**
+             * @description File size in bytes
+             * @example 204800
+             */
+            size: number;
+        };
+        PresignInputDto: {
+            /** @description Files to presign (1..10) */
+            files: components["schemas"]["PresignFileInputDto"][];
+        };
+        CreatePostInputDto: {
+            /**
+             * @description Post description (optional)
+             * @example My first post
+             */
+            description?: string;
+            /**
+             * @description Identifiers of uploaded images (from presign)
+             * @example [
+             *       "3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c"
+             *     ]
+             */
+            imageIds: string[];
+            /**
+             * @description Post status (only PUBLISHED is supported for now)
+             * @example PUBLISHED
+             * @enum {string}
+             */
+            status: "PUBLISHED";
+        };
+        AuthorResponseDto: {
+            /**
+             * @description Author identifier (reference to User)
+             * @example 7c9e6679-7425-40de-944b-e07fc1f90ae7
+             */
+            authorId: string;
+            /**
+             * @description Author name (from local replica of account profile)
+             * @example john_doe
+             */
+            username: string;
+            /**
+             * @description Author avatar URL (CDN); null if no photo uploaded
+             * @example https://cdn.starlions.dev/avatars/3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            avatarUrl: Record<string, never> | null;
+        };
+        ImageResponseDto: {
+            /**
+             * @description Ready-to-use image URL (CDN)
+             * @example https://cdn.starlions.dev/posts/3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            url: string;
+        };
+        PostViewResponseDto: {
+            /**
+             * @description Post identifier
+             * @example 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
+             */
+            id: string;
+            /**
+             * @description Post description
+             * @example My first post
+             */
+            description: string | null;
+            /**
+             * @description Creation date (ISO 8601)
+             * @example 2026-06-14T09:30:00.000Z
+             */
+            createdAt: string;
+            author: components["schemas"]["AuthorResponseDto"];
+            images: components["schemas"]["ImageResponseDto"][];
+        };
+        PostCoverResponseDto: {
+            /**
+             * @description Cover image URL (CDN): the first image of the post
+             * @example https://cdn.starlions.dev/posts/3f1a2b4c-1d2e-4f3a-8b9c-0d1e2f3a4b5c
+             */
+            url: string;
+        };
+        PostListItemResponseDto: {
+            /**
+             * @description Post identifier
+             * @example c923e3ec-f555-495c-9975-29bfa5d707fc
+             */
+            id: string;
+            cover: components["schemas"]["PostCoverResponseDto"];
+            /**
+             * @description Total images in the post; the list returns only the cover
+             * @example 3
+             */
+            imagesCount: number;
+        };
+        UserPostsResponseDto: {
+            items: components["schemas"]["PostListItemResponseDto"][];
+            /**
+             * @description Cursor for the next page; null when there are no more posts. Pass it back as the `cursor` query parameter.
+             * @example eyJpZCI6IjEyMyJ9
+             */
+            nextCursor: string | null;
+            /**
+             * @description Total posts of the author, ignoring pagination: the publications counter on the profile page
+             * @example 42
+             */
+            totalCount: number;
+        };
+        UpdatePostInputDto: {
+            /**
+             * @description New post description. Empty string clears the description
+             * @example Updated description
+             */
+            description?: string;
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-export type SchemaRegistrationInputDto = components["schemas"]["RegistrationInputDto"]
-export type SchemaConfirmEmailInputDto = components["schemas"]["ConfirmEmailInputDto"]
-export type SchemaEmailInputDto = components["schemas"]["EmailInputDto"]
-export type SchemaPasswordRecoveryInputDto = components["schemas"]["PasswordRecoveryInputDto"]
-export type SchemaNewPasswordInputDto = components["schemas"]["NewPasswordInputDto"]
-export type SchemaSignInInputDto = components["schemas"]["SignInInputDto"]
-export type SchemaPresignFileInputDto = components["schemas"]["PresignFileInputDto"]
-export type SchemaPresignInputDto = components["schemas"]["PresignInputDto"]
-export type SchemaCreatePostInputDto = components["schemas"]["CreatePostInputDto"]
-export type SchemaAuthorResponseDto = components["schemas"]["AuthorResponseDto"]
-export type SchemaImageResponseDto = components["schemas"]["ImageResponseDto"]
-export type SchemaPostViewResponseDto = components["schemas"]["PostViewResponseDto"]
-export type SchemaUpdatePostInputDto = components["schemas"]["UpdatePostInputDto"]
-export type $defs = Record<string, never>
+export type SchemaRegistrationInputDto = components['schemas']['RegistrationInputDto'];
+export type SchemaConfirmEmailInputDto = components['schemas']['ConfirmEmailInputDto'];
+export type SchemaEmailInputDto = components['schemas']['EmailInputDto'];
+export type SchemaPasswordRecoveryInputDto = components['schemas']['PasswordRecoveryInputDto'];
+export type SchemaNewPasswordInputDto = components['schemas']['NewPasswordInputDto'];
+export type SchemaSignInInputDto = components['schemas']['SignInInputDto'];
+export type SchemaProfileOutputDto = components['schemas']['ProfileOutputDto'];
+export type SchemaUpdateProfileInputDto = components['schemas']['UpdateProfileInputDto'];
+export type SchemaPresignAvatarInputDto = components['schemas']['PresignAvatarInputDto'];
+export type SchemaPresignItemResponseDto = components['schemas']['PresignItemResponseDto'];
+export type SchemaSetAvatarInputDto = components['schemas']['SetAvatarInputDto'];
+export type SchemaSetAvatarResponseDto = components['schemas']['SetAvatarResponseDto'];
+export type SchemaCountryResponseDto = components['schemas']['CountryResponseDto'];
+export type SchemaCityResponseDto = components['schemas']['CityResponseDto'];
+export type SchemaPublicProfileOutputDto = components['schemas']['PublicProfileOutputDto'];
+export type SchemaPresignFileInputDto = components['schemas']['PresignFileInputDto'];
+export type SchemaPresignInputDto = components['schemas']['PresignInputDto'];
+export type SchemaCreatePostInputDto = components['schemas']['CreatePostInputDto'];
+export type SchemaAuthorResponseDto = components['schemas']['AuthorResponseDto'];
+export type SchemaImageResponseDto = components['schemas']['ImageResponseDto'];
+export type SchemaPostViewResponseDto = components['schemas']['PostViewResponseDto'];
+export type SchemaPostCoverResponseDto = components['schemas']['PostCoverResponseDto'];
+export type SchemaPostListItemResponseDto = components['schemas']['PostListItemResponseDto'];
+export type SchemaUserPostsResponseDto = components['schemas']['UserPostsResponseDto'];
+export type SchemaUpdatePostInputDto = components['schemas']['UpdatePostInputDto'];
+export type $defs = Record<string, never>;
 export interface operations {
-  AuthController_register: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["RegistrationInputDto"]
-      }
-    }
-    responses: {
-      /** @description Input data is accepted. Email with confirmation code will be send to passed email address */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description If the inputModel has incorrect values (in particular if the user with the given email or login already exists) */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description More than 5 attempts from one IP-address during 10 seconds */
-      429: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_confirmEmail: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ConfirmEmailInputDto"]
-      }
-    }
-    responses: {
-      /** @description Email was verified. Account was activated */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description If the confirmation code is expired, already used, or invalid */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description User with this confirmation code not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_emailResending: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["EmailInputDto"]
-      }
-    }
-    responses: {
-      /** @description Email with new confirmation link has been sent */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description If the email is already confirmed */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description User with this email not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description More than 5 attempts from one IP-address during 10 seconds */
-      429: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_passwordRecovery: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["PasswordRecoveryInputDto"]
-      }
-    }
-    responses: {
-      /** @description Email with password recovery link has been sent (even if user does not exist) */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description The email must match the format example@example.com */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description More than 5 attempts from one IP-address during 10 seconds */
-      429: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_newPassword: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["NewPasswordInputDto"]
-      }
-    }
-    responses: {
-      /** @description Password has been successfully changed */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Recovery code is expired or already used */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description User with this recovery code not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_resendPasswordRecovery: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["EmailInputDto"]
-      }
-    }
-    responses: {
-      /** @description Email with password recovery link has been resent */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description The email must match the format example@example.com or recovery was not requested */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description More than 3 resend attempts for this email */
-      429: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_googleAuth: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_googleCallback: {
-    parameters: {
-      query: {
-        code: string
-        state: string
-      }
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_signIn: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SignInInputDto"]
-      }
-    }
-    responses: {
-      /** @description Returns JWT accessToken (expired after 5 hour) in body and JWT refreshToken in cookie (http-only, secure) (expired after 24 hours). */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
-            accessToken?: string
-          }
-        }
-      }
-      /** @description Invalid credentials or email not confirmed */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": unknown
-        }
-      }
-      /** @description Unauthorized if the password or login is wrong */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description More than 5 attempts from one IP-address during 10 seconds */
-      429: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_signOut: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description No Content */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_refreshToken: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Returns JWT accessToken (expired after 1 day) in body and JWT refreshToken in cookie (http-only, secure) (expired after 1 week). */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
-            accessToken?: string
-          }
-        }
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  AuthController_me: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Returns current user info */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            /** @example c923e3ec-f555-495c-9975-29bfa5d707fc */
-            id?: string
-            /** @example john_doe */
-            username?: string
-            /** @example user@example.com */
-            email?: string
-          }
-        }
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  SessionsController_getActiveSessions: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Success */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            current?: {
-              /** @example 3f7e8a2c-9b4d-4a1e-8c3f-5e6d7b8a9c2d */
-              deviceId?: string
-              /** @example Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 */
-              deviceName?: string
-              /** @example 127.0.0.1 */
-              ip?: string
-            }
-            other?: {
-              /** @example 7b1c4f9e-2d6a-4e8c-9f3b-1a5e7d8b2c4f */
-              deviceId?: string
-              /** @example Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 */
-              deviceName?: string
-              /** @example 127.0.0.1 */
-              ip?: string
-            }[]
-          }
-        }
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description More than 5 attempts from one IP-address during 10 seconds */
-      429: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  SessionsController_terminateAllSessions: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Sessions successfully deleted */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description More than 5 attempts from one IP-address during 10 seconds */
-      429: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  SessionsController_terminateDeviceIdSession: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Session successfully deleted */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description If try to delete the deviceId of other user */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Sessions not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description More than 5 attempts from one IP-address during 10 seconds */
-      429: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  PostController_presign: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["PresignInputDto"]
-      }
-    }
-    responses: {
-      /** @description Presigned URLs generated */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Invalid type/size/count */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  PostController_createPost: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreatePostInputDto"]
-      }
-    }
-    responses: {
-      /** @description Post created */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["PostViewResponseDto"]
-        }
-      }
-      /** @description Invalid data / images not uploaded */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  PostController_getPostById: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: unknown
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Post found */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["PostViewResponseDto"]
-        }
-      }
-      /** @description Post not found / deleted */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  PostController_deletePost: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Post has been deleted */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description You are not the author of this post */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Post not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  PostController_updatePost: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: unknown
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UpdatePostInputDto"]
-      }
-    }
-    responses: {
-      /** @description Post updated */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["PostViewResponseDto"]
-        }
-      }
-      /** @description Invalid data (e.g. description too long) */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Unauthorized */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Not the post owner */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-      /** @description Post not found / deleted */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  PostController_getUserPosts: {
-    parameters: {
-      query?: {
-        cursor?: string
-        limit?: number
-      }
-      header?: never
-      path: {
-        userId: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Returns paginated list of user posts */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            items?: {
-              /** @example c923e3ec-f555-495c-9975-29bfa5d707fc */
-              id?: string
-              cover?: {
-                /** @example https://cdn.example.com/image.jpg */
-                url?: string
-              }
-              /** @example 3 */
-              imagesCount?: number
-            }[]
-            /** @example eyJpZCI6IjEyMyJ9 */
-            nextCursor?: string | null
-          }
-        }
-      }
-      /** @description User not found */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  HealthController_live: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description The Health Check is successful */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            /** @example ok */
-            status?: string
-            /**
-             * @example {
-             *       "database": {
-             *         "status": "up"
-             *       }
-             *     }
-             */
-            info?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            } | null
-            /** @example {} */
-            error?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            } | null
-            /**
-             * @example {
-             *       "database": {
-             *         "status": "up"
-             *       }
-             *     }
-             */
-            details?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            }
-          }
-        }
-      }
-      /** @description The Health Check is not successful */
-      503: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            /** @example error */
-            status?: string
-            /**
-             * @example {
-             *       "database": {
-             *         "status": "up"
-             *       }
-             *     }
-             */
-            info?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            } | null
-            /**
-             * @example {
-             *       "redis": {
-             *         "status": "down",
-             *         "message": "Could not connect"
-             *       }
-             *     }
-             */
-            error?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            } | null
-            /**
-             * @example {
-             *       "database": {
-             *         "status": "up"
-             *       },
-             *       "redis": {
-             *         "status": "down",
-             *         "message": "Could not connect"
-             *       }
-             *     }
-             */
-            details?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  HealthController_ready: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description The Health Check is successful */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            /** @example ok */
-            status?: string
-            /**
-             * @example {
-             *       "database": {
-             *         "status": "up"
-             *       }
-             *     }
-             */
-            info?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            } | null
-            /** @example {} */
-            error?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            } | null
-            /**
-             * @example {
-             *       "database": {
-             *         "status": "up"
-             *       }
-             *     }
-             */
-            details?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            }
-          }
-        }
-      }
-      /** @description The Health Check is not successful */
-      503: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            /** @example error */
-            status?: string
-            /**
-             * @example {
-             *       "database": {
-             *         "status": "up"
-             *       }
-             *     }
-             */
-            info?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            } | null
-            /**
-             * @example {
-             *       "redis": {
-             *         "status": "down",
-             *         "message": "Could not connect"
-             *       }
-             *     }
-             */
-            error?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            } | null
-            /**
-             * @example {
-             *       "database": {
-             *         "status": "up"
-             *       },
-             *       "redis": {
-             *         "status": "down",
-             *         "message": "Could not connect"
-             *       }
-             *     }
-             */
-            details?: {
-              [key: string]: {
-                status: string
-              } & {
-                [key: string]: unknown
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  TestingController_deleteAll: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  HomeController_getHomePage: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Home page data returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            /** @example 1024 */
-            usersCount?: number
-            latestPosts?: {
-              /**
-               * Format: uuid
-               * @example c923e3ec-f555-495c-9975-29bfa5d707fc
-               */
-              id?: string
-              /** @example Sunset at the beach */
-              description?: string | null
-              /**
-               * Format: date-time
-               * @example 2026-07-01T12:00:00.000Z
-               */
-              createdAt?: string
-              author?: {
-                /**
-                 * Format: uuid
-                 * @example a1b2c3d4-e5f6-7890-abcd-ef1234567890
-                 */
-                authorId?: string
-                /** @example john_doe */
-                username?: string
-              }
-              images?: {
-                /** @example https://cdn.example.com/image.jpg */
-                url?: string
-              }[]
-            }[]
-          }
-        }
-      }
-    }
-  }
+    AuthController_register: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegistrationInputDto"];
+            };
+        };
+        responses: {
+            /** @description Input data is accepted. Email with confirmation code will be send to passed email address */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description If the inputModel has incorrect values (in particular if the user with the given email or login already exists) */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 5 attempts from one IP-address during 10 seconds */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_confirmEmail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConfirmEmailInputDto"];
+            };
+        };
+        responses: {
+            /** @description Email was verified. Account was activated */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description If the confirmation code is expired, already used, or invalid */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User with this confirmation code not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_emailResending: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmailInputDto"];
+            };
+        };
+        responses: {
+            /** @description Email with new confirmation link has been sent */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description If the email is already confirmed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User with this email not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 5 attempts from one IP-address during 10 seconds */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_passwordRecovery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PasswordRecoveryInputDto"];
+            };
+        };
+        responses: {
+            /** @description Email with password recovery link has been sent (even if user does not exist) */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The email must match the format example@example.com */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 5 attempts from one IP-address during 10 seconds */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_newPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NewPasswordInputDto"];
+            };
+        };
+        responses: {
+            /** @description Password has been successfully changed */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Recovery code is expired or already used */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User with this recovery code not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_resendPasswordRecovery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmailInputDto"];
+            };
+        };
+        responses: {
+            /** @description Email with password recovery link has been resent */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The email must match the format example@example.com or recovery was not requested */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 3 resend attempts for this email */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_googleAuth: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_googleCallback: {
+        parameters: {
+            query: {
+                code: string;
+                state: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_signIn: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignInInputDto"];
+            };
+        };
+        responses: {
+            /** @description Returns JWT accessToken (expired after 5 hour) in body and JWT refreshToken in cookie (http-only, secure) (expired after 24 hours). */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
+                        accessToken?: string;
+                    };
+                };
+            };
+            /** @description Invalid credentials or email not confirmed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Unauthorized if the password or login is wrong */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 5 attempts from one IP-address during 10 seconds */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_signOut: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_refreshToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns JWT accessToken (expired after 1 day) in body and JWT refreshToken in cookie (http-only, secure) (expired after 1 week). */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
+                        accessToken?: string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AuthController_me: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns current user info */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example c923e3ec-f555-495c-9975-29bfa5d707fc */
+                        id?: string;
+                        /** @example john_doe */
+                        username?: string;
+                        /** @example user@example.com */
+                        email?: string;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    SessionsController_getActiveSessions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        current?: {
+                            /** @example 3f7e8a2c-9b4d-4a1e-8c3f-5e6d7b8a9c2d */
+                            deviceId?: string;
+                            /** @example Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 */
+                            deviceName?: string;
+                            /** @example 127.0.0.1 */
+                            ip?: string;
+                        };
+                        other?: {
+                            /** @example 7b1c4f9e-2d6a-4e8c-9f3b-1a5e7d8b2c4f */
+                            deviceId?: string;
+                            /** @example Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 */
+                            deviceName?: string;
+                            /** @example 127.0.0.1 */
+                            ip?: string;
+                        }[];
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 5 attempts from one IP-address during 10 seconds */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    SessionsController_terminateAllSessions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sessions successfully deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 5 attempts from one IP-address during 10 seconds */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    SessionsController_terminateDeviceIdSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Session successfully deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description If try to delete the deviceId of other user */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Sessions not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description More than 5 attempts from one IP-address during 10 seconds */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProfileController_getMyProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns current user profile */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProfileOutputDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProfileController_updateProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateProfileInputDto"];
+            };
+        };
+        responses: {
+            /** @description Profile updated; returns the saved profile */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProfileOutputDto"];
+                };
+            };
+            /** @description Validation failed or username already taken */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProfileController_setAvatar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetAvatarInputDto"];
+            };
+        };
+        responses: {
+            /** @description Avatar linked to profile */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SetAvatarResponseDto"];
+                };
+            };
+            /** @description File not uploaded or is not a valid image */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProfileController_removeAvatar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Avatar removed */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProfileController_presign: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PresignAvatarInputDto"];
+            };
+        };
+        responses: {
+            /** @description Presigned upload URL */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PresignItemResponseDto"];
+                };
+            };
+            /** @description Invalid file name, content type or size */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    CountriesController_getCountries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Country list */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CountryResponseDto"][];
+                };
+            };
+        };
+    };
+    CountriesController_getCities: {
+        parameters: {
+            query?: {
+                /** @description Filter by city name prefix, case-insensitive */
+                search?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                /** @description ISO 3166-1 alpha-2 country code */
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description City list */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CityResponseDto"][];
+                };
+            };
+        };
+    };
+    UsersController_getPublicProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: unknown;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Public profile found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicProfileOutputDto"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_presign: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PresignInputDto"];
+            };
+        };
+        responses: {
+            /** @description Presigned URLs generated */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Invalid type/size/count */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_createPost: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePostInputDto"];
+            };
+        };
+        responses: {
+            /** @description Post created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostViewResponseDto"];
+                };
+            };
+            /** @description Invalid data / images not uploaded */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_getPostById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: unknown;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Post found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostViewResponseDto"];
+                };
+            };
+            /** @description Post not found / deleted */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_deletePost: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Post has been deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not the author of this post */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Post not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_updatePost: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: unknown;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdatePostInputDto"];
+            };
+        };
+        responses: {
+            /** @description Post updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostViewResponseDto"];
+                };
+            };
+            /** @description Invalid data (e.g. description too long) */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not the post owner */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Post not found / deleted */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostController_getUserPosts: {
+        parameters: {
+            query?: {
+                cursor?: string;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Returns paginated list of user posts */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserPostsResponseDto"];
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HealthController_live: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The Health Check is successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example ok */
+                        status?: string;
+                        /**
+                         * @example {
+                         *       "database": {
+                         *         "status": "up"
+                         *       }
+                         *     }
+                         */
+                        info?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        } | null;
+                        /** @example {} */
+                        error?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        } | null;
+                        /**
+                         * @example {
+                         *       "database": {
+                         *         "status": "up"
+                         *       }
+                         *     }
+                         */
+                        details?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        };
+                    };
+                };
+            };
+            /** @description The Health Check is not successful */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example error */
+                        status?: string;
+                        /**
+                         * @example {
+                         *       "database": {
+                         *         "status": "up"
+                         *       }
+                         *     }
+                         */
+                        info?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        } | null;
+                        /**
+                         * @example {
+                         *       "redis": {
+                         *         "status": "down",
+                         *         "message": "Could not connect"
+                         *       }
+                         *     }
+                         */
+                        error?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        } | null;
+                        /**
+                         * @example {
+                         *       "database": {
+                         *         "status": "up"
+                         *       },
+                         *       "redis": {
+                         *         "status": "down",
+                         *         "message": "Could not connect"
+                         *       }
+                         *     }
+                         */
+                        details?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    HealthController_ready: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The Health Check is successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example ok */
+                        status?: string;
+                        /**
+                         * @example {
+                         *       "database": {
+                         *         "status": "up"
+                         *       }
+                         *     }
+                         */
+                        info?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        } | null;
+                        /** @example {} */
+                        error?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        } | null;
+                        /**
+                         * @example {
+                         *       "database": {
+                         *         "status": "up"
+                         *       }
+                         *     }
+                         */
+                        details?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        };
+                    };
+                };
+            };
+            /** @description The Health Check is not successful */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example error */
+                        status?: string;
+                        /**
+                         * @example {
+                         *       "database": {
+                         *         "status": "up"
+                         *       }
+                         *     }
+                         */
+                        info?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        } | null;
+                        /**
+                         * @example {
+                         *       "redis": {
+                         *         "status": "down",
+                         *         "message": "Could not connect"
+                         *       }
+                         *     }
+                         */
+                        error?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        } | null;
+                        /**
+                         * @example {
+                         *       "database": {
+                         *         "status": "up"
+                         *       },
+                         *       "redis": {
+                         *         "status": "down",
+                         *         "message": "Could not connect"
+                         *       }
+                         *     }
+                         */
+                        details?: {
+                            [key: string]: {
+                                status: string;
+                            } & {
+                                [key: string]: unknown;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    TestingController_deleteAll: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HomeController_getHomePage: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Home page data returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example 1024 */
+                        usersCount?: number;
+                        latestPosts?: {
+                            /**
+                             * Format: uuid
+                             * @example c923e3ec-f555-495c-9975-29bfa5d707fc
+                             */
+                            id?: string;
+                            /** @example Sunset at the beach */
+                            description?: string | null;
+                            /**
+                             * Format: date-time
+                             * @example 2026-07-01T12:00:00.000Z
+                             */
+                            createdAt?: string;
+                            author?: {
+                                /**
+                                 * Format: uuid
+                                 * @example a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                                 */
+                                authorId?: string;
+                                /** @example john_doe */
+                                username?: string;
+                            };
+                            images?: {
+                                /** @example https://cdn.example.com/image.jpg */
+                                url?: string;
+                            }[];
+                        }[];
+                    };
+                };
+            };
+        };
+    };
 }

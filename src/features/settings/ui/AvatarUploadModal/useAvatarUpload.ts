@@ -4,7 +4,7 @@ import { useState, useCallback, useRef, useEffect } from "react"
 import type { Area } from "react-easy-crop"
 import { toast } from "sonner"
 import { useFileInput } from "@/common/hooks/useFileInput"
-import { loadImage, renderCropToBlobUrl } from "./cropUtils"
+import { loadImage, renderCropToFile } from "./cropUtils"
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png"])
@@ -12,7 +12,7 @@ const VALIDATION_MESSAGE = "The photo must be less than 10 Mb and have JPEG or P
 
 type Step = "upload" | "crop"
 
-export const useAvatarUpload = (onSave: (blobUrl: string) => void) => {
+export const useAvatarUpload = (onSave: (file: File) => void) => {
   const [isOpen, setIsOpen] = useState(false)
   const [step, setStep] = useState<Step>("upload")
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -60,9 +60,9 @@ export const useAvatarUpload = (onSave: (blobUrl: string) => void) => {
     setIsSaving(true)
     try {
       const img = await loadImage(previewUrl)
-      const croppedBlobUrl = await renderCropToBlobUrl(img, croppedAreaRef.current)
-      if (croppedBlobUrl) {
-        onSave(croppedBlobUrl)
+      const croppedFile = await renderCropToFile(img, croppedAreaRef.current)
+      if (croppedFile) {
+        onSave(croppedFile)
         setIsOpen(false)
         setStep("upload")
         setPreviewUrl(null)

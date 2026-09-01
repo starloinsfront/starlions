@@ -28,9 +28,9 @@ export const profileSettingsSchema = z.object({
 
   dateOfBirth: z.string().optional().nullable(),
 
-  country: z.string().optional().nullable(),
+  countryCode: z.string().length(2).nullable().optional(),
 
-  city: z.string().optional().nullable(),
+  cityId: z.number().nullable().optional(),
 
   aboutMe: z.string().max(200, "Maximum number of characters 200").optional(),
 })
