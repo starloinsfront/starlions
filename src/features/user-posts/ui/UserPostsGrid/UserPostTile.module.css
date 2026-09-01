@@ -1,0 +1,43 @@
+.tile {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, rgb(57 125 246 / 20%), rgb(255 255 255 / 4%));
+  border: 1px solid rgb(255 255 255 / 8%);
+  display: block;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.tile:hover {
+  transform: scale(1.02);
+}
+
+.image {
+  object-fit: cover;
+}
+
+.placeholder {
+  background: linear-gradient(135deg, #222222 0%, #111111 100%);
+  inset: 0;
+  position: absolute;
+}
+
+.badge {
+  align-items: center;
+  background: rgb(0 0 0 / 55%);
+  border-radius: 4px;
+  color: var(--light-100);
+  display: inline-flex;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semi-bold);
+  gap: 4px;
+  padding: 4px 8px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.badge::before {
+  content: "▦";
+  font-size: 10px;
+}

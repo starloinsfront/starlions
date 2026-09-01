@@ -23,7 +23,7 @@ function OAuthCompleteContent() {
     }
     ran.current = true
 
-    const err = searchParams.get("error")
+    const err = searchParams?.get("error")
 
     if (err) {
       router.replace(`${ROUTES.signIn}?error=${encodeURIComponent(err)}`)
@@ -32,9 +32,9 @@ function OAuthCompleteContent() {
     }
 
     const raw =
-      searchParams.get("accessToken") ??
-      searchParams.get("access_token") ??
-      searchParams.get("token")
+      searchParams?.get("accessToken") ??
+      searchParams?.get("access_token") ??
+      searchParams?.get("token")
 
     const token = raw?.trim()
 

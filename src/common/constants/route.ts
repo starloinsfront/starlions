@@ -1,9 +1,13 @@
 export const ROUTES = {
   home: "/",
+  post: "/post",
+  postById: (id: string) => `/post/${encodeURIComponent(id)}`,
+  postModalById: (pathname: string, id: string) => `${pathname}?postId=${encodeURIComponent(id)}`,
 
   feed: "/feed",
   create: "/create",
   profile: "/profile",
+  profileById: (userId: string) => `/profile/${encodeURIComponent(userId)}`,
   messenger: "/messenger",
   search: "/search",
   statistics: "/statistics",
@@ -23,7 +27,7 @@ export const ROUTES = {
   emailCheck: "/forgot-password/email-check",
   createNewPassword: "/auth/create-new-password",
   recoveryLinkExpired: "/auth/recovery-link-expired",
-  settings: "/settings",
+  settings: (userId: string) => `/profile/${encodeURIComponent(userId)}/settings`,
   privacyPolicy: "/privacypolicy",
   termsOfService: "/termsofservice",
 } as const

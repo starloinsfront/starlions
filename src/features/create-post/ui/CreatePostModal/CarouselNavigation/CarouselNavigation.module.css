@@ -1,0 +1,71 @@
+/* Navigation arrows */
+.navArrow {
+  align-items: center;
+  appearance: none;
+  background-color: rgb(from var(--dark-900) r g b / 55%);
+  border: none;
+  border-radius: 2px;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 36px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  z-index: 2;
+}
+
+.navArrow:hover {
+  background-color: rgb(from var(--dark-900) r g b / 75%);
+}
+
+.navArrow:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+.navArrowLeft {
+  left: 16px;
+}
+
+.navArrowRight {
+  right: 16px;
+}
+
+/* Pagination dots */
+.pagination {
+  background-color: color-mix(in srgb, var(--dark-300) 70%, transparent);
+  border-radius: 2px;
+  bottom: 64px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  left: 50%;
+  padding: 8px;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.dot {
+  appearance: none;
+  background-color: var(--light-900);
+  border: none;
+  border-radius: 100%;
+  cursor: pointer;
+  height: 8px;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.2s ease;
+  width: 8px;
+}
+
+.dot:hover,
+.dot[aria-current="true"] {
+  background-color: var(--accent-500);
+}

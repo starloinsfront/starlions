@@ -46,6 +46,7 @@ storybook-static
 certificates
 .vscode/
 .idea/
+.mimocode/
 
 certificates
 .vscode/

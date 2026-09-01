@@ -1,0 +1,25 @@
+.pageContentContainer {
+  display: grid;
+  gap: 34px;
+  margin: 0 auto;
+  max-width: 972px;
+  min-width: 0;
+  width: 100%;
+}
+
+.mainRegisteredUsers {
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+
+@media (width <= 768px) {
+  .pageContentContainer {
+    gap: 18px;
+    max-width: 480px;
+  }
+
+  .mainRegisteredUsers {
+    display: block;
+  }
+}

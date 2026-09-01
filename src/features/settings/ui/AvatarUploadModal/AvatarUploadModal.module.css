@@ -1,0 +1,93 @@
+.content {
+  max-width: 492px;
+  width: 100%;
+}
+
+.uploadStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.uploadPlaceholder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.uploadIcon {
+  color: var(--light-900);
+}
+
+.uploadText {
+  color: var(--light-900);
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.cropStep {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cropperContainer {
+  height: 350px;
+  position: relative;
+  width: 100%;
+}
+
+.toolbar {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  padding: 0 8px;
+}
+
+.sliderIcon {
+  color: var(--light-900);
+  flex-shrink: 0;
+}
+
+.slider {
+  appearance: none;
+  background: var(--dark-100);
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+  height: 4px;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  background: var(--light-100);
+  border: 2px solid var(--accent-500);
+  border-radius: 50%;
+  cursor: pointer;
+  height: 16px;
+  width: 16px;
+}
+
+.slider::-moz-range-thumb {
+  background: var(--light-100);
+  border: 2px solid var(--accent-500);
+  border-radius: 50%;
+  cursor: pointer;
+  height: 16px;
+  width: 16px;
+}
+
+.cropActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}

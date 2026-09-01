@@ -1,0 +1,46 @@
+.cardMeta {
+  display: grid;
+  gap: 6px;
+}
+
+.time {
+  color: var(--light-900);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-s);
+}
+
+.descriptionViewport {
+  display: block;
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.2s ease;
+  will-change: max-height;
+}
+
+.descriptionViewportCollapsed {
+  max-height: 100px;
+}
+
+.descriptionViewportExpanded {
+  max-height: 999px;
+}
+
+.showMore {
+  background: none;
+  border: none;
+  color: var(--accent-500);
+  cursor: pointer;
+  display: inline;
+  font: inherit;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.showMore:hover {
+  color: var(--accent-300);
+}

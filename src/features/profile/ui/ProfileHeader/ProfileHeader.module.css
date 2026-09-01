@@ -1,0 +1,272 @@
+.header {
+  align-items: start;
+  display: grid;
+  gap: 40px;
+  grid-template-columns: 160px minmax(0, 1fr);
+  min-width: 0;
+  width: 100%;
+}
+
+.avatar {
+  align-items: center;
+  aspect-ratio: 1;
+  background:
+    radial-gradient(circle at 34% 24%, rgb(255 255 255 / 28%), transparent 24%),
+    linear-gradient(145deg, var(--accent-300), var(--accent-700) 52%, var(--dark-300));
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 36px rgb(0 0 0 / 24%);
+  color: var(--light-100);
+  display: inline-flex;
+  font-size: 34px;
+  font-weight: var(--font-weight-bold);
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 160px;
+}
+
+.avatarImage {
+  object-fit: cover;
+}
+
+.avatarFallback {
+  align-items: center;
+  display: inline-flex;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.content {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+  padding-top: 4px;
+}
+
+.topRow {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.username {
+  color: var(--light-100);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-l);
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.actions[hidden] {
+  display: none;
+}
+
+.settingsButton,
+.followButton,
+.messageButton {
+  min-width: 132px;
+  white-space: nowrap;
+}
+
+.messageButton {
+  min-width: 148px;
+}
+
+.stats {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(3, minmax(92px, 1fr));
+  margin: 0;
+  max-width: 520px;
+}
+
+.stat {
+  display: grid;
+  gap: 4px;
+}
+
+.stat dd,
+.stat dt {
+  margin: 0;
+}
+
+.stat dd {
+  color: var(--light-100);
+  font-size: var(--font-size-s);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+  order: -1;
+}
+
+.stat dt {
+  color: var(--light-100);
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-m);
+}
+
+.about {
+  color: var(--light-100);
+  font-size: var(--font-size-s);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 760px;
+  overflow-wrap: anywhere;
+}
+
+@media (width <= 900px) and (width > 768px) {
+  .header {
+    gap: 28px;
+    grid-template-columns: 132px minmax(0, 1fr);
+  }
+
+  .avatar {
+    font-size: 28px;
+    width: 132px;
+  }
+
+  .stats {
+    gap: 20px;
+  }
+}
+
+@media (width <= 768px) {
+  .header {
+    align-items: center;
+    column-gap: 16px;
+    grid-template-columns: clamp(72px, 21vw, 80px) minmax(0, 1fr);
+    row-gap: 16px;
+  }
+
+  .avatar {
+    align-self: center;
+    font-size: 18px;
+    grid-column: 1;
+    grid-row: 1;
+    width: clamp(72px, 21vw, 80px);
+  }
+
+  .content,
+  .topRow {
+    display: contents;
+  }
+
+  .stats {
+    align-self: center;
+    gap: 6px;
+    grid-column: 2;
+    grid-row: 1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+    width: 100%;
+  }
+
+  .stat {
+    gap: 2px;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .stat dd {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .stat dt {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .username {
+    font-size: 16px;
+    grid-column: 1 / -1;
+    line-height: 24px;
+    white-space: normal;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+    grid-column: 1 / -1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .actions[data-owner="true"] {
+    display: none;
+  }
+
+  .settingsButton,
+  .followButton,
+  .messageButton {
+    height: 36px;
+    min-width: 0;
+    padding-inline: 10px;
+    width: auto;
+  }
+
+  .actions .followButton,
+  .actions .messageButton {
+    flex: 1 1 0;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .about {
+    font-size: 14px;
+    grid-column: 1 / -1;
+    line-height: 24px;
+    max-width: none;
+  }
+}
+
+@media (width <= 360px) {
+  .header {
+    column-gap: 12px;
+    row-gap: 14px;
+  }
+
+  .stats {
+    gap: 2px;
+  }
+
+  .stat dd {
+    font-size: 13px;
+  }
+
+  .stat dt {
+    font-size: 11px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .settingsButton,
+  .followButton,
+  .messageButton {
+    height: 34px;
+    padding-inline: 8px;
+  }
+
+  .actions .followButton,
+  .actions .messageButton {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
