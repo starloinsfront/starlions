@@ -40,6 +40,8 @@ export const PostModalSearchParamsController = () => {
   const postId = searchParams.get(POST_ID_SEARCH_PARAM)
   const createAction = searchParams.get(ACTION_SEARCH_PARAM)
 
+  const isProfilePost = pathname.startsWith("/profile/") && Boolean(postId)
+
   const closeHref = useMemo(() => {
     return buildHrefWithoutSearchParam(pathname, searchParams, POST_ID_SEARCH_PARAM)
   }, [pathname, searchParams])
@@ -55,11 +57,15 @@ export const PostModalSearchParamsController = () => {
   }, [createAction, pathname, postId, router, searchParams])
 
   const { data: post, isFetching } = useQuery({
-    enabled: Boolean(postId),
+    enabled: Boolean(postId) && !isProfilePost,
     queryKey: [POST_DETAIL_QUERY_KEY, postId],
     queryFn: () => getPostDetailData(postId!),
     staleTime: 60_000,
   })
+
+  if (isProfilePost) {
+    return null
+  }
 
   if (!postId) {
     return null

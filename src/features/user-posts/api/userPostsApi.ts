@@ -34,6 +34,7 @@ const getUserPosts = async (userId: string, params?: GetUserPostsParams) => {
           : [],
       ) ?? [],
     nextCursor: response?.nextCursor,
+    totalCount: response?.totalCount ?? 0,
   } satisfies UserPostsPage
 }
 

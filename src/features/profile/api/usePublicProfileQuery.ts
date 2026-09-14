@@ -9,7 +9,7 @@ export const PUBLIC_PROFILE_QUERY_KEY = (userId: string) => ["publicProfile", us
 
 // Why: The actual HTTP request to the server. Separated from the hook for clarity.
 
-const fetchPublicProfile = async (userId: string): Promise<SchemaPublicProfileOutputDto> => {
+export const fetchPublicProfile = async (userId: string): Promise<SchemaPublicProfileOutputDto> => {
   const result = await client.GET("/api/v1/users/{id}/profile", {
     params: { path: { id: userId } },
   })
@@ -19,10 +19,14 @@ const fetchPublicProfile = async (userId: string): Promise<SchemaPublicProfileOu
 
 // Why: A React hook that components use to load a public profile.
 
-export const usePublicProfileQuery = (userId: string) => {
+export const usePublicProfileQuery = (
+  userId: string,
+  initialData?: SchemaPublicProfileOutputDto | null,
+) => {
   return useQuery({
     queryKey: PUBLIC_PROFILE_QUERY_KEY(userId),
     queryFn: () => fetchPublicProfile(userId),
     enabled: Boolean(userId),
+    initialData: initialData ?? undefined,
   })
 }

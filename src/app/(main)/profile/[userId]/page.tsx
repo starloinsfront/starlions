@@ -1,55 +1,22 @@
-"use client"
+import { getPostDetailData } from "@/features/posts/api/postsApi"
+import { fetchPublicProfile } from "@/features/profile/api/usePublicProfileQuery"
+import { userPostsApi } from "@/features/user-posts/api/userPostsApi"
 
-import { useParams } from "next/navigation"
+import ProfilePageClient from "./ProfilePageClient"
 
-import { useMe } from "@/features/auth/api/useMe"
-import { usePublicProfileQuery } from "@/features/profile/api/usePublicProfileQuery"
-import { ProfileHeader } from "@/features/profile/ui/ProfileHeader"
-import { UserPostsGrid } from "@/features/user-posts/ui/UserPostsGrid"
-
-import s from "./page.module.css"
-
-const DEFAULT_STATS = {
-  following: 0,
-  followers: 0,
-  publications: 0,
+type Props = {
+  params: Promise<{ userId: string }>
+  searchParams: Promise<{ postId?: string }>
 }
 
-export default function ProfilePage() {
-  const params = useParams<{ userId: string }>()
-  const { data: me } = useMe()
-  const userId = params.userId
-  const isAuthorized = Boolean(me?.id)
-  const isOwner = Boolean(me?.id && me.id === userId)
+export default async function ProfilePage({ params, searchParams }: Props) {
+  const [{ userId }, { postId }] = await Promise.all([params, searchParams])
 
-  const { data: publicProfile, isPending } = usePublicProfileQuery(userId)
+  const [profile, posts, post] = await Promise.all([
+    fetchPublicProfile(userId).catch(() => null),
+    userPostsApi.getUserPosts(userId, { limit: 12 }).catch(() => null),
+    postId ? getPostDetailData(postId) : Promise.resolve(null),
+  ])
 
-  const profile = {
-    id: userId,
-    username: publicProfile?.username || me?.username || "UserName",
-    aboutMe: publicProfile?.aboutMe || "",
-    avatarUrl: publicProfile?.avatarUrl ?? undefined,
-    stats: DEFAULT_STATS,
-  }
-
-  if (isPending && !publicProfile) {
-    return (
-      <section className={s.page}>
-        <p>Loading...</p>
-      </section>
-    )
-  }
-
-  return (
-    <section className={s.page}>
-      <ProfileHeader
-        key={profile.id}
-        isAuthorized={isAuthorized}
-        isOwner={isOwner}
-        profile={profile}
-      />
-
-      <UserPostsGrid isOwner={isOwner} userId={userId} />
-    </section>
-  )
+  return <ProfilePageClient initialPost={post} initialPosts={posts} initialProfile={profile} />
 }

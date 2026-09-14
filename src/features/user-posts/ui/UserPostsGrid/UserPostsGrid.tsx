@@ -8,15 +8,17 @@ import { useUserPostsInfiniteQuery } from "@/features/user-posts/api/useUserPost
 
 import { UserPostTile } from "./UserPostTile"
 import s from "./UserPostsGrid.module.css"
+import type { UserPostsPage } from "@/features/user-posts/model/userPosts.types"
 
 type Props = {
   isOwner?: boolean
+  initialPage?: UserPostsPage
   userId: string
 }
 
-export const UserPostsGrid = ({ isOwner = false, userId }: Props) => {
+export const UserPostsGrid = ({ isOwner = false, initialPage, userId }: Props) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
-    useUserPostsInfiniteQuery(userId)
+    useUserPostsInfiniteQuery(userId, initialPage)
 
   const posts = data?.pages.flatMap((page) => page.items) ?? []
 
