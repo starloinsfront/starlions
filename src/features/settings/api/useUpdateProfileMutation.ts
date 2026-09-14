@@ -16,7 +16,7 @@ export const useUpdateProfileMutation = () => {
     },
 
     onError: () => {
-      showErrorToast("Failed to save settings")
+      showErrorToast("Error! Server is not available!")
     },
   })
 }

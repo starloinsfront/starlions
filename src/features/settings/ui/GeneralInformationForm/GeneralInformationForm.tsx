@@ -105,8 +105,8 @@ export const GeneralInformationForm = () => {
       <ConfirmationModal
         title="Delete photo"
         message="Do you really want to delete your profile photo?"
-        discardBtnText="Yes"
-        confirmBtnText="No"
+        discardBtnText="No"
+        confirmBtnText="Yes"
         {...deleteConfirmProps}
       />
     </form>

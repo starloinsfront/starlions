@@ -52,8 +52,8 @@ export const useProfileAvatar = ({ setValueAction, watch, initialAvatarUrl }: Pr
     deleteConfirmProps: {
       isOpen: showDeleteConfirm,
       onClose: () => setShowDeleteConfirm(false),
-      onConfirm: () => setShowDeleteConfirm(false),
-      onDiscard: handleDeleteConfirm,
+      onConfirm: handleDeleteConfirm,
+      onDiscard: () => setShowDeleteConfirm(false),
     },
   }
 }
