@@ -30,6 +30,11 @@
   object-fit: cover;
 }
 
+.avatarWithImage {
+  background: transparent;
+  box-shadow: none;
+}
+
 .avatarFallback {
   align-items: center;
   display: inline-flex;
@@ -87,6 +92,11 @@
   min-width: 148px;
 }
 
+.actionsSkeleton {
+  height: 36px;
+  width: 292px;
+}
+
 .stats {
   display: grid;
   gap: 32px;
@@ -129,6 +139,24 @@
   overflow-wrap: anywhere;
 }
 
+@media (width <= 920px) and (width > 768px) {
+  .topRow {
+    display: contents;
+  }
+
+  .actions {
+    order: 1;
+    width: 100%;
+  }
+
+  .actions .actionsSkeleton,
+  .actions .settingsButton,
+  .actions .followButton,
+  .actions .messageButton {
+    flex: 1 1 0;
+  }
+}
+
 @media (width <= 900px) and (width > 768px) {
   .header {
     gap: 28px;
@@ -148,9 +176,8 @@
 @media (width <= 768px) {
   .header {
     align-items: center;
-    column-gap: 16px;
+    gap: 16px;
     grid-template-columns: clamp(72px, 21vw, 80px) minmax(0, 1fr);
-    row-gap: 16px;
   }
 
   .avatar {
@@ -211,6 +238,7 @@
     display: none;
   }
 
+  .actionsSkeleton,
   .settingsButton,
   .followButton,
   .messageButton {
@@ -220,6 +248,7 @@
     width: auto;
   }
 
+  .actions .actionsSkeleton,
   .actions .followButton,
   .actions .messageButton {
     flex: 1 1 0;
@@ -237,8 +266,7 @@
 
 @media (width <= 360px) {
   .header {
-    column-gap: 12px;
-    row-gap: 14px;
+    gap: 14px 12px;
   }
 
   .stats {
@@ -257,6 +285,7 @@
     gap: 6px;
   }
 
+  .actionsSkeleton,
   .settingsButton,
   .followButton,
   .messageButton {

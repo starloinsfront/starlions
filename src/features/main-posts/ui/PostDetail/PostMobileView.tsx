@@ -61,6 +61,7 @@ export const PostMobileView = ({
           <PostMetaFooter
             commentsCount={post.comments.length}
             createdAt={post.createdAt}
+            interactionsAvailable={post.interactionsAvailable}
             isAuthorized={isAuthorized}
             likes={post.likes}
             likesCount={post.likesCount}
@@ -132,7 +133,7 @@ export const PostMobileView = ({
         title="Likes"
       >
         <div className={s.modalPaddedContent}>
-          <PostLikesList likes={post.likes} variant="mobile" />
+          <PostLikesList isAuthorized={isAuthorized} likes={post.likes} variant="mobile" />
         </div>
       </PostMobilePanelModal>
     </section>

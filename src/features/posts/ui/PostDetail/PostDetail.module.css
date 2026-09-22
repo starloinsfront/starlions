@@ -12,6 +12,10 @@
   width: 100%;
 }
 
+.mobileView {
+  display: none;
+}
+
 .desktopLayout {
   display: grid;
   grid-template-columns: minmax(0, 564px) minmax(0, 408px);
@@ -21,7 +25,7 @@
   width: 100%;
 }
 
-@media (max-width: 1024px) and (min-width: 769px) {
+@media (width <= 1024px) and (width >= 769px) {
   .root {
     height: min(540px, calc(100dvh - 64px));
     max-width: 860px;
@@ -32,7 +36,19 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
+  .desktopView {
+    display: none;
+  }
+
+  .mobileView {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media (width <= 768px) {
   .root {
     background: var(--dark-700);
     border: none;

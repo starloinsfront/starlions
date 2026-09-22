@@ -1,11 +1,8 @@
 .overlay.overlay {
   background: transparent;
-  bottom: env(safe-area-inset-bottom);
-  left: 0;
+  inset: 60px 0 env(safe-area-inset-bottom);
   opacity: 1;
   position: fixed;
-  right: 0;
-  top: 60px;
   z-index: 70;
 }
 
@@ -19,17 +16,14 @@
   border: none;
   border-radius: 0;
   border-top: 1px solid var(--dark-100);
-  bottom: env(safe-area-inset-bottom);
   box-shadow: none;
   display: grid;
   grid-template-rows: 52px minmax(0, 1fr);
-  left: 0;
+  inset: 60px 0 env(safe-area-inset-bottom);
   max-height: none;
   max-width: none;
   overflow: hidden;
   position: fixed;
-  right: 0;
-  top: 60px;
   transform: none;
   width: 100vw;
   z-index: 71;

@@ -1,17 +1,13 @@
 "use client"
 
 import clsx from "clsx"
-import { type MouseEvent } from "react"
 
 import { Carousel } from "@/common/components/Carousel/Carousel"
 import { ROUTES } from "@/common/constants/route"
-import { useMediaQuery } from "@/common/hooks/useMediaQuery"
 import type { PublicPostImage } from "@/features/posts/model/post.types"
 
 import stylesPostCard from "../PostCard.module.css"
 import s from "./PostCardMedia.module.css"
-
-const COMPACT_POST_MEDIA_QUERY = "(max-width: 1024px)"
 
 type Props = {
   hideControls?: boolean
@@ -26,19 +22,8 @@ export const PostCardMedia = ({
   postHrefBase = "/",
   postId,
 }: Props) => {
-  const isCompact = useMediaQuery(COMPACT_POST_MEDIA_QUERY)
   const visibleImages = hideControls ? images.slice(0, 1) : images
   const postModalHref = ROUTES.postModalById(postHrefBase, postId)
-  const mobilePostHref = ROUTES.postById(postId)
-
-  const handleNavigate = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (!isCompact) {
-      return
-    }
-
-    event.preventDefault()
-    window.location.assign(mobilePostHref)
-  }
 
   return (
     <Carousel
@@ -52,7 +37,6 @@ export const PostCardMedia = ({
         slide: stylesPostCard.slide,
       }}
       getHref={() => postModalHref}
-      onNavigate={handleNavigate}
       labelClassName={s.slideLabel}
       slides={visibleImages.map((image) => ({
         postId,

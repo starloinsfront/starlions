@@ -38,10 +38,6 @@
   text-decoration: none;
 }
 
-.authorInfo:hover .username {
-  color: var(--accent-300);
-}
-
 .avatar {
   align-items: center;
   background:
@@ -66,6 +62,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.authorInfo:hover .username {
+  color: var(--accent-300);
 }
 
 .postBody {
@@ -106,12 +106,6 @@
   width: 28px;
 }
 
-.iconButton:hover,
-.likesButton:hover,
-.viewCommentsButton:hover {
-  color: var(--accent-300);
-}
-
 .likesButton {
   align-items: center;
   color: var(--light-100);
@@ -132,6 +126,12 @@
   line-height: var(--line-height-s);
 }
 
+.iconButton:hover,
+.likesButton:hover,
+.viewCommentsButton:hover {
+  color: var(--accent-300);
+}
+
 .description,
 .previewComment p {
   color: var(--light-100);
@@ -142,7 +142,6 @@
   min-width: 0;
   overflow-wrap: anywhere;
   white-space: normal;
-  word-break: break-word;
 }
 
 .description strong,

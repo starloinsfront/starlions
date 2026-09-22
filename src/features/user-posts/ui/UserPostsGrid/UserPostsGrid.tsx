@@ -5,18 +5,27 @@ import { useCallback } from "react"
 import { Loader } from "@/common/components/Loader/Loader"
 import { useIntersectionObserver } from "@/common/hooks/useIntersectionObserver"
 import { useUserPostsInfiniteQuery } from "@/features/user-posts/api/useUserPostsInfiniteQuery"
+import type { UserPostsPage } from "@/features/user-posts/model/userPosts.types"
 
 import { UserPostTile } from "./UserPostTile"
 import s from "./UserPostsGrid.module.css"
 
 type Props = {
   isOwner?: boolean
+  initialPage?: UserPostsPage
   userId: string
 }
 
-export const UserPostsGrid = ({ isOwner = false, userId }: Props) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
-    useUserPostsInfiniteQuery(userId)
+export const UserPostsGrid = ({ isOwner = false, initialPage, userId }: Props) => {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    refetch,
+  } = useUserPostsInfiniteQuery(userId, initialPage)
 
   const posts = data?.pages.flatMap((page) => page.items) ?? []
 
@@ -39,7 +48,14 @@ export const UserPostsGrid = ({ isOwner = false, userId }: Props) => {
   }
 
   if (isError) {
-    return <p className={s.state}>Failed to load publications.</p>
+    return (
+      <div className={s.state} role="alert">
+        <p>Failed to load publications.</p>
+        <button className={s.retryButton} onClick={() => void refetch()} type="button">
+          Try again
+        </button>
+      </div>
+    )
   }
 
   if (posts.length === 0) {

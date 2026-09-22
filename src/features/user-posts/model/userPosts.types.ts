@@ -7,4 +7,5 @@ export type UserPostListItem = {
 export type UserPostsPage = {
   items: UserPostListItem[]
   nextCursor?: string | null
+  totalCount: number
 }

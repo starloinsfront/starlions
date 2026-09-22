@@ -38,6 +38,7 @@ export const PostDetailSidebar = ({
       />
       <PostMetaFooter
         createdAt={post.createdAt}
+        interactionsAvailable={post.interactionsAvailable}
         isAuthorized={isAuthorized}
         likes={post.likes}
         likesCount={post.likesCount}

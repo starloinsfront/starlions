@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect, useMemo, useCallback } from "react"
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
 import s from "./LocationSelect.module.css"
 
@@ -33,6 +33,7 @@ export const LocationSelect = <T extends string | number>({
   const [query, setQuery] = useState("")
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const listboxId = useId()
 
   const selectedItem = items.find((item) => item.id === value)
   const isFreeText = allowFreeText && value && !selectedItem
@@ -125,8 +126,10 @@ export const LocationSelect = <T extends string | number>({
           onBlur={handleBlur}
           disabled={disabled}
           role="combobox"
+          aria-controls={listboxId}
           aria-expanded={isOpen}
           aria-autocomplete="list"
+          aria-invalid={Boolean(error)}
         />
         <Icon
           name="arrowIosDownOutline"
@@ -136,7 +139,7 @@ export const LocationSelect = <T extends string | number>({
         />
 
         {isOpen && filteredItems.length > 0 && (
-          <ul className={s.dropdown} role="listbox">
+          <ul className={s.dropdown} id={listboxId} role="listbox">
             {filteredItems.map((item) => (
               <li key={String(item.id)}>
                 <button

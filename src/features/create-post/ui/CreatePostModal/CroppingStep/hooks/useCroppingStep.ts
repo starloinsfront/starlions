@@ -56,7 +56,6 @@ export const useCroppingStep = ({
     cropAllImages,
     resetCrop,
   } = useCropping(photos, activeIndex, {
-    isCropOptionsOpen,
     closeCropOptions: closeAll,
   })
 

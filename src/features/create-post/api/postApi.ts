@@ -2,7 +2,6 @@ import { client } from "@/common/api/client"
 import { handleApiResponse } from "@/common/utils/api/error/handleApiResponse"
 import { getAuthHeaders } from "@/features/auth/api/apiAuth"
 import type {
-  SchemaPresignFileInputDto,
   SchemaPresignInputDto,
   SchemaCreatePostInputDto,
   SchemaPostViewResponseDto,

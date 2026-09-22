@@ -21,6 +21,21 @@
   text-align: center;
 }
 
+.retryButton {
+  background: transparent;
+  border: 1px solid var(--accent-500);
+  border-radius: 2px;
+  color: var(--accent-500);
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px 20px;
+}
+
+.retryButton:hover {
+  background: var(--accent-500);
+  color: var(--light-100);
+}
+
 .sentinel {
   height: 1px;
   width: 100%;

@@ -32,6 +32,7 @@ export type CardCarouselProps = SharedProps & {
 }
 
 export type DetailCarouselProps = SharedProps & {
+  getHref?: (slide: DetailCarouselSlide) => string
   slides: DetailCarouselSlide[]
   variant: "detail"
 }

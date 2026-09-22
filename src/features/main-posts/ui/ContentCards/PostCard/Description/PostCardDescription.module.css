@@ -11,19 +11,6 @@
 
 .descriptionViewport {
   display: block;
-  overflow: hidden;
-  transition:
-    max-height 0.3s ease,
-    opacity 0.2s ease;
-  will-change: max-height;
-}
-
-.descriptionViewportCollapsed {
-  max-height: 100px;
-}
-
-.descriptionViewportExpanded {
-  max-height: 999px;
 }
 
 .showMore {

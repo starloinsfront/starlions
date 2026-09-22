@@ -7,7 +7,6 @@ import { PostDetailMedia } from "./PostDetailMedia"
 import { PostDetailSidebar } from "./PostDetailSidebar"
 import { PostLikesModal } from "./PostLikesModal"
 import { PostMobileView } from "./PostMobileView"
-import { usePostLayoutMode } from "./usePostLayoutMode"
 import s from "./PostDetail.module.css"
 import type { PostDetailData } from "./PostDetail.types"
 
@@ -20,7 +19,6 @@ type Props = {
 
 export const PostDetail = ({ isModal = false, post }: Props) => {
   const { data: me } = useMe()
-  const { isTabletOrMobile } = usePostLayoutMode()
   const [description, setDescription] = useState(post.description)
 
   const [isLikesModalOpen, setIsLikesModalOpen] = useState(false)
@@ -34,42 +32,45 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
   const handleOpenLikes = () => setMobilePanel("likes")
   const handleResetPanel = () => setMobilePanel(null)
 
-  if (isTabletOrMobile) {
-    return (
-      <PostMobileView
-        activePanel={mobilePanel}
-        isAuthorized={isAuthorized}
-        isOwnPost={isOwnPost}
-        onDescriptionUpdated={setDescription}
-        onOpenCommentsAction={handleOpenComments}
-        onOpenLikesAction={handleOpenLikes}
-        onResetPanelAction={handleResetPanel}
-        post={postWithDescription}
-        showAppBar={isModal}
-        showBackNavigation={!isModal}
-      />
-    )
-  }
-
   return (
-    <article className={s.root}>
-      <div className={s.desktopLayout}>
-        <PostDetailMedia images={post.images} />
-        <PostDetailSidebar
-          isAuthorized={isAuthorized}
-          isOwnPost={isOwnPost}
-          onDescriptionUpdated={setDescription}
-          onOpenLikes={() => setIsLikesModalOpen(true)}
-          post={postWithDescription}
-        />
+    <>
+      <div className={s.desktopView}>
+        <article className={s.root}>
+          <div className={s.desktopLayout}>
+            <PostDetailMedia images={post.images} />
+            <PostDetailSidebar
+              isAuthorized={isAuthorized}
+              isOwnPost={isOwnPost}
+              onDescriptionUpdated={setDescription}
+              onOpenLikes={() => setIsLikesModalOpen(true)}
+              post={postWithDescription}
+            />
+          </div>
+
+          <PostLikesModal
+            isAuthorized={isAuthorized}
+            isOpen={isLikesModalOpen}
+            likes={post.likes}
+            onCloseAction={() => setIsLikesModalOpen(false)}
+          />
+        </article>
       </div>
 
-      <PostLikesModal
-        isAuthorized={isAuthorized}
-        isOpen={isLikesModalOpen}
-        likes={post.likes}
-        onCloseAction={() => setIsLikesModalOpen(false)}
-      />
-    </article>
+      <div className={s.mobileView}>
+        <PostMobileView
+          activePanel={mobilePanel}
+          isAuthorized={isAuthorized}
+          isOwnPost={isOwnPost}
+          isModal={isModal}
+          onDescriptionUpdated={setDescription}
+          onOpenCommentsAction={handleOpenComments}
+          onOpenLikesAction={handleOpenLikes}
+          onResetPanelAction={handleResetPanel}
+          post={postWithDescription}
+          showAppBar={isModal}
+          showBackNavigation={!isModal}
+        />
+      </div>
+    </>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
+import { useState } from "react"
 
 import { Icon } from "@/common/components/Icon/Icon"
 import { ROUTES } from "@/common/constants/route"
@@ -33,6 +33,7 @@ const formatMetric = (value: number) => new Intl.NumberFormat("ru-RU").format(va
 const toPostDetailData = (post: PublicPost): PostDetailData => ({
   ...post,
   comments: [],
+  interactionsAvailable: false,
   likes: [],
   likesCount: 0,
 })
@@ -74,7 +75,11 @@ export const MobilePostsFeed = ({ posts }: Props) => {
                 )}
               </header>
 
-              <PostDetailMedia images={post.images} variant="mobile" />
+              <PostDetailMedia
+                href={ROUTES.postModalById("/", post.id)}
+                images={post.images}
+                variant="mobile"
+              />
 
               <div className={s.postBody}>
                 <div aria-label="Post actions" className={s.actionsRow}>
@@ -100,6 +105,7 @@ export const MobilePostsFeed = ({ posts }: Props) => {
                       </button>
                     )}
                   </div>
+
                   {isAuthorized && (
                     <button aria-label="Save post" className={s.iconButton} type="button">
                       <Icon height={24} name="bookmarkOutline" width={24} />
@@ -112,8 +118,8 @@ export const MobilePostsFeed = ({ posts }: Props) => {
                   onClick={() => setActivePanel({ post: detailPost, type: "likes" })}
                   type="button"
                 >
-                  <PostLikesAvatarStack likes={[]} />
-                  <span>{formatMetric(0)} &quot;Like&quot;</span>
+                  <PostLikesAvatarStack likes={detailPost.likes} />
+                  <span>{formatMetric(detailPost.likesCount)} &quot;Like&quot;</span>
                 </button>
 
                 {post.description && (
@@ -123,18 +129,18 @@ export const MobilePostsFeed = ({ posts }: Props) => {
                   </p>
                 )}
 
-                {(detailPost.comments ?? []).length > 0 && (
+                {detailPost.comments.length > 0 && (
                   <button
                     className={s.viewCommentsButton}
                     onClick={() => setActivePanel({ post: detailPost, type: "comments" })}
                     type="button"
                   >
-                    View all Comments ({(detailPost.comments ?? []).length + 1})
+                    View all Comments ({detailPost.comments.length + 1})
                   </button>
                 )}
 
                 <div className={s.previewComments}>
-                  {(detailPost.comments ?? []).slice(0, COMMENTS_PREVIEW_LIMIT).map((comment) => (
+                  {detailPost.comments.slice(0, COMMENTS_PREVIEW_LIMIT).map((comment) => (
                     <div className={s.previewComment} key={comment.id}>
                       <p>
                         <strong>{comment.username}</strong>
@@ -176,8 +182,8 @@ export const MobilePostsFeed = ({ posts }: Props) => {
           <PostCommentsList
             author={activePost.author}
             className={s.modalList}
+            comments={activePost.comments}
             createdAt={activePost.createdAt}
-            comments={activePost.comments ?? []}
             description={activePost.description}
             isAuthorized={isAuthorized}
             variant="mobile"
@@ -193,7 +199,13 @@ export const MobilePostsFeed = ({ posts }: Props) => {
         title="Likes"
       >
         <div className={s.modalPaddedContent}>
-          {activePost ? <PostLikesList likes={activePost.likes ?? []} variant="mobile" /> : null}
+          {activePost ? (
+            <PostLikesList
+              isAuthorized={isAuthorized}
+              likes={activePost.likes}
+              variant="mobile"
+            />
+          ) : null}
         </div>
       </PostMobilePanelModal>
     </>

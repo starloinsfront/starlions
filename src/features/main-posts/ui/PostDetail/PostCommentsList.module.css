@@ -51,6 +51,10 @@
   font-size: var(--font-size-s);
   line-height: var(--line-height-m);
   margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .commentText strong {
@@ -86,11 +90,6 @@
   color: var(--light-900);
 }
 
-.commentMeta button:hover,
-.answersButton:hover {
-  color: var(--accent-300);
-}
-
 .answersButton {
   align-items: center;
   display: inline-flex;
@@ -98,6 +97,11 @@
   gap: 12px;
   justify-self: start;
   line-height: var(--line-height-s);
+}
+
+.commentMeta button:hover,
+.answersButton:hover {
+  color: var(--accent-300);
 }
 
 .answersButton span {

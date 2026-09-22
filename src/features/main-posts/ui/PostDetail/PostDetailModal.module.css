@@ -20,7 +20,7 @@
 
 .title.title {
   border: 0;
-  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   height: 1px;
   margin: -1px;
   overflow: hidden;
@@ -72,9 +72,17 @@
 }
 
 @media (max-width: 768px) {
-  .overlay.overlay,
-  .content.content,
+  .content.content {
+    height: 100dvh;
+    inset: 0;
+    max-height: none;
+    overflow-y: auto;
+    transform: none;
+    width: 100%;
+  }
+
   .closeButton.closeButton {
-    display: none;
+    right: 12px;
+    top: 14px;
   }
 }

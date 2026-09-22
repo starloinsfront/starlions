@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import clsx from "clsx"
 
 import { Icon } from "@/common/components/Icon/Icon"
 import { ROUTES } from "@/common/constants/route"
@@ -21,6 +22,7 @@ type MobilePanel = "comments" | "likes" | null
 type Props = {
   activePanel: MobilePanel
   isAuthorized: boolean
+  isModal?: boolean
   isOwnPost: boolean
   onDescriptionUpdated?: (description: string) => void
   onOpenCommentsAction: () => void
@@ -36,6 +38,7 @@ const MOBILE_COMMENTS_PREVIEW_LIMIT = 1
 export const PostMobileView = ({
   activePanel,
   isAuthorized,
+  isModal = false,
   isOwnPost,
   onDescriptionUpdated,
   onOpenCommentsAction,
@@ -59,7 +62,7 @@ export const PostMobileView = ({
   }
 
   return (
-    <section className={s.root}>
+    <section className={clsx(s.root, isModal && s.modal)}>
       {showAppBar && (
         <MobileAppBar
           description={post.description}
@@ -67,6 +70,7 @@ export const PostMobileView = ({
           isOwnPost={isOwnPost}
           onDescriptionUpdated={onDescriptionUpdated}
           postId={post.id}
+          isModal={isModal}
         />
       )}
 
@@ -114,6 +118,7 @@ export const PostMobileView = ({
           <PostMetaFooter
             commentsCount={post.comments.length}
             createdAt={post.createdAt}
+            interactionsAvailable={post.interactionsAvailable}
             isAuthorized={isAuthorized}
             likes={post.likes}
             likesCount={post.likesCount}
@@ -186,7 +191,7 @@ export const PostMobileView = ({
         title="Likes"
       >
         <div className={s.modalPaddedContent}>
-          <PostLikesList likes={post.likes} variant="mobile" />
+          <PostLikesList isAuthorized={isAuthorized} likes={post.likes} variant="mobile" />
         </div>
       </PostMobilePanelModal>
     </section>
@@ -196,6 +201,7 @@ export const PostMobileView = ({
 type MobileAppBarProps = {
   description: string
   isAuthorized: boolean
+  isModal: boolean
   isOwnPost: boolean
   onDescriptionUpdated?: (description: string) => void
   postId: string
@@ -204,12 +210,13 @@ type MobileAppBarProps = {
 const MobileAppBar = ({
   description,
   isAuthorized,
+  isModal,
   isOwnPost,
   onDescriptionUpdated,
   postId,
 }: MobileAppBarProps) => {
   return (
-    <header className={s.appBar}>
+    <header className={clsx(s.appBar, isModal && s.modalAppBar)}>
       <span className={s.logo}>Inctagram</span>
       <div className={s.appBarActions}>
         <button aria-label="Change language" className={s.languageButton} type="button">

@@ -1,4 +1,5 @@
 import type { paths } from "@/common/api/schema"
+import { ApiError } from "@/common/utils/api/error/apiError"
 import { mapPostDtoToPublicPost } from "@/features/posts/lib/mapPost"
 import type { PostDetailData, PublicPost } from "@/features/posts/model/post.types"
 
@@ -9,19 +10,27 @@ async function request<T>(url: string, options?: RequestInit): Promise<T | null>
   const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "")
 
   if (!apiUrl) {
-    return null
+    throw new Error("NEXT_PUBLIC_API_URL is missing")
   }
 
   try {
     const response = await fetch(`${apiUrl}${url}`, options)
 
-    if (!response.ok) {
+    if (response.status === 404) {
       return null
     }
 
+    if (!response.ok) {
+      throw new ApiError(response.status, undefined, "Failed to load post", response)
+    }
+
     return (await response.json()) as T
-  } catch {
-    return null
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error
+    }
+
+    throw error instanceof Error ? error : new Error("Failed to load post")
   }
 }
 
@@ -43,6 +52,7 @@ export async function getPostDetailData(postId: string): Promise<PostDetailData 
   return {
     ...post,
     comments: [],
+    interactionsAvailable: false,
     likes: [],
     likesCount: 0,
   }

@@ -1,10 +1,12 @@
 "use client"
 
+import clsx from "clsx"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
 import { Button } from "@/common/components/Button/Button"
+import { Skeleton } from "@/common/components/Skeleton/Skeleton"
 import { ROUTES } from "@/common/constants/route"
 import type { ProfileViewModel } from "@/features/profile/model/profile.types"
 
@@ -12,6 +14,7 @@ import s from "./ProfileHeader.module.css"
 
 type Props = {
   isAuthorized: boolean
+  isAuthLoading: boolean
   isOwner: boolean
   profile: ProfileViewModel
 }
@@ -28,20 +31,28 @@ const getInitials = (username: string) => {
   return normalizedUsername.slice(0, 2).toUpperCase()
 }
 
-export const ProfileHeader = ({ isAuthorized, isOwner, profile }: Props) => {
+export const ProfileHeader = ({ isAuthorized, isAuthLoading, isOwner, profile }: Props) => {
+  const avatarSource = profile.avatarUrl?.trim() || undefined
+  const [failedAvatarSource, setFailedAvatarSource] = useState<string>()
   const [isFollowing, setIsFollowing] = useState(profile.isFollowing ?? false)
-  const hasActions = isOwner || isAuthorized
+  const hasActions = isAuthLoading || isOwner || isAuthorized
+  const showAvatarImage = Boolean(avatarSource) && avatarSource !== failedAvatarSource
 
   return (
     <header className={s.header}>
-      <div className={s.avatar} aria-label={`${profile.username} profile image`} role="img">
-        {profile.avatarUrl ? (
+      <div
+        aria-label={`${profile.username} profile image`}
+        className={clsx(s.avatar, showAvatarImage && s.avatarWithImage)}
+        role="img"
+      >
+        {showAvatarImage ? (
           <Image
             alt=""
             className={s.avatarImage}
             fill
             sizes="(max-width: 768px) 80px, 160px"
-            src={profile.avatarUrl}
+            src={avatarSource ?? ""}
+            onError={() => avatarSource && setFailedAvatarSource(avatarSource)}
             unoptimized
           />
         ) : (
@@ -54,11 +65,16 @@ export const ProfileHeader = ({ isAuthorized, isOwner, profile }: Props) => {
           <h1 className={s.username}>{profile.username}</h1>
 
           <div
+            aria-busy={isAuthLoading}
+            aria-label={isAuthLoading ? "Loading profile actions" : undefined}
             className={s.actions}
             data-owner={isOwner ? "true" : "false"}
             hidden={!hasActions}
+            role={isAuthLoading ? "status" : undefined}
           >
-            {isOwner ? (
+            {isAuthLoading ? (
+              <Skeleton className={s.actionsSkeleton} />
+            ) : isOwner ? (
               <Button asChild className={s.settingsButton} variant="secondary">
                 <Link href={ROUTES.settings(profile.id)}>Profile Settings</Link>
               </Button>

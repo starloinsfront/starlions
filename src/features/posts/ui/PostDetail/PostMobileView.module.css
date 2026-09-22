@@ -16,6 +16,10 @@
   padding: 0 16px;
 }
 
+.modalAppBar {
+  padding-right: 64px;
+}
+
 .logo {
   color: var(--light-100);
   font-size: var(--font-size-xl);
@@ -117,10 +121,6 @@
   text-decoration: none;
 }
 
-.authorInfo:hover .username {
-  color: var(--accent-300);
-}
-
 .avatar {
   align-items: center;
   background:
@@ -147,6 +147,10 @@
   white-space: nowrap;
 }
 
+.authorInfo:hover .username {
+  color: var(--accent-300);
+}
+
 .body {
   display: grid;
   gap: 8px;
@@ -167,7 +171,6 @@
   min-width: 0;
   overflow-wrap: anywhere;
   white-space: normal;
-  word-break: break-word;
 }
 
 .description strong,
@@ -225,5 +228,10 @@
   .root {
     margin-inline: -16px;
     width: calc(100% + 32px);
+  }
+
+  .root.modal {
+    margin-inline: 0;
+    width: 100%;
   }
 }

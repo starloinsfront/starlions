@@ -1,7 +1,5 @@
 "use client"
 
-import clsx from "clsx"
-
 import stylesPostCard from "../PostCard.module.css"
 import s from "./PostCardDescription.module.css"
 
@@ -29,13 +27,7 @@ export const PostCardDescription = ({
     <div className={s.cardMeta}>
       <span className={s.time}>{time}</span>
 
-      <div
-        className={clsx(
-          s.descriptionViewport,
-          canExpand &&
-            (isExpanded ? s.descriptionViewportExpanded : s.descriptionViewportCollapsed),
-        )}
-      >
+      <div className={s.descriptionViewport}>
         <p className={stylesPostCard.descriptionText}>
           {visibleDescription}{" "}
           {canExpand && (

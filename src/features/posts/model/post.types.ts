@@ -36,6 +36,8 @@ export type PostDetailLike = {
 
 export type PostDetailData = PublicPost & {
   comments: PostDetailComment[]
+  /** Whether the response includes server-backed likes/comments/actions. */
+  interactionsAvailable: boolean
   likes: PostDetailLike[]
   likesCount: number
 }

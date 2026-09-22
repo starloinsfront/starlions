@@ -1,55 +1,56 @@
-"use client"
+import { notFound } from "next/navigation"
 
-import { useParams } from "next/navigation"
+import { isApiError } from "@/common/utils/api/error/apiError"
+import { buildPostModalCloseHref, POST_ID_SEARCH_PARAM } from "@/common/utils/modalSearchParams"
+import { getFirstSearchParamValue, type SearchParamsRecord } from "@/common/utils/urlSearchParams"
+import { getPostDetailData } from "@/features/posts/api/postsApi"
+import { PostModal } from "@/features/posts/ui/PostDetail/PostModal"
+import { fetchPublicProfile } from "@/features/profile/api/profileApi"
+import { USER_POSTS_PAGE_SIZE } from "@/features/user-posts/model/constants"
+import { userPostsApi } from "@/features/user-posts/api/userPostsApi"
 
-import { useMe } from "@/features/auth/api/useMe"
-import { usePublicProfileQuery } from "@/features/profile/api/usePublicProfileQuery"
-import { ProfileHeader } from "@/features/profile/ui/ProfileHeader"
-import { UserPostsGrid } from "@/features/user-posts/ui/UserPostsGrid"
+import { ProfilePageClient } from "./ProfilePageClient"
 
-import s from "./page.module.css"
-
-const DEFAULT_STATS = {
-  following: 0,
-  followers: 0,
-  publications: 0,
+type Props = {
+  params: Promise<{ userId: string }>
+  searchParams: Promise<SearchParamsRecord>
 }
 
-export default function ProfilePage() {
-  const params = useParams<{ userId: string }>()
-  const { data: me } = useMe()
-  const userId = params.userId
-  const isAuthorized = Boolean(me?.id)
-  const isOwner = Boolean(me?.id && me.id === userId)
+const loadProfilePageData = async (userId: string, postId?: string) => {
+  try {
+    const [profile, initialPosts, selectedPost] = await Promise.all([
+      fetchPublicProfile(userId),
+      userPostsApi.getUserPosts(userId, { limit: USER_POSTS_PAGE_SIZE }),
+      postId ? getPostDetailData(postId) : Promise.resolve(null),
+    ])
 
-  const { data: publicProfile, isPending } = usePublicProfileQuery(userId)
+    if (postId && !selectedPost) {
+      notFound()
+    }
 
-  const profile = {
-    id: userId,
-    username: publicProfile?.username || me?.username || "UserName",
-    aboutMe: publicProfile?.aboutMe || "",
-    avatarUrl: publicProfile?.avatarUrl ?? undefined,
-    stats: DEFAULT_STATS,
+    return { initialPosts, profile, selectedPost }
+  } catch (error) {
+    if (isApiError(error) && error.status === 404) {
+      notFound()
+    }
+
+    throw error
   }
+}
 
-  if (isPending && !publicProfile) {
-    return (
-      <section className={s.page}>
-        <p>Loading...</p>
-      </section>
-    )
-  }
+export default async function ProfilePage({ params, searchParams }: Props) {
+  const [{ userId }, resolvedSearchParams] = await Promise.all([params, searchParams])
+  const postId = getFirstSearchParamValue(resolvedSearchParams, POST_ID_SEARCH_PARAM)
+  const { initialPosts, profile, selectedPost } = await loadProfilePageData(userId, postId)
+  const closeHref = buildPostModalCloseHref(
+    `/profile/${encodeURIComponent(userId)}`,
+    resolvedSearchParams,
+  )
 
   return (
-    <section className={s.page}>
-      <ProfileHeader
-        key={profile.id}
-        isAuthorized={isAuthorized}
-        isOwner={isOwner}
-        profile={profile}
-      />
-
-      <UserPostsGrid isOwner={isOwner} userId={userId} />
-    </section>
+    <>
+      <ProfilePageClient initialPosts={initialPosts} profile={profile} userId={userId} />
+      {selectedPost ? <PostModal closeHref={closeHref} post={selectedPost} /> : null}
+    </>
   )
 }

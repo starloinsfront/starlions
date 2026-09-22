@@ -10,6 +10,7 @@ type Props = {
   className?: string
   commentsCount?: number
   createdAt: string
+  interactionsAvailable: boolean
   isAuthorized: boolean
   likes: PostDetailLike[]
   likesCount: number
@@ -24,6 +25,7 @@ export const PostMetaFooter = ({
   className,
   commentsCount = 0,
   createdAt,
+  interactionsAvailable,
   isAuthorized,
   likes,
   likesCount,
@@ -38,7 +40,12 @@ export const PostMetaFooter = ({
       {isAuthorized && (
         <div aria-label="Post actions" className={s.actionsRow}>
           <div className={s.actionGroup}>
-            <button aria-label="Like post" className={s.actionButton} type="button">
+            <button
+              aria-label="Like post"
+              className={s.actionButton}
+              disabled={!interactionsAvailable}
+              type="button"
+            >
               <Icon height={24} name="heartOutline" width={24} />
             </button>
             {isMobile && (
@@ -51,19 +58,33 @@ export const PostMetaFooter = ({
                 <Icon height={24} name="messageCircleOutline" width={24} />
               </button>
             )}
-            <button aria-label="Share post" className={s.actionButton} type="button">
+            <button
+              aria-label="Share post"
+              className={s.actionButton}
+              disabled={!interactionsAvailable}
+              type="button"
+            >
               <Icon height={24} name="paperPlaneOutline" width={24} />
             </button>
           </div>
 
-          <button aria-label="Save post" className={s.actionButton} type="button">
+          <button
+            aria-label="Save post"
+            className={s.actionButton}
+            disabled={!interactionsAvailable}
+            type="button"
+          >
             <Icon height={24} name="bookmarkOutline" width={24} />
           </button>
         </div>
       )}
 
       <div className={s.metaInfo}>
-        <button className={s.likesButton} onClick={onLikesClick} type="button">
+        <button
+          className={s.likesButton}
+          onClick={onLikesClick}
+          type="button"
+        >
           <PostLikesAvatarStack likes={likes} />
           <span>{formatMetric(likesCount)} &quot;Like&quot;</span>
         </button>
@@ -78,8 +99,12 @@ export const PostMetaFooter = ({
 
       {isAuthorized && !isMobile && (
         <form className={s.commentForm} onSubmit={(event) => event.preventDefault()}>
-          <input className={s.commentInput} placeholder="Add a Comment..." type="text" />
-          <button className={s.publishButton} type="button">
+          <input
+            className={s.commentInput}
+            placeholder="Add a Comment..."
+            type="text"
+          />
+          <button className={s.publishButton} disabled={!interactionsAvailable} type="button">
             Publish
           </button>
         </form>

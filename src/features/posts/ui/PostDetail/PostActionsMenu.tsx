@@ -11,7 +11,7 @@ import { ConfirmationModal } from "@/common/components/ConfirmationModal"
 import { useDeletePostMutation } from "@/features/posts/api/useDeletePostMutation"
 import { EditPostModal } from "./EditPostModal"
 
-type PostActionId = "copy-link" | "delete" | "edit" | "report"
+type PostActionId = "delete" | "edit"
 
 type PostActionItem = {
   id: PostActionId
@@ -25,15 +25,9 @@ const ownPostActions: PostActionItem[] = [
   { id: "delete", icon: "trashOutline", label: "Delete Post", variant: "danger" },
 ]
 
-const otherPostActions: PostActionItem[] = [
-  { id: "report", icon: "personRemoveOutline", label: "Follow" },
-  { id: "copy-link", icon: "copyOutline", label: "Copy Link" },
-]
-
 type Props = {
   description: string
   isOwnPost: boolean
-  onAction?: (actionId: PostActionId) => void
   onDescriptionUpdated?: (description: string) => void
   postId: string
 }
@@ -41,19 +35,21 @@ type Props = {
 export const PostActionsMenu = ({
   description,
   isOwnPost,
-  onAction,
   onDescriptionUpdated,
   postId,
 }: Props) => {
-  const items = isOwnPost ? ownPostActions : otherPostActions
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const { mutate } = useDeletePostMutation()
 
+  if (!isOwnPost) {
+    return null
+  }
+
   return (
     <>
       <MoreActionsDropdown>
-        {items.map((item) => (
+        {ownPostActions.map((item) => (
           <DropdownMenuItem
             data-action-id={item.id}
             key={item.id}
@@ -62,8 +58,6 @@ export const PostActionsMenu = ({
                 setIsDeleteModalOpen(true)
               } else if (item.id === "edit") {
                 setIsEditModalOpen(true)
-              } else {
-                onAction?.(item.id)
               }
             }}
             unstyled

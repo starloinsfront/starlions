@@ -6,11 +6,12 @@ import { PostDetailImage } from "./PostDetail.types"
 
 type Props = {
   className?: string
+  href?: string
   images: PostDetailImage[]
   variant?: "desktop" | "mobile" | "mobile-detail"
 }
 
-export const PostDetailMedia = ({ className, images, variant = "desktop" }: Props) => {
+export const PostDetailMedia = ({ className, href, images, variant = "desktop" }: Props) => {
   const isMobile = variant !== "desktop"
   const isMobileDetail = variant === "mobile-detail"
 
@@ -36,6 +37,7 @@ export const PostDetailMedia = ({ className, images, variant = "desktop" }: Prop
         slides={images.map((image) => ({
           src: image.url,
         }))}
+        getHref={href ? () => href : undefined}
         variant="detail"
       />
     </div>

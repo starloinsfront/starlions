@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const Main = ({ data, postHrefBase = "/" }: Props) => {
-  if (!data || data.posts.length === 0) {
+  if (!data) {
     return <EmptyMainState />
   }
 
@@ -20,7 +20,11 @@ export const Main = ({ data, postHrefBase = "/" }: Props) => {
       <div className={s.mainRegisteredUsers}>
         <RegisteredUsers count={data.usersCount} />
       </div>
-      <ContentCards posts={data.posts} postHrefBase={postHrefBase} />
+      {data.posts.length > 0 ? (
+        <ContentCards posts={data.posts} postHrefBase={postHrefBase} />
+      ) : (
+        <EmptyMainState />
+      )}
     </div>
   )
 }
