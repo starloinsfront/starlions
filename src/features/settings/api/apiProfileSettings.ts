@@ -63,10 +63,7 @@ export const presignAvatar = async (file: File) => {
 // What's inside: Performs a regular fetch with the PUT method directly to the cloud storage URL (bypassing our API server). Simply sends the file as the request body. If the response is not OK, it throws an
 // error.
 
-export const uploadAvatarToPresignedUrl = async (
-  uploadUrl: string,
-  file: File,
-) => {
+export const uploadAvatarToPresignedUrl = async (uploadUrl: string, file: File) => {
   const response = await fetch(uploadUrl, {
     method: "PUT",
     body: file,

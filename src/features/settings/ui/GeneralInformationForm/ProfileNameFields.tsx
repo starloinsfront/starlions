@@ -15,6 +15,7 @@ export const ProfileNameFields = ({ register, errors }: Props) => (
     <TextField
       label="Username"
       placeholder="Username"
+      required
       errorMessage={errors.username?.message}
       {...register("username")}
     />
@@ -23,12 +24,14 @@ export const ProfileNameFields = ({ register, errors }: Props) => (
       <TextField
         label="First Name"
         placeholder="First Name"
+        required
         errorMessage={errors.firstName?.message}
         {...register("firstName")}
       />
       <TextField
         label="Last Name"
         placeholder="Last Name"
+        required
         errorMessage={errors.lastName?.message}
         {...register("lastName")}
       />

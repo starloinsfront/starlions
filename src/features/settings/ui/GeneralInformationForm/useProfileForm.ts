@@ -12,6 +12,8 @@ import { useUpdateProfileMutation } from "../../api/useUpdateProfileMutation"
 import { useProfileSettingsQuery } from "../../api/useProfileSettingsQuery"
 import { useMe } from "@/features/auth/api/useMe"
 import type { SchemaUpdateProfileInputDto } from "@/common/api/schema"
+import { normalizeDateOnly } from "../../model/dateOfBirth"
+import { normalizeCityId, normalizeCountryCode } from "../../model/profileLocation"
 
 const STORAGE_KEY = "profile-settings-draft"
 
@@ -42,8 +44,7 @@ export const useProfileForm = () => {
     refetch,
   } = useProfileSettingsQuery()
   const { mutate: updateProfile, isPending: isSaving } = useUpdateProfileMutation()
-  const initializedUserIdRef = useRef<string | null>(null)
-
+  const hasRestoredDraftRef = useRef(false)
   const form = useForm<ProfileSettingsFormData>({
     resolver: zodResolver(profileSettingsSchema),
     mode: "onChange",
@@ -60,34 +61,50 @@ export const useProfileForm = () => {
   })
 
   const { getValues, reset } = form
+  const profileUserId = profileSettings?.userId ?? me?.id
 
   useEffect(() => {
-    if (!profileSettings || !me?.id || initializedUserIdRef.current === profileSettings.userId) {
+    if (!profileSettings) {
       return
     }
 
     const serverValues: ProfileSettingsFormData = {
       avatarUrl: profileSettings.avatarUrl,
-      username: profileSettings.username || me.username || "",
+      username: profileSettings.username || me?.username || "",
       firstName: profileSettings.firstName ?? "",
       lastName: profileSettings.lastName ?? "",
-      dateOfBirth: profileSettings.dateOfBirth,
-      countryCode: profileSettings.countryCode,
-      cityId: profileSettings.cityId,
+      dateOfBirth: normalizeDateOnly(profileSettings.dateOfBirth),
+      countryCode: normalizeCountryCode(profileSettings.countryCode),
+      cityId: normalizeCityId(profileSettings.cityId),
       aboutMe: profileSettings.aboutMe ?? "",
     }
-    const draft = readDraft(getDraftKey(me.id))
+    const draft = hasRestoredDraftRef.current
+      ? null
+      : readDraft(getDraftKey(profileSettings.userId))
+    const draftCountryCode = normalizeCountryCode(draft?.countryCode)
+    const draftCityId = normalizeCityId(draft?.cityId)
+    const restoredValues: ProfileSettingsFormData = draft
+      ? {
+          ...serverValues,
+          ...draft,
+          countryCode: draftCountryCode ?? serverValues.countryCode,
+          cityId:
+            draftCountryCode && draftCountryCode !== serverValues.countryCode
+              ? draftCityId
+              : (draftCityId ?? serverValues.cityId),
+        }
+      : serverValues
 
-    reset({ ...serverValues, ...draft })
-    initializedUserIdRef.current = profileSettings.userId
-  }, [me?.id, me?.username, profileSettings, reset])
+    hasRestoredDraftRef.current = true
+    reset(restoredValues, { keepDirtyValues: true })
+  }, [me?.username, profileSettings, reset])
 
   const preserveDraft = () => {
-    if (!me?.id) {
+    if (!profileUserId) {
       return
     }
 
-    sessionStorage.setItem(getDraftKey(me.id), JSON.stringify(getValues()))
+    sessionStorage.setItem(getDraftKey(profileUserId), JSON.stringify(getValues()))
   }
 
   const onSubmit = (data: ProfileSettingsFormData) => {
@@ -102,8 +119,8 @@ export const useProfileForm = () => {
     }
     updateProfile(body, {
       onSuccess: () => {
-        if (me?.id) {
-          sessionStorage.removeItem(getDraftKey(me.id))
+        if (profileUserId) {
+          sessionStorage.removeItem(getDraftKey(profileUserId))
         }
       },
     })
@@ -116,6 +133,7 @@ export const useProfileForm = () => {
     isSaving,
     onSubmit,
     preserveDraft,
+    profileSettings,
     refetch,
   }
 }

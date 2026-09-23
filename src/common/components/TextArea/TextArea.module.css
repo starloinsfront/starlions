@@ -48,3 +48,19 @@
   font-size: var(--font-size-xs);
   line-height: var(--line-height-s);
 }
+
+.meta {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  min-height: var(--line-height-s);
+}
+
+.characterCount {
+  color: var(--light-900);
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-s);
+  margin-left: auto;
+}

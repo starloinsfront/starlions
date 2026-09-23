@@ -6,7 +6,7 @@
 .fieldWrapper {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
 
 .label {
@@ -20,7 +20,7 @@
 .input {
   align-items: center;
   appearance: none;
-  background-color: var(--dark-300);
+  background-color: transparent;
   border: 1px solid var(--dark-100);
   border-radius: 2px;
   color: var(--light-100);
@@ -31,7 +31,8 @@
   font-weight: var(--font-weight-regular);
   justify-content: space-between;
   line-height: var(--line-height-m);
-  padding: 10px 12px;
+  min-height: 36px;
+  padding: 6px 12px;
 }
 
 .input:focus-visible {

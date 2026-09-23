@@ -1,24 +1,15 @@
-.contentSkeleton {
+.contentLoader {
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-width: 970px;
+  justify-content: center;
+  min-height: calc(100dvh - 104px);
   width: 100%;
 }
 
-.titleSkeleton {
-  height: 28px;
-  width: min(240px, 55%);
-}
-
-.tabsSkeleton {
-  height: 44px;
-  width: min(600px, 100%);
-}
-
-.blockSkeleton {
-  height: 320px;
-  width: min(640px, 100%);
+.loader {
+  display: block;
+  height: 40px;
+  width: 40px;
 }
 
 .errorState {
@@ -30,4 +21,16 @@
   gap: 16px;
   justify-content: center;
   min-height: 320px;
+}
+
+@media (width <= 992px) {
+  .contentLoader {
+    min-height: calc(100dvh - 108px);
+  }
+}
+
+@media (width <= 768px) {
+  .contentLoader {
+    min-height: calc(100dvh - 176px - env(safe-area-inset-bottom));
+  }
 }

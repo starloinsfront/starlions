@@ -9,6 +9,10 @@
   color: var(--light-900);
 }
 
+.requiredMark {
+  color: var(--danger-500);
+}
+
 .inputWrapper {
   align-items: center;
   display: flex;

@@ -1,33 +1,34 @@
 "use client"
 
-import { useDeferredValue, useState } from "react"
+import { useMemo } from "react"
 import type { Control, FieldErrors } from "react-hook-form"
-import { Controller } from "react-hook-form"
-import { LocationSelect } from "../LocationSelect"
+import { Controller, useWatch } from "react-hook-form"
+
+import { Select } from "@/common/components/Select/CustomSelect"
 import { useCountriesQuery } from "../../api/useCountriesQuery"
 import { useCitiesQuery } from "../../api/useCitiesQuery"
+import { withSelectedOption } from "../../model/locationOptions"
 import type { ProfileSettingsFormData } from "../../model/profile-settings.schema"
 import s from "./GeneralInformationForm.module.css"
 
 type Props = {
   control: Control<ProfileSettingsFormData>
   errors: FieldErrors<ProfileSettingsFormData>
-  selectedCountryCode: string | null | undefined
+  initialCityName: string | null | undefined
   onCountryChange: (val: string | null) => void
   onCityChange: (val: number | null) => void
-  selectedCityId: number | null | undefined
 }
 
 export const ProfileLocationFields = ({
   control,
   errors,
-  selectedCountryCode,
+  initialCityName,
   onCountryChange,
   onCityChange,
-  selectedCityId,
 }: Props) => {
-  const [citySearch, setCitySearch] = useState("")
-  const deferredCitySearch = useDeferredValue(citySearch.trim())
+  const selectedCountryCode = useWatch({ control, name: "countryCode" })
+  const selectedCityId = useWatch({ control, name: "cityId" })
+
   const {
     data: countries = [],
     isError: isCountriesError,
@@ -39,68 +40,127 @@ export const ProfileLocationFields = ({
     isError: isCitiesError,
     isFetching: isCitiesLoading,
     refetch: refetchCities,
-  } = useCitiesQuery(selectedCountryCode, deferredCitySearch)
+  } = useCitiesQuery(selectedCountryCode)
 
-  const countryItems = countries.map((c) => ({ id: c.code, name: c.name }))
-  const cityItems = cities.map((c) => ({ id: c.id, name: c.name }))
-  const handleCountryChange = (value: string | null) => {
-    setCitySearch("")
-    onCountryChange(value)
-  }
+  const countryOptions = useMemo(() => {
+    const options = countries.map((country) => ({
+      label: country.name,
+      value: country.code,
+    }))
 
+    return withSelectedOption(options, selectedCountryCode, selectedCountryCode)
+  }, [countries, selectedCountryCode])
+  const cityOptions = useMemo(
+    () =>
+      withSelectedOption(
+        cities.map((city) => ({ label: city.name, value: String(city.id) })),
+        selectedCityId == null ? null : String(selectedCityId),
+        initialCityName,
+      ),
+    [cities, initialCityName, selectedCityId],
+  )
   return (
-    <>
-      <Controller
-        name="countryCode"
-        control={control}
-        render={({ field }) => (
-          <LocationSelect
-            label="Country"
-            placeholder="Select country"
-            items={countryItems}
-            value={field.value}
-            onChange={handleCountryChange}
-            error={errors.countryCode?.message}
-            isLoading={isCountriesLoading}
-          />
-        )}
-      />
+    <div className={s.locationRow}>
+      <div className={s.locationField}>
+        <Controller
+          name="countryCode"
+          control={control}
+          render={({ field }) => {
+            const selectedValue = field.value ?? ""
+            const selectedLabel = selectedValue
+              ? (countryOptions.find((option) => option.value === selectedValue)?.label ??
+                selectedValue)
+              : undefined
 
-      {isCountriesError ? (
-        <div className={s.inlineError} role="alert">
-          <span>Failed to load countries.</span>
-          <button onClick={() => void refetchCountries()} type="button">
-            Try again
-          </button>
-        </div>
-      ) : null}
+            return (
+              <Select
+                ariaLabel="Country"
+                className={s.locationSelect}
+                disabled={isCountriesLoading}
+                error={errors.countryCode?.message}
+                label="Select your country"
+                name={field.name}
+                onBlur={field.onBlur}
+                onValueChange={(value) => {
+                  if (!value || value === field.value) {
+                    return
+                  }
 
-      <Controller
-        name="cityId"
-        control={control}
-        render={() => (
-          <LocationSelect<number>
-            label="City"
-            placeholder="Select city"
-            items={cityItems}
-            value={selectedCityId}
-            onChange={onCityChange}
-            onSearchChange={setCitySearch}
-            disabled={!selectedCountryCode}
-            error={errors.cityId?.message}
-            isLoading={isCitiesLoading}
-          />
-        )}
-      />
+                  onCountryChange(value)
+                }}
+                options={countryOptions}
+                placeholder={isCountriesLoading ? "Loading countries…" : "Country"}
+                ref={field.ref}
+                selectedLabel={selectedLabel}
+                value={selectedValue}
+              />
+            )
+          }}
+        />
 
-      {isCitiesError ? (
-        <div className={s.inlineError} role="alert">
-          <span>Failed to load cities.</span>
-          <button onClick={() => void refetchCities()} type="button">
-            Try again
-          </button>
-        </div>
-      ) : null}
-    </>
+        {isCountriesError ? (
+          <div className={s.inlineError} role="alert">
+            <span>Failed to load countries.</span>
+            <button onClick={() => void refetchCountries()} type="button">
+              Try again
+            </button>
+          </div>
+        ) : null}
+      </div>
+
+      <div className={s.locationField}>
+        <Controller
+          name="cityId"
+          control={control}
+          render={({ field }) => {
+            const selectedValue = field.value == null ? "" : String(field.value)
+            const selectedLabel = selectedValue
+              ? (cityOptions.find((option) => option.value === selectedValue)?.label ??
+                initialCityName ??
+                selectedValue)
+              : undefined
+
+            return (
+              <Select
+                ariaLabel="City"
+                className={s.locationSelect}
+                disabled={!selectedCountryCode || isCitiesLoading}
+                error={errors.cityId?.message}
+                label="Select your city"
+                name={field.name}
+                onBlur={field.onBlur}
+                onValueChange={(value) => {
+                  if (!value) {
+                    return
+                  }
+
+                  const cityId = Number(value)
+
+                  if (!Number.isSafeInteger(cityId) || cityId === field.value) {
+                    return
+                  }
+
+                  onCityChange(cityId)
+                }}
+                options={cityOptions}
+                placeholder={isCitiesLoading ? "Loading cities…" : "City"}
+                ref={field.ref}
+                selectedLabel={selectedLabel}
+                value={selectedValue}
+              />
+            )
+          }}
+        />
+
+        {isCitiesError ? (
+          <div className={s.inlineError} role="alert">
+            <span>Failed to load cities.</span>
+            <button onClick={() => void refetchCities()} type="button">
+              Try again
+            </button>
+          </div>
+        ) : null}
+      </div>
+    </div>
   )
 }

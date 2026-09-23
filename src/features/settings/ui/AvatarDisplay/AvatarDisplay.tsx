@@ -29,6 +29,7 @@ export const AvatarDisplay = ({ avatarUrl, username, onSelectPhoto, onDelete }: 
             sizes="192px"
             src={avatarUrl}
             unoptimized
+            loading="eager"
           />
         ) : (
           <span className={s.avatarFallback}>{getInitials(username)}</span>
@@ -49,7 +50,7 @@ export const AvatarDisplay = ({ avatarUrl, username, onSelectPhoto, onDelete }: 
 
     {onSelectPhoto && (
       <button type="button" className={s.selectButton} onClick={onSelectPhoto}>
-        Select Profile Photo
+        Add a Profile Photo
       </button>
     )}
   </div>

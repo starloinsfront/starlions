@@ -4,7 +4,7 @@ import { useEffect, type ReactNode } from "react"
 import { useRouter } from "next/navigation"
 
 import { Button } from "@/common/components/Button/Button"
-import { Skeleton } from "@/common/components/Skeleton/Skeleton"
+import { Loader } from "@/common/components/Loader/Loader"
 import { ROUTES } from "@/common/constants/route"
 import { useMe } from "@/features/auth/api/useMe"
 import { ToastLayoutSync } from "@/app/providers/ToastProvider/ToastLayoutSync"
@@ -17,17 +17,12 @@ type Props = {
   children: ReactNode
 }
 
-const ProtectedContentSkeleton = () => {
+const ProtectedContentLoader = () => {
   return (
-    <div
-      aria-busy="true"
-      aria-label="Loading protected page"
-      className={s.contentSkeleton}
-      role="status"
-    >
-      <Skeleton className={s.titleSkeleton} />
-      <Skeleton className={s.tabsSkeleton} />
-      <Skeleton className={s.blockSkeleton} />
+    <div aria-label="Loading protected page" className={s.contentLoader} role="status">
+      <span className={s.loader}>
+        <Loader />
+      </span>
     </div>
   )
 }
@@ -64,7 +59,7 @@ export const ProtectedAppLayout = ({ children }: Props) => {
                   </Button>
                 </div>
               ) : isWaitingForAuth ? (
-                <ProtectedContentSkeleton />
+                <ProtectedContentLoader />
               ) : (
                 children
               )}

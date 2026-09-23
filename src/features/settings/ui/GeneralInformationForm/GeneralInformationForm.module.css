@@ -1,32 +1,134 @@
 .form {
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+.formBody {
+  display: grid;
   gap: 24px;
-  max-width: 640px;
+  grid-template-columns: 192px minmax(0, 1fr);
+}
+
+.avatarColumn {
+  min-width: 0;
+}
+
+.fieldsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.fieldsColumn label {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
 }
 
 .nameRow {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
-  grid-template-columns: 1fr 1fr;
 }
 
-@media (--mobile) {
-  .nameRow {
-    grid-template-columns: 1fr;
-  }
+.locationRow {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.locationField {
+  min-width: 0;
+}
+
+.locationSelect label {
+  color: var(--light-900);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.locationSelect,
+.compactField {
+  gap: 0;
+}
+
+.actions {
+  border-top: 1px solid var(--dark-100);
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 24px;
 }
 
 .saveButton {
-  align-self: flex-start;
-  margin-top: 8px;
+  min-width: 160px;
 }
 
-.loading {
-  color: var(--light-900);
-  font-family: var(--font-inter), sans-serif;
-  font-size: var(--font-size-m);
-  line-height: var(--line-height-m);
+.srOnly {
+  border: 0;
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.skeletonAvatarColumn {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeletonAvatar {
+  border-radius: 50%;
+  height: 192px;
+  width: 192px;
+}
+
+.skeletonPhotoButton {
+  height: 36px;
+  width: 192px;
+}
+
+.skeletonField {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.skeletonLabel {
+  height: var(--line-height-m);
+}
+
+.skeletonInput {
+  height: 36px;
+  width: 100%;
+}
+
+.skeletonTextArea {
+  height: 100px;
+  width: 100%;
+}
+
+.skeletonCounter {
+  align-self: flex-end;
+  height: var(--line-height-s);
+  margin-top: 4px;
+  width: 42px;
+}
+
+.skeletonSaveButton {
+  height: 36px;
+  width: 160px;
 }
 
 .errorState {
@@ -46,7 +148,7 @@
   font-size: var(--font-size-xs);
   gap: 12px;
   line-height: var(--line-height-s);
-  margin-top: -16px;
+  margin-top: 8px;
 }
 
 .inlineError button {
@@ -61,4 +163,38 @@
 
 .inlineError button:hover {
   color: var(--accent-300);
+}
+
+@media (width <= 768px) {
+  .formBody {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .avatarColumn {
+    align-self: center;
+    width: 100%;
+  }
+
+  .skeletonPhotoButton {
+    width: 100%;
+  }
+
+  .locationRow {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    margin-top: 40px;
+    padding-top: 24px;
+  }
+
+  .saveButton {
+    width: 100%;
+  }
+
+  .skeletonSaveButton {
+    width: 100%;
+  }
 }

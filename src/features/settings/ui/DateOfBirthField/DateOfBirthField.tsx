@@ -4,7 +4,7 @@ import { forwardRef } from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { Icon } from "@/common/components/Icon/Icon"
-import { parseDateOnly } from "@/features/settings/model/dateOfBirth"
+import { normalizeDateOnly, parseDateOnly } from "@/features/settings/model/dateOfBirth"
 import s from "./DateOfBirthField.module.css"
 
 type Props = {
@@ -14,8 +14,9 @@ type Props = {
 }
 
 const toDate = (iso: string | null | undefined): Date | null => {
-  if (!iso) return null
-  return parseDateOnly(iso)
+  const dateOnly = normalizeDateOnly(iso)
+
+  return dateOnly ? parseDateOnly(dateOnly) : null
 }
 
 const toIso = (d: Date | null): string | null => {

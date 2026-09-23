@@ -5,6 +5,7 @@ export type Props = {
   label?: string
   errorMessage?: string
   containerClassName?: string
+  showCharacterCount?: boolean
 } & ComponentPropsWithoutRef<"textarea">
 
 export const TextArea = ({
@@ -12,7 +13,10 @@ export const TextArea = ({
   errorMessage,
   className,
   containerClassName,
+  showCharacterCount = false,
   id,
+  maxLength,
+  value,
   ...rest
 }: Props) => {
   const generatedId = useId()
@@ -20,6 +24,8 @@ export const TextArea = ({
 
   const containerClasses = `${s.textareaContainer} ${errorMessage ? s.error : ""} ${containerClassName || ""}`
   const textareaClasses = `${s.textarea} ${className || ""}`
+  const shouldShowCharacterCount = showCharacterCount && typeof maxLength === "number"
+  const characterCount = typeof value === "string" ? value.length : 0
 
   return (
     <div className={containerClasses}>
@@ -29,9 +35,24 @@ export const TextArea = ({
         </label>
       )}
 
-      <textarea id={finalId} className={textareaClasses} {...rest} />
+      <textarea
+        id={finalId}
+        className={textareaClasses}
+        maxLength={maxLength}
+        value={value}
+        {...rest}
+      />
 
-      {errorMessage && <span className={s.errorText}>{errorMessage}</span>}
+      {(errorMessage || shouldShowCharacterCount) && (
+        <div className={s.meta}>
+          {errorMessage && <span className={s.errorText}>{errorMessage}</span>}
+          {shouldShowCharacterCount && (
+            <span aria-hidden="true" className={s.characterCount}>
+              {characterCount}/{maxLength}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   )
 }

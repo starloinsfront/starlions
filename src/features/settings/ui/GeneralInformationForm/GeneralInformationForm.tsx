@@ -13,6 +13,7 @@ import { DateOfBirthField } from "../DateOfBirthField"
 import { AgeRestrictionNotice } from "../AgeRestrictionNotice"
 import { ProfileNameFields } from "./ProfileNameFields"
 import { ProfileLocationFields } from "./ProfileLocationFields"
+import { GeneralInformationSkeleton } from "./GeneralInformationSkeleton"
 import { useProfileForm } from "./useProfileForm"
 import { useProfileAvatar } from "./useProfileAvatar"
 
@@ -20,7 +21,8 @@ import s from "./GeneralInformationForm.module.css"
 
 export const GeneralInformationForm = () => {
   const pathname = usePathname()
-  const { form, isError, isLoading, isSaving, onSubmit, preserveDraft, refetch } = useProfileForm()
+  const { form, isError, isLoading, isSaving, onSubmit, preserveDraft, profileSettings, refetch } =
+    useProfileForm()
   const { register, watch, setValue, formState } = form
   const { errors, isValid } = formState
 
@@ -38,12 +40,10 @@ export const GeneralInformationForm = () => {
     deleteConfirmProps,
   } = useProfileAvatar({ setValueAction: setValue, watch })
 
-  const selectedCountryCode = watch("countryCode")
-  const selectedCityId = watch("cityId")
   const dateOfBirth = watch("dateOfBirth")
 
   if (isLoading) {
-    return <p className={s.loading}>Loading...</p>
+    return <GeneralInformationSkeleton />
   }
 
   if (isError) {
@@ -59,63 +59,79 @@ export const GeneralInformationForm = () => {
 
   return (
     <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-      <AvatarDisplay
-        avatarUrl={displayAvatarUrl}
-        username={watch("username")}
-        onSelectPhoto={openUploadModal}
-        onDelete={requestDelete}
-      />
-
-      <ProfileNameFields register={register} errors={errors} />
-
-      <Controller
-        name="dateOfBirth"
-        control={control}
-        render={({ field }) => (
-          <DateOfBirthField
-            value={field.value}
-            onChange={field.onChange}
-            error={errors.dateOfBirth?.message}
+      <div className={s.formBody}>
+        <div className={s.avatarColumn}>
+          <AvatarDisplay
+            avatarUrl={displayAvatarUrl}
+            username={watch("username")}
+            onSelectPhoto={openUploadModal}
+            onDelete={requestDelete}
           />
-        )}
-      />
+        </div>
 
-      <AgeRestrictionNotice
-        dateOfBirth={dateOfBirth}
-        onPrivacyPolicyClick={preserveDraft}
-        returnTo={pathname}
-      />
+        <div className={s.fieldsColumn}>
+          <ProfileNameFields register={register} errors={errors} />
 
-      <ProfileLocationFields
-        control={control}
-        errors={errors}
-        selectedCountryCode={selectedCountryCode}
-        selectedCityId={selectedCityId}
-        onCountryChange={(val) => {
-          setValue("countryCode", val)
-          setValue("cityId", null, { shouldValidate: true })
-        }}
-        onCityChange={(val) => {
-          setValue("cityId", val, { shouldValidate: true })
-        }}
-      />
+          <Controller
+            name="dateOfBirth"
+            control={control}
+            render={({ field }) => (
+              <DateOfBirthField
+                value={field.value}
+                onChange={field.onChange}
+                error={errors.dateOfBirth?.message}
+              />
+            )}
+          />
 
-      <TextArea
-        label="About Me"
-        placeholder="Tell us about yourself"
-        errorMessage={errors.aboutMe?.message}
-        maxLength={200}
-        {...register("aboutMe")}
-      />
+          <AgeRestrictionNotice
+            dateOfBirth={dateOfBirth}
+            onPrivacyPolicyClick={preserveDraft}
+            returnTo={pathname}
+          />
 
-      <Button
-        className={s.saveButton}
-        type="submit"
-        disabled={!isValid || isSaving || isUploading}
-        isLoading={isSaving}
-      >
-        Save changes
-      </Button>
+          <ProfileLocationFields
+            control={control}
+            errors={errors}
+            initialCityName={profileSettings?.cityName}
+            onCountryChange={(val) => {
+              setValue("countryCode", val, { shouldDirty: true, shouldValidate: true })
+              setValue("cityId", null, { shouldDirty: true, shouldValidate: true })
+            }}
+            onCityChange={(val) => {
+              setValue("cityId", val, { shouldDirty: true, shouldValidate: true })
+            }}
+          />
+
+          <Controller
+            name="aboutMe"
+            control={control}
+            render={({ field }) => (
+              <TextArea
+                {...field}
+                containerClassName={s.compactField}
+                errorMessage={errors.aboutMe?.message}
+                label="About Me"
+                maxLength={200}
+                placeholder="Tell us about yourself"
+                showCharacterCount
+                value={field.value ?? ""}
+              />
+            )}
+          />
+        </div>
+      </div>
+
+      <div className={s.actions}>
+        <Button
+          className={s.saveButton}
+          type="submit"
+          disabled={!isValid || isSaving || isUploading}
+          isLoading={isSaving}
+        >
+          Save Changes
+        </Button>
+      </div>
 
       {avatarUploadModal}
 

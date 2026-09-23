@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { isAtLeastAge, parseDateOnly } from "./dateOfBirth"
+import { isAtLeastAge, normalizeDateOnly, parseDateOnly } from "./dateOfBirth"
+import { normalizeCityId, normalizeCountryCode } from "./profileLocation"
 import { profileSettingsSchema } from "./profile-settings.schema"
 
 const validProfile = {
@@ -36,11 +37,29 @@ describe("profile settings date of birth", () => {
     expect(parseDateOnly("23.04.1998")).toBeNull()
   })
 
+  it("normalizes an ISO server timestamp without shifting the calendar day", () => {
+    expect(normalizeDateOnly("1998-04-23T23:30:00.000Z")).toBe("1998-04-23")
+    expect(normalizeDateOnly("1998-02-30T00:00:00.000Z")).toBeNull()
+  })
+
   it("accepts the exact thirteenth birthday and rejects the following day", () => {
     const today = new Date(2026, 8, 23)
 
     expect(isAtLeastAge("2013-09-23", 13, today)).toBe(true)
     expect(isAtLeastAge("2013-09-24", 13, today)).toBe(false)
+  })
+})
+
+describe("profile settings location values", () => {
+  it("normalizes country codes returned with inconsistent casing or spaces", () => {
+    expect(normalizeCountryCode(" us ")).toBe("US")
+    expect(normalizeCountryCode("USA")).toBeNull()
+  })
+
+  it("normalizes numeric city ids returned as strings", () => {
+    expect(normalizeCityId("5128581")).toBe(5128581)
+    expect(normalizeCityId(5128581)).toBe(5128581)
+    expect(normalizeCityId("not-a-city")).toBeNull()
   })
 })
 
