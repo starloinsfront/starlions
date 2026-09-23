@@ -1,0 +1,33 @@
+.contentSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 970px;
+  width: 100%;
+}
+
+.titleSkeleton {
+  height: 28px;
+  width: min(240px, 55%);
+}
+
+.tabsSkeleton {
+  height: 44px;
+  width: min(600px, 100%);
+}
+
+.blockSkeleton {
+  height: 320px;
+  width: min(640px, 100%);
+}
+
+.errorState {
+  align-items: flex-start;
+  color: var(--danger-500);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-inter), sans-serif;
+  gap: 16px;
+  justify-content: center;
+  min-height: 320px;
+}

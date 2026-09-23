@@ -14,8 +14,10 @@ type Props = {
   className?: string
   description: string
   isAuthorized: boolean
+  isFollowing: boolean
   isOwnPost: boolean
   onDescriptionUpdated?: (description: string) => void
+  onFollowToggle: () => void
   postId: string
 }
 
@@ -24,8 +26,10 @@ export const PostAuthorHeader = ({
   className,
   description,
   isAuthorized,
+  isFollowing,
   isOwnPost,
   onDescriptionUpdated,
+  onFollowToggle,
   postId,
 }: Props) => {
   return (
@@ -39,14 +43,15 @@ export const PostAuthorHeader = ({
         <span className={s.username}>{author.username}</span>
       </Link>
 
-      {isAuthorized ? (
-        <PostActionsMenu
-          description={description}
-          isOwnPost={isOwnPost}
-          onDescriptionUpdated={onDescriptionUpdated}
-          postId={postId}
-        />
-      ) : null}
+      <PostActionsMenu
+        description={description}
+        isAuthorized={isAuthorized}
+        isFollowing={isFollowing}
+        isOwnPost={isOwnPost}
+        onDescriptionUpdated={onDescriptionUpdated}
+        onFollowToggle={onFollowToggle}
+        postId={postId}
+      />
     </header>
   )
 }

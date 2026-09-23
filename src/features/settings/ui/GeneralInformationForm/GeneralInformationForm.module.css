@@ -28,3 +28,37 @@
   font-size: var(--font-size-m);
   line-height: var(--line-height-m);
 }
+
+.errorState {
+  align-items: flex-start;
+  color: var(--danger-500);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-inter), sans-serif;
+  gap: 12px;
+}
+
+.inlineError {
+  align-items: center;
+  color: var(--danger-500);
+  display: flex;
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-xs);
+  gap: 12px;
+  line-height: var(--line-height-s);
+  margin-top: -16px;
+}
+
+.inlineError button {
+  background: none;
+  border: none;
+  color: var(--accent-500);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.inlineError button:hover {
+  color: var(--accent-300);
+}

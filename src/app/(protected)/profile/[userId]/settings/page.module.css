@@ -1,0 +1,11 @@
+.state {
+  align-items: center;
+  color: var(--light-900);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-inter), sans-serif;
+  gap: 16px;
+  justify-content: center;
+  min-height: 320px;
+  text-align: center;
+}

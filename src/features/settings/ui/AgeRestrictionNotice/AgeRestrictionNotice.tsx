@@ -2,29 +2,17 @@
 
 import Link from "next/link"
 import { ROUTES } from "@/common/constants/route"
+import { isUnderMinimumAge } from "@/features/settings/model/dateOfBirth"
 import s from "./AgeRestrictionNotice.module.css"
 
 type Props = {
   dateOfBirth: string | null | undefined
+  onPrivacyPolicyClick: () => void
+  returnTo: string
 }
 
-const isUnder13 = (dob: string): boolean => {
-  const birthDate = new Date(dob)
-  if (isNaN(birthDate.getTime())) return false
-
-  const today = new Date()
-  let age = today.getFullYear() - birthDate.getFullYear()
-  const monthDiff = today.getMonth() - birthDate.getMonth()
-
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    age--
-  }
-
-  return age < 13
-}
-
-export const AgeRestrictionNotice = ({ dateOfBirth }: Props) => {
-  if (!dateOfBirth || !isUnder13(dateOfBirth)) {
+export const AgeRestrictionNotice = ({ dateOfBirth, onPrivacyPolicyClick, returnTo }: Props) => {
+  if (!dateOfBirth || !isUnderMinimumAge(dateOfBirth)) {
     return null
   }
 
@@ -32,7 +20,11 @@ export const AgeRestrictionNotice = ({ dateOfBirth }: Props) => {
     <div className={s.notice} role="alert">
       <p className={s.text}>
         A user under 13 cannot create a profile.{" "}
-        <Link className={s.link} href={ROUTES.privacyPolicy}>
+        <Link
+          className={s.link}
+          href={ROUTES.profilePrivacyPolicy(returnTo)}
+          onClick={onPrivacyPolicyClick}
+        >
           Privacy Policy
         </Link>
       </p>

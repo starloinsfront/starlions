@@ -6,7 +6,9 @@ import { PostDetailData } from "./PostDetail.types"
 
 type Props = {
   isAuthorized: boolean
+  isFollowing: boolean
   isOwnPost: boolean
+  onFollowToggle: () => void
   onOpenLikes?: () => void
   onDescriptionUpdated?: (description: string) => void
   post: PostDetailData
@@ -14,7 +16,9 @@ type Props = {
 
 export const PostDetailSidebar = ({
   isAuthorized,
+  isFollowing,
   isOwnPost,
+  onFollowToggle,
   onOpenLikes,
   onDescriptionUpdated,
   post,
@@ -25,8 +29,10 @@ export const PostDetailSidebar = ({
         author={post.author}
         description={post.description}
         isAuthorized={isAuthorized}
+        isFollowing={isFollowing}
         isOwnPost={isOwnPost}
         onDescriptionUpdated={onDescriptionUpdated}
+        onFollowToggle={onFollowToggle}
         postId={post.id}
       />
       <PostCommentsList

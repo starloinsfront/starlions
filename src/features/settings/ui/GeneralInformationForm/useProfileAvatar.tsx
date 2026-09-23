@@ -9,21 +9,23 @@ import { useAvatarUploadMutation, useAvatarRemoveMutation } from "../../api/useA
 type Props = {
   setValueAction: UseFormSetValue<ProfileSettingsFormData>
   watch: UseFormWatch<ProfileSettingsFormData>
-  initialAvatarUrl: string | null
 }
 
-export const useProfileAvatar = ({ setValueAction, watch, initialAvatarUrl }: Props) => {
+export const useProfileAvatar = ({ setValueAction, watch }: Props) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const uploadMutation = useAvatarUploadMutation()
   const removeMutation = useAvatarRemoveMutation()
 
   const handleAvatarSave = useCallback(
-    (file: File) => {
-      uploadMutation.mutate(file, {
-        onSuccess: (avatarUrl) => {
-          setValueAction("avatarUrl", avatarUrl, { shouldValidate: true })
-        },
-      })
+    async (file: File) => {
+      try {
+        const avatarUrl = await uploadMutation.mutateAsync(file)
+        setValueAction("avatarUrl", avatarUrl, { shouldValidate: true })
+
+        return true
+      } catch {
+        return false
+      }
     },
     [uploadMutation, setValueAction],
   )
@@ -40,7 +42,7 @@ export const useProfileAvatar = ({ setValueAction, watch, initialAvatarUrl }: Pr
   const avatarHook = useAvatarUpload(handleAvatarSave)
 
   const currentAvatarUrl = watch("avatarUrl")
-  const displayAvatarUrl = currentAvatarUrl ?? initialAvatarUrl
+  const displayAvatarUrl = currentAvatarUrl
   const hasAvatar = Boolean(displayAvatarUrl)
 
   return {

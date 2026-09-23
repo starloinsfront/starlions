@@ -143,22 +143,6 @@
   border-color: var(--light-100);
 }
 
-:global(.react-datepicker__month-dropdown),
-:global(.react-datepicker__year-dropdown) {
-  background-color: var(--dark-300);
-  border-color: var(--dark-100);
-}
-
-:global(.react-datepicker__month-option),
-:global(.react-datepicker__year-option) {
-  color: var(--light-100);
-}
-
-:global(.react-datepicker__month-option:hover),
-:global(.react-datepicker__year-option:hover) {
-  background-color: var(--dark-500);
-}
-
 :global(.react-datepicker__month-read-view),
 :global(.react-datepicker__year-read-view) {
   color: var(--light-100);
@@ -179,8 +163,8 @@
 
 :global(.react-datepicker__year-option),
 :global(.react-datepicker__month-option) {
-  color: var(--light-100);
   background-color: var(--dark-300);
+  color: var(--light-100);
   padding: 4px 8px;
 }
 
@@ -201,8 +185,8 @@
 }
 
 .day {
-  color: var(--light-100);
   border-radius: 2px;
+  color: var(--light-100);
 }
 
 .weekDay {

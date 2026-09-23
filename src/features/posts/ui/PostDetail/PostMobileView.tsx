@@ -22,9 +22,11 @@ type MobilePanel = "comments" | "likes" | null
 type Props = {
   activePanel: MobilePanel
   isAuthorized: boolean
+  isFollowing: boolean
   isModal?: boolean
   isOwnPost: boolean
   onDescriptionUpdated?: (description: string) => void
+  onFollowToggle: () => void
   onOpenCommentsAction: () => void
   onOpenLikesAction: () => void
   onResetPanelAction: () => void
@@ -38,9 +40,11 @@ const MOBILE_COMMENTS_PREVIEW_LIMIT = 1
 export const PostMobileView = ({
   activePanel,
   isAuthorized,
+  isFollowing,
   isModal = false,
   isOwnPost,
   onDescriptionUpdated,
+  onFollowToggle,
   onOpenCommentsAction,
   onOpenLikesAction,
   onResetPanelAction,
@@ -67,8 +71,10 @@ export const PostMobileView = ({
         <MobileAppBar
           description={post.description}
           isAuthorized={isAuthorized}
+          isFollowing={isFollowing}
           isOwnPost={isOwnPost}
           onDescriptionUpdated={onDescriptionUpdated}
+          onFollowToggle={onFollowToggle}
           postId={post.id}
           isModal={isModal}
         />
@@ -102,14 +108,15 @@ export const PostMobileView = ({
             <span className={s.username}>{post.author.username}</span>
           </Link>
 
-          {isAuthorized && (
-            <PostActionsMenu
-              description={post.description}
-              isOwnPost={isOwnPost}
-              onDescriptionUpdated={onDescriptionUpdated}
-              postId={post.id}
-            />
-          )}
+          <PostActionsMenu
+            description={post.description}
+            isAuthorized={isAuthorized}
+            isFollowing={isFollowing}
+            isOwnPost={isOwnPost}
+            onDescriptionUpdated={onDescriptionUpdated}
+            onFollowToggle={onFollowToggle}
+            postId={post.id}
+          />
         </header>
 
         <PostDetailMedia images={post.images} variant="mobile-detail" />
@@ -201,18 +208,22 @@ export const PostMobileView = ({
 type MobileAppBarProps = {
   description: string
   isAuthorized: boolean
+  isFollowing: boolean
   isModal: boolean
   isOwnPost: boolean
   onDescriptionUpdated?: (description: string) => void
+  onFollowToggle: () => void
   postId: string
 }
 
 const MobileAppBar = ({
   description,
   isAuthorized,
+  isFollowing,
   isModal,
   isOwnPost,
   onDescriptionUpdated,
+  onFollowToggle,
   postId,
 }: MobileAppBarProps) => {
   return (
@@ -223,14 +234,15 @@ const MobileAppBar = ({
           <Icon height={18} name="flagRussiaFilled" width={18} />
           <Icon className={s.languageChevron} height={16} name="arrowIosDownOutline" width={16} />
         </button>
-        {isAuthorized && (
-          <PostActionsMenu
-            description={description}
-            isOwnPost={isOwnPost}
-            onDescriptionUpdated={onDescriptionUpdated}
-            postId={postId}
-          />
-        )}
+        <PostActionsMenu
+          description={description}
+          isAuthorized={isAuthorized}
+          isFollowing={isFollowing}
+          isOwnPost={isOwnPost}
+          onDescriptionUpdated={onDescriptionUpdated}
+          onFollowToggle={onFollowToggle}
+          postId={postId}
+        />
       </div>
     </header>
   )

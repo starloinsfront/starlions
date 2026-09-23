@@ -1,6 +1,7 @@
 "use client"
 
 import { Controller, type Control, type SubmitHandler } from "react-hook-form"
+import { usePathname } from "next/navigation"
 
 import { Button } from "@/common/components/Button/Button"
 import { TextArea } from "@/common/components/TextArea/TextArea"
@@ -18,7 +19,8 @@ import { useProfileAvatar } from "./useProfileAvatar"
 import s from "./GeneralInformationForm.module.css"
 
 export const GeneralInformationForm = () => {
-  const { form, isLoading, isSaving, onSubmit, avatarUrl } = useProfileForm()
+  const pathname = usePathname()
+  const { form, isError, isLoading, isSaving, onSubmit, preserveDraft, refetch } = useProfileForm()
   const { register, watch, setValue, formState } = form
   const { errors, isValid } = formState
 
@@ -34,7 +36,7 @@ export const GeneralInformationForm = () => {
     openUploadModal,
     requestDelete,
     deleteConfirmProps,
-  } = useProfileAvatar({ setValueAction: setValue, watch, initialAvatarUrl: avatarUrl })
+  } = useProfileAvatar({ setValueAction: setValue, watch })
 
   const selectedCountryCode = watch("countryCode")
   const selectedCityId = watch("cityId")
@@ -42,6 +44,17 @@ export const GeneralInformationForm = () => {
 
   if (isLoading) {
     return <p className={s.loading}>Loading...</p>
+  }
+
+  if (isError) {
+    return (
+      <div className={s.errorState} role="alert">
+        <p>Failed to load profile settings.</p>
+        <Button onClick={() => void refetch()} type="button" variant="secondary">
+          Try again
+        </Button>
+      </div>
+    )
   }
 
   return (
@@ -67,7 +80,11 @@ export const GeneralInformationForm = () => {
         )}
       />
 
-      <AgeRestrictionNotice dateOfBirth={dateOfBirth} />
+      <AgeRestrictionNotice
+        dateOfBirth={dateOfBirth}
+        onPrivacyPolicyClick={preserveDraft}
+        returnTo={pathname}
+      />
 
       <ProfileLocationFields
         control={control}

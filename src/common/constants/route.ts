@@ -28,6 +28,8 @@ export const ROUTES = {
   createNewPassword: "/auth/create-new-password",
   recoveryLinkExpired: "/auth/recovery-link-expired",
   settings: (userId: string) => `/profile/${encodeURIComponent(userId)}/settings`,
-  privacyPolicy: "/privacypolicy",
-  termsOfService: "/termsofservice",
+  privacyPolicy: "/privacy-policy",
+  profilePrivacyPolicy: (returnTo: string) =>
+    `/privacy-policy?returnTo=${encodeURIComponent(returnTo)}`,
+  termsOfService: "/terms-of-service",
 } as const

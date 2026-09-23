@@ -1,5 +1,5 @@
 .notice {
-  background-color: var(--warning-900, rgba(255, 165, 0, 0.1));
+  background-color: var(--warning-900, rgb(255 165 0 / 10%));
   border: 1px solid var(--warning-500, orange);
   border-radius: 2px;
   padding: 12px;

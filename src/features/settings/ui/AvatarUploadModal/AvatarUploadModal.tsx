@@ -106,7 +106,12 @@ export const AvatarUploadModal = ({ hook }: Props) => {
                   </div>
 
                   <div className={s.cropActions}>
-                    <Button type="button" variant="outline" onClick={handleBack}>
+                    <Button
+                      disabled={isSaving}
+                      onClick={handleBack}
+                      type="button"
+                      variant="outline"
+                    >
                       Back
                     </Button>
                     <Button

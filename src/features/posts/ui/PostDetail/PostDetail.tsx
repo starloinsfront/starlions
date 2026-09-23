@@ -21,6 +21,7 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
   const { data: me } = useMe()
   const [description, setDescription] = useState(post.description)
 
+  const [isFollowing, setIsFollowing] = useState(false)
   const [isLikesModalOpen, setIsLikesModalOpen] = useState(false)
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null)
 
@@ -40,8 +41,10 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
             <PostDetailMedia images={post.images} />
             <PostDetailSidebar
               isAuthorized={isAuthorized}
+              isFollowing={isFollowing}
               isOwnPost={isOwnPost}
               onDescriptionUpdated={setDescription}
+              onFollowToggle={() => setIsFollowing((currentValue) => !currentValue)}
               onOpenLikes={() => setIsLikesModalOpen(true)}
               post={postWithDescription}
             />
@@ -60,9 +63,11 @@ export const PostDetail = ({ isModal = false, post }: Props) => {
         <PostMobileView
           activePanel={mobilePanel}
           isAuthorized={isAuthorized}
+          isFollowing={isFollowing}
           isOwnPost={isOwnPost}
           isModal={isModal}
           onDescriptionUpdated={setDescription}
+          onFollowToggle={() => setIsFollowing((currentValue) => !currentValue)}
           onOpenCommentsAction={handleOpenComments}
           onOpenLikesAction={handleOpenLikes}
           onResetPanelAction={handleResetPanel}

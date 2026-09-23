@@ -4,6 +4,7 @@ import { forwardRef } from "react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { Icon } from "@/common/components/Icon/Icon"
+import { parseDateOnly } from "@/features/settings/model/dateOfBirth"
 import s from "./DateOfBirthField.module.css"
 
 type Props = {
@@ -14,8 +15,7 @@ type Props = {
 
 const toDate = (iso: string | null | undefined): Date | null => {
   if (!iso) return null
-  const d = new Date(iso)
-  return isNaN(d.getTime()) ? null : d
+  return parseDateOnly(iso)
 }
 
 const toIso = (d: Date | null): string | null => {
@@ -46,9 +46,7 @@ const CustomInput = forwardRef<HTMLDivElement, CustomInputProps>(
           if (e.key === "Enter" || e.key === " ") onClick?.()
         }}
       >
-        <span className={value ? s.valueText : s.placeholderText}>
-          {value || "dd.mm.yyyy"}
-        </span>
+        <span className={value ? s.valueText : s.placeholderText}>{value || "dd.mm.yyyy"}</span>
         <Icon name="calendarOutline" width={20} height={20} className={s.calendarIcon} />
       </div>
       {error && <span className={s.errorText}>{error}</span>}

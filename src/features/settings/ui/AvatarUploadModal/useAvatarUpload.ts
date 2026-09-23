@@ -12,7 +12,7 @@ const VALIDATION_MESSAGE = "The photo must be less than 10 Mb and have JPEG or P
 
 type Step = "upload" | "crop"
 
-export const useAvatarUpload = (onSave: (file: File) => void) => {
+export const useAvatarUpload = (onSave: (file: File) => Promise<boolean>) => {
   const [isOpen, setIsOpen] = useState(false)
   const [step, setStep] = useState<Step>("upload")
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -47,12 +47,9 @@ export const useAvatarUpload = (onSave: (file: File) => void) => {
     onFilesSelected: handleFilesSelected,
   })
 
-  const handleCropComplete = useCallback(
-    (_croppedArea: Area, croppedAreaPixels: Area) => {
-      croppedAreaRef.current = croppedAreaPixels
-    },
-    [],
-  )
+  const handleCropComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
+    croppedAreaRef.current = croppedAreaPixels
+  }, [])
 
   const handleSave = useCallback(async () => {
     if (!previewUrl || !croppedAreaRef.current) return
@@ -62,12 +59,15 @@ export const useAvatarUpload = (onSave: (file: File) => void) => {
       const img = await loadImage(previewUrl)
       const croppedFile = await renderCropToFile(img, croppedAreaRef.current)
       if (croppedFile) {
-        onSave(croppedFile)
-        setIsOpen(false)
-        setStep("upload")
-        setPreviewUrl(null)
-        setZoom(1)
-        croppedAreaRef.current = null
+        const wasSaved = await onSave(croppedFile)
+
+        if (wasSaved) {
+          setIsOpen(false)
+          setStep("upload")
+          setPreviewUrl(null)
+          setZoom(1)
+          croppedAreaRef.current = null
+        }
       }
     } catch {
       toast.error("Failed to process the image")
@@ -87,13 +87,17 @@ export const useAvatarUpload = (onSave: (file: File) => void) => {
   }, [previewUrl])
 
   const requestClose = useCallback(() => {
+    if (isSaving) {
+      return
+    }
+
     if (step === "crop") {
       setShowCloseConfirm(true)
     } else {
       cleanup()
       setIsOpen(false)
     }
-  }, [step, cleanup])
+  }, [cleanup, isSaving, step])
 
   const confirmClose = useCallback(() => {
     setShowCloseConfirm(false)
