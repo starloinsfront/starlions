@@ -1,9 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import Cropper from "react-easy-crop"
 import "react-easy-crop/react-easy-crop.css"
-import type { Point } from "react-easy-crop"
 import { CompoundModal } from "@/common/components/CompoundModal/CompoundModal"
 import { ConfirmationModal } from "@/common/components/ConfirmationModal/ConfirmationModal"
 import { Button } from "@/common/components/Button/Button"
@@ -20,11 +18,14 @@ export const AvatarUploadModal = ({ hook }: Props) => {
     isOpen,
     step,
     previewUrl,
+    cropPosition,
     zoom,
     isSaving,
+    isCropReady,
     showCloseConfirm,
     fileInputRef,
     setZoom,
+    setCropPosition,
     requestClose,
     confirmClose,
     cancelClose,
@@ -34,8 +35,6 @@ export const AvatarUploadModal = ({ hook }: Props) => {
     triggerFileInput,
     handleFileChange,
   } = hook
-
-  const [cropPosition, setCropPosition] = useState<Point>({ x: 0, y: 0 })
 
   return (
     <>
@@ -49,6 +48,11 @@ export const AvatarUploadModal = ({ hook }: Props) => {
               </CompoundModal.Title>
               <CompoundModal.Close />
             </CompoundModal.Header>
+            <CompoundModal.Description>
+              {step === "upload"
+                ? "Choose a JPEG or PNG profile photo up to 10 MB."
+                : "Move and zoom the photo to choose the square avatar area."}
+            </CompoundModal.Description>
             <CompoundModal.MainContent>
               {step === "upload" && (
                 <div className={s.uploadStep}>
@@ -101,6 +105,7 @@ export const AvatarUploadModal = ({ hook }: Props) => {
                       value={zoom}
                       onChange={(e) => setZoom(Number(e.target.value))}
                       className={s.slider}
+                      aria-label="Profile photo zoom"
                     />
                     <Icon name="expandOutline" width={20} height={20} className={s.sliderIcon} />
                   </div>
@@ -118,7 +123,9 @@ export const AvatarUploadModal = ({ hook }: Props) => {
                       type="button"
                       onClick={handleSave}
                       isLoading={isSaving}
-                      disabled={isSaving}
+                      disabled={isSaving || !isCropReady}
+                      aria-busy={isSaving}
+                      aria-label={isSaving ? "Saving profile photo" : "Save profile photo"}
                     >
                       Save
                     </Button>

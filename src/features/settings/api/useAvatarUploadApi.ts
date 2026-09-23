@@ -6,28 +6,52 @@ import {
   confirmAvatarUpload,
   removeAvatar,
 } from "./apiProfileSettings"
-import { PROFILE_SETTINGS_QUERY_KEY } from "./useProfileSettingsQuery"
-import type { ProfileSettingsDto } from "./apiProfileSettings"
+import { setAvatarInProfileCaches } from "./profileCache"
+
+class AvatarUploadStageError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = "AvatarUploadStageError"
+  }
+}
+
+const runUploadStage = async <T>(action: () => Promise<T>, errorMessage: string): Promise<T> => {
+  try {
+    return await action()
+  } catch {
+    throw new AvatarUploadStageError(errorMessage)
+  }
+}
 
 export const useAvatarUploadMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async (file: File): Promise<string> => {
-      const { imageId, uploadUrl } = await presignAvatar(file)
-      await uploadAvatarToPresignedUrl(uploadUrl, file)
-      return confirmAvatarUpload(imageId)
+      const { imageId, uploadUrl } = await runUploadStage(
+        () => presignAvatar(file),
+        "Could not prepare the avatar upload",
+      )
+      await runUploadStage(
+        () => uploadAvatarToPresignedUrl(uploadUrl, file),
+        "Could not upload the avatar. Check your connection and try again",
+      )
+
+      return runUploadStage(
+        () => confirmAvatarUpload(imageId),
+        "The avatar was uploaded but could not be saved. Try again",
+      )
     },
 
     onSuccess: (avatarUrl) => {
-      queryClient.setQueryData(PROFILE_SETTINGS_QUERY_KEY, (old: ProfileSettingsDto | undefined) =>
-        old ? { ...old, avatarUrl } : old,
-      )
+      setAvatarInProfileCaches(queryClient, avatarUrl)
       toast.success("Avatar updated")
     },
 
-    onError: () => {
-      toast.error("Failed to upload avatar")
+    onError: (error) => {
+      toast.error(
+        error instanceof AvatarUploadStageError ? error.message : "Failed to upload avatar",
+      )
     },
   })
 }
@@ -39,9 +63,7 @@ export const useAvatarRemoveMutation = () => {
     mutationFn: () => removeAvatar(),
 
     onSuccess: () => {
-      queryClient.setQueryData(PROFILE_SETTINGS_QUERY_KEY, (old: ProfileSettingsDto | undefined) =>
-        old ? { ...old, avatarUrl: null } : old,
-      )
+      setAvatarInProfileCaches(queryClient, null)
       toast.success("Avatar removed")
     },
 

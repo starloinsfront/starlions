@@ -1,14 +1,11 @@
 "use client"
 
 import { useState, useCallback, useRef, useEffect } from "react"
-import type { Area } from "react-easy-crop"
+import type { Area, Point } from "react-easy-crop"
 import { toast } from "sonner"
 import { useFileInput } from "@/common/hooks/useFileInput"
+import { getAvatarFileValidationError } from "../../model/avatarFile"
 import { loadImage, renderCropToFile } from "./cropUtils"
-
-const MAX_FILE_SIZE = 10 * 1024 * 1024
-const ALLOWED_TYPES = new Set(["image/jpeg", "image/png"])
-const VALIDATION_MESSAGE = "The photo must be less than 10 Mb and have JPEG or PNG format"
 
 type Step = "upload" | "crop"
 
@@ -16,14 +13,18 @@ export const useAvatarUpload = (onSave: (file: File) => Promise<boolean>) => {
   const [isOpen, setIsOpen] = useState(false)
   const [step, setStep] = useState<Step>("upload")
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [cropPosition, setCropPosition] = useState<Point>({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const croppedAreaRef = useRef<Area | null>(null)
+  const [isCropReady, setIsCropReady] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [showCloseConfirm, setShowCloseConfirm] = useState(false)
 
   const validateFile = useCallback((file: File): boolean => {
-    if (!ALLOWED_TYPES.has(file.type) || file.size > MAX_FILE_SIZE) {
-      toast.error(VALIDATION_MESSAGE)
+    const validationError = getAvatarFileValidationError(file)
+
+    if (validationError) {
+      toast.error(validationError)
       return false
     }
     return true
@@ -37,8 +38,10 @@ export const useAvatarUpload = (onSave: (file: File) => Promise<boolean>) => {
       const url = URL.createObjectURL(file)
       setPreviewUrl(url)
       setStep("crop")
+      setCropPosition({ x: 0, y: 0 })
       setZoom(1)
       croppedAreaRef.current = null
+      setIsCropReady(false)
     },
     [validateFile],
   )
@@ -49,7 +52,20 @@ export const useAvatarUpload = (onSave: (file: File) => Promise<boolean>) => {
 
   const handleCropComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
     croppedAreaRef.current = croppedAreaPixels
+    setIsCropReady(true)
   }, [])
+
+  const cleanup = useCallback(() => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl)
+    }
+    setPreviewUrl(null)
+    setStep("upload")
+    setCropPosition({ x: 0, y: 0 })
+    setZoom(1)
+    croppedAreaRef.current = null
+    setIsCropReady(false)
+  }, [previewUrl])
 
   const handleSave = useCallback(async () => {
     if (!previewUrl || !croppedAreaRef.current) return
@@ -58,33 +74,25 @@ export const useAvatarUpload = (onSave: (file: File) => Promise<boolean>) => {
     try {
       const img = await loadImage(previewUrl)
       const croppedFile = await renderCropToFile(img, croppedAreaRef.current)
-      if (croppedFile) {
-        const wasSaved = await onSave(croppedFile)
+      const validationError = getAvatarFileValidationError(croppedFile)
 
-        if (wasSaved) {
-          setIsOpen(false)
-          setStep("upload")
-          setPreviewUrl(null)
-          setZoom(1)
-          croppedAreaRef.current = null
-        }
+      if (validationError) {
+        toast.error(validationError)
+        return
+      }
+
+      const wasSaved = await onSave(croppedFile)
+
+      if (wasSaved) {
+        cleanup()
+        setIsOpen(false)
       }
     } catch {
       toast.error("Failed to process the image")
     } finally {
       setIsSaving(false)
     }
-  }, [previewUrl, onSave])
-
-  const cleanup = useCallback(() => {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl)
-    }
-    setPreviewUrl(null)
-    setStep("upload")
-    setZoom(1)
-    croppedAreaRef.current = null
-  }, [previewUrl])
+  }, [cleanup, onSave, previewUrl])
 
   const requestClose = useCallback(() => {
     if (isSaving) {
@@ -130,11 +138,14 @@ export const useAvatarUpload = (onSave: (file: File) => Promise<boolean>) => {
     isOpen,
     step,
     previewUrl,
+    cropPosition,
     zoom,
     isSaving,
+    isCropReady,
     showCloseConfirm,
     fileInputRef,
     setZoom,
+    setCropPosition,
     openModal,
     requestClose,
     confirmClose,

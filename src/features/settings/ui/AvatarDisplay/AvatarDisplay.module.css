@@ -55,10 +55,6 @@
   z-index: 1;
 }
 
-.deleteButton:hover {
-  background-color: var(--danger-300);
-}
-
 .selectButton {
   appearance: none;
   background: transparent;
@@ -76,15 +72,25 @@
   width: 100%;
 }
 
-.selectButton:hover {
-  border-color: var(--accent-300);
-  color: var(--accent-300);
+.selectButton:disabled,
+.deleteButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .selectButton:focus-visible,
 .deleteButton:focus-visible {
   outline: 2px solid var(--accent-500);
   outline-offset: 2px;
+}
+
+.deleteButton:not(:disabled):hover {
+  background-color: var(--danger-300);
+}
+
+.selectButton:not(:disabled):hover {
+  border-color: var(--accent-300);
+  color: var(--accent-300);
 }
 
 @media (width <= 768px) {

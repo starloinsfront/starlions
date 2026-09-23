@@ -1,5 +1,11 @@
 import type { Area } from "react-easy-crop"
 
+import {
+  AVATAR_OUTPUT_QUALITY,
+  AVATAR_OUTPUT_SIZE,
+  AVATAR_OUTPUT_TYPE,
+} from "../../model/avatarFile"
+
 //Why: Converts a URL string (either a blob URL or a regular link) into a ready-to-use HTMLImageElement object—that is, it loads the image into the browser's memory.
 
 export function loadImage(url: string): Promise<HTMLImageElement> {
@@ -18,11 +24,10 @@ export async function renderCropToFile(
   imgElement: HTMLImageElement,
   croppedAreaPixels: Area,
   fileName = "avatar.jpg",
-): Promise<File | null> {
+): Promise<File> {
   const blob = await renderCropToBlob(imgElement, croppedAreaPixels)
-  if (!blob) return null
 
-  return new File([blob], fileName, { type: "image/jpeg" })
+  return new File([blob], fileName, { type: AVATAR_OUTPUT_TYPE })
 }
 
 // Why: The core of all logic—draws the cut-out area of ​​the image on an invisible canvas and exports the result as a JPEG blob.
@@ -30,13 +35,17 @@ export async function renderCropToFile(
 async function renderCropToBlob(
   imgElement: HTMLImageElement,
   croppedAreaPixels: Area,
-): Promise<Blob | null> {
+): Promise<Blob> {
   const canvas = document.createElement("canvas")
   const ctx = canvas.getContext("2d")
-  if (!ctx) return null
+  if (!ctx) {
+    throw new Error("Canvas is not supported")
+  }
 
-  canvas.width = croppedAreaPixels.width
-  canvas.height = croppedAreaPixels.height
+  canvas.width = AVATAR_OUTPUT_SIZE
+  canvas.height = AVATAR_OUTPUT_SIZE
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = "high"
 
   ctx.drawImage(
     imgElement,
@@ -46,11 +55,22 @@ async function renderCropToBlob(
     croppedAreaPixels.height,
     0,
     0,
-    croppedAreaPixels.width,
-    croppedAreaPixels.height,
+    AVATAR_OUTPUT_SIZE,
+    AVATAR_OUTPUT_SIZE,
   )
 
-  return new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, "image/jpeg", 0.95),
-  )
+  return new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          reject(new Error("Failed to encode the cropped avatar"))
+          return
+        }
+
+        resolve(blob)
+      },
+      AVATAR_OUTPUT_TYPE,
+      AVATAR_OUTPUT_QUALITY,
+    )
+  })
 }

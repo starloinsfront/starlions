@@ -33,7 +33,7 @@ export const GeneralInformationForm = () => {
 
   const {
     displayAvatarUrl,
-    isUploading,
+    isAvatarBusy,
     avatarUploadModal,
     openUploadModal,
     requestDelete,
@@ -66,6 +66,7 @@ export const GeneralInformationForm = () => {
             username={watch("username")}
             onSelectPhoto={openUploadModal}
             onDelete={requestDelete}
+            disabled={isAvatarBusy || isSaving}
           />
         </div>
 
@@ -126,7 +127,7 @@ export const GeneralInformationForm = () => {
         <Button
           className={s.saveButton}
           type="submit"
-          disabled={!isValid || isSaving || isUploading}
+          disabled={!isValid || isSaving || isAvatarBusy}
           isLoading={isSaving}
         >
           Save Changes
