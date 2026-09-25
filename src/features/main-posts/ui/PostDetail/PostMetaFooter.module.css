@@ -1,0 +1,142 @@
+.footer {
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  display: grid;
+  gap: 12px;
+  padding: 14px 24px 0;
+}
+
+.actionsRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.actionGroup {
+  display: flex;
+  gap: 14px;
+}
+
+.actionButton {
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  height: 28px;
+  justify-content: center;
+  padding: 0;
+  width: 28px;
+}
+
+.actionButton:hover {
+  color: var(--accent-300);
+}
+
+.metaInfo {
+  display: grid;
+  gap: 4px;
+}
+
+.likesButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: var(--light-100);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  gap: 12px;
+  justify-self: start;
+  line-height: var(--line-height-m);
+  padding: 0;
+  text-align: left;
+}
+
+.likesButton:hover {
+  color: var(--accent-300);
+}
+
+.date {
+  color: var(--light-900);
+  font-size: var(--font-size-xs);
+  margin: 0;
+}
+
+.commentForm {
+  align-items: center;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin: 0 -24px;
+  min-height: 44px;
+  padding: 0 0 0 24px;
+}
+
+.commentInput {
+  background: transparent;
+  border: none;
+  color: var(--light-100);
+  font: inherit;
+  min-width: 0;
+  outline: none;
+}
+
+.commentInput::placeholder {
+  color: var(--light-900);
+}
+
+.publishButton {
+  align-self: stretch;
+  background: transparent;
+  border: none;
+  color: var(--accent-500);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semi-bold);
+  padding: 0 24px;
+}
+
+.publishButton:hover {
+  color: var(--accent-300);
+}
+
+.viewCommentsButton {
+  background: transparent;
+  border: none;
+  color: var(--light-900);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  justify-self: start;
+  line-height: var(--line-height-s);
+  padding: 0;
+}
+
+.viewCommentsButton:hover {
+  color: var(--accent-300);
+}
+
+.mobile {
+  border-top: none;
+  gap: 8px;
+  padding: 12px 0 0;
+}
+
+.mobile .actionsRow {
+  margin-bottom: 2px;
+}
+
+@media (width <= 640px) {
+  .footer:not(.mobile) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .commentForm {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+  }
+}

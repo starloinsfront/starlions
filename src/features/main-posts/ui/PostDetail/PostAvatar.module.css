@@ -1,0 +1,39 @@
+.avatar {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgb(57 125 246 / 85%), rgb(57 125 246 / 25%)),
+    var(--dark-500);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 50%;
+  color: var(--light-100);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-weight: var(--font-weight-bold);
+  justify-content: center;
+  overflow: hidden;
+}
+
+.sm {
+  font-size: 9px;
+  height: 24px;
+  width: 24px;
+}
+
+.md {
+  font-size: var(--font-size-xs);
+  height: 36px;
+  width: 36px;
+}
+
+.lg {
+  font-size: var(--font-size-s);
+  height: 48px;
+  width: 48px;
+}
+
+@media (width <= 768px) {
+  .md {
+    height: 32px;
+    width: 32px;
+  }
+}

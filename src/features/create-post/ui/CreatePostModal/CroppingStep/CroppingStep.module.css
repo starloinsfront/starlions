@@ -1,0 +1,19 @@
+.step {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.imageArea {
+  background-color: var(--dark-900);
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.cropperContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}

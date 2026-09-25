@@ -1,0 +1,138 @@
+.container {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* LEFT */
+
+.media {
+  align-items: center;
+  background: var(--color-dark-700);
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.imageSkeleton {
+  animation: shimmer 1.5s infinite;
+  background: linear-gradient(90deg, #252525 25%, #303030 37%, #252525 63%);
+  background-size: 400% 100%;
+  height: 100%;
+  width: 100%;
+}
+
+/* RIGHT */
+
+.sidebar {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+}
+
+.author {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.avatar,
+.avatarSmall {
+  background: #303030;
+  border-radius: 50%;
+}
+
+.avatar {
+  height: 40px;
+  width: 40px;
+}
+
+.avatarSmall {
+  height: 32px;
+  width: 32px;
+}
+
+.authorText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.line,
+.lineSmall,
+.lineTiny,
+.lineShort {
+  animation: shimmer 1.5s infinite;
+  background: #303030;
+  border-radius: 6px;
+}
+
+.line {
+  height: 14px;
+  width: 100%;
+}
+
+.lineSmall {
+  height: 12px;
+  width: 120px;
+}
+
+.lineTiny {
+  height: 10px;
+  width: 70px;
+}
+
+.lineShort {
+  height: 14px;
+  width: 60%;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comments {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.comment {
+  display: flex;
+  gap: 12px;
+}
+
+.commentBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input {
+  background: #303030;
+  border-radius: 20px;
+  height: 40px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}

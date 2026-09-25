@@ -1,0 +1,13 @@
+.form {
+  display: grid;
+  gap: 24px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.zIndex {
+  z-index: 901;
+}

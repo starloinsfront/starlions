@@ -1,22 +1,11 @@
-import { ROUTES } from "@/common/constants/route"
-import { isAuthenticated } from "@/common/utils/isAuth"
-import { AppLayout } from "@/widgets/AppLayout/AppLayout"
-import { redirect } from "next/navigation"
+import type { ReactNode } from "react"
 
-export default async function ProtectedLayout({
+import { ProtectedAppLayout } from "@/widgets/AppLayout/ProtectedAppLayout"
+
+export default function ProtectedLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
-  const isAuth = await isAuthenticated()
-
-  if (!isAuth) {
-    redirect(ROUTES.signIn)
-  }
-
-  return (
-    <AppLayout isAuth withSidebar>
-      {children}
-    </AppLayout>
-  )
+  return <ProtectedAppLayout>{children}</ProtectedAppLayout>
 }

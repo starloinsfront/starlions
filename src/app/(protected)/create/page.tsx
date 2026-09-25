@@ -1,13 +1,6 @@
-import s from "../feed/page.module.css"
+import { redirect } from "next/navigation"
+import { ROUTES } from "@/common/constants/route"
 
 export default function CreatePage() {
-  return (
-    <section className={s.page}>
-      <h1 className={s.title}>Create</h1>
-      <p className={s.description}>
-        This protected page is available only for authenticated users and is opened from the
-        sidebar route /create.
-      </p>
-    </section>
-  )
+  redirect(ROUTES.feed)
 }

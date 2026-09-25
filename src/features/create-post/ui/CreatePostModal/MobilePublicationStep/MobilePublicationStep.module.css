@@ -1,0 +1,105 @@
+.step {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.imageArea {
+  background-color: var(--dark-900);
+  flex: 0 0 auto;
+  height: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+.imageStrip {
+  display: flex;
+  gap: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.imageSlot {
+  flex: 1 1 0;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.stripImage {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overflowOverlay {
+  align-items: center;
+  background: linear-gradient(to right, transparent, rgb(0 0 0 / 70%));
+  display: flex;
+  flex-shrink: 0;
+  height: 100%;
+  justify-content: center;
+  min-width: 60px;
+  padding: 0 8px;
+}
+
+.overflowCount {
+  color: var(--light-100);
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-l);
+  text-shadow: 0 1px 4px rgb(0 0 0 / 60%);
+  white-space: nowrap;
+}
+
+.formPanel {
+  background-color: var(--dark-500);
+  border-top: 1px solid var(--dark-100);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding: 20px 16px 16px;
+}
+
+.formPanel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.formPanel::-webkit-scrollbar-thumb {
+  background-color: var(--dark-100);
+  border-radius: 2px;
+}
+
+.profileBlock {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.avatar {
+  background-color: var(--dark-300);
+  border-radius: 50%;
+  flex-shrink: 0;
+  height: 36px;
+  object-fit: cover;
+  width: 36px;
+}
+
+.username {
+  color: var(--light-100);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-m);
+}

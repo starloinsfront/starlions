@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { useEffect, useState, type ComponentProps, type ReactNode } from "react"
+import { useState, type ComponentProps, type ReactNode } from "react"
 
 import { Modal } from "./Modal"
 import { Button } from "../Button/Button"
@@ -37,11 +37,7 @@ type ModalPreviewProps = Omit<ComponentProps<typeof Modal>, "children"> & {
 }
 
 function ModalPreview({ renderContent, ...args }: ModalPreviewProps) {
-  const [isOpen, setIsOpen] = useState(args.open)
-
-  useEffect(() => {
-    setIsOpen(args.open)
-  }, [args.open])
+  const [isOpen, setIsOpen] = useState(() => args.open)
 
   const handleOpen = () => setIsOpen(true)
 
@@ -75,7 +71,7 @@ export const Default: Story = {
           }}
         >
           <p style={{ margin: 0, color: "white" }}>
-            Do you really want to delete a Following "URLProfile"?
+            Do you really want to delete a Following &quot;URLProfile&quot;?
           </p>
 
           <div

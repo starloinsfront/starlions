@@ -35,6 +35,7 @@ export interface CompoundSelectTriggerProps extends SelectTriggerProps {
 export interface CompoundSelectValueProps {
   placeholder?: string
   className?: string
+  children?: ReactNode
 }
 
 export interface CompoundSelectIconProps {

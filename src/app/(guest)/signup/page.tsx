@@ -132,8 +132,13 @@ export default function Home() {
             </span>
           )}
 
-          <Button className={s.submitButton} type={"submit"} disabled={!isValid || isPending}>
-            {isPending ? "Loading..." : "Sign Up"}
+          <Button
+            className={s.submitButton}
+            disabled={!isValid || isPending}
+            isLoading={isPending}
+            type={"submit"}
+          >
+            Sign Up
           </Button>
         </form>
 

@@ -15,7 +15,7 @@ const LANGUAGE_OPTIONS: SelectOption[] = [
 ]
 
 export const LanguageSelect = () => {
-  const [language, setLanguage] = useState<Language>("ru")
+  const [language, setLanguage] = useState<Language>("en")
 
   return (
     <div className={styles.languageSelect}>
