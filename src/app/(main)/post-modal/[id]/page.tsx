@@ -13,7 +13,15 @@ type Props = {
 
 export default async function HomePostModalPage({ params }: Props) {
   const { id } = await params
-  const [data, post] = await Promise.all([getMainPageData(), getPostDetailData(id)])
+  const [data, post] = await Promise.all([getMainPageData(), getPostDetailData(id)]).catch(
+    (error: unknown) => {
+      console.error("[home-post-modal] Failed to load route data", {
+        error,
+        postId: id,
+      })
+      throw error
+    },
+  )
 
   if (!post) {
     notFound()

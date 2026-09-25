@@ -38,6 +38,7 @@ export const PostAuthorHeader = ({
         aria-label={`Open ${author.username} profile`}
         className={s.authorInfo}
         href={ROUTES.profileById(author.authorId)}
+        prefetch={false}
       >
         <PostAvatar label={getUserInitials(author.username)} size="md" />
         <span className={s.username}>{author.username}</span>

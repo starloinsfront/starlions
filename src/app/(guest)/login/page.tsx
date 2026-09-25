@@ -79,6 +79,7 @@ function LoginPageContent() {
           <Button
             disabled={!isValid || mutation.status === "pending"}
             className={s.submitButton}
+            isLoading={mutation.status === "pending"}
             type={"submit"}
           >
             Sign In

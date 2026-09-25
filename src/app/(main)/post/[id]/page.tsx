@@ -11,7 +11,10 @@ type Props = {
 
 export default async function PostPage({ params }: Props) {
   const { id } = await params
-  const post = await getPostDetailData(id)
+  const post = await getPostDetailData(id).catch((error: unknown) => {
+    console.error("[post-page] Failed to load post", { error, postId: id })
+    throw error
+  })
 
   if (!post) {
     notFound()

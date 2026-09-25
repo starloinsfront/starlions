@@ -1,4 +1,5 @@
 import type { paths } from "@/common/api/schema"
+import { fetchWithRetry } from "@/common/api/fetchWithRetry"
 import { ApiError } from "@/common/utils/api/error/apiError"
 import { mapPostDtoToPublicPost } from "@/features/posts/lib/mapPost"
 import type { PublicPost } from "@/features/posts/model/post.types"
@@ -16,7 +17,7 @@ async function request<T>(url: string, options?: RequestInit): Promise<T | null>
   }
 
   try {
-    const response = await fetch(`${apiUrl}${url}`, {
+    const response = await fetchWithRetry(`${apiUrl}${url}`, {
       ...options,
       next: {
         revalidate: PUBLIC_CONTENT_REVALIDATE_SECONDS,

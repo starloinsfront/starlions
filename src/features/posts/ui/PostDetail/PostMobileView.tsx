@@ -101,6 +101,7 @@ export const PostMobileView = ({
             aria-label={`Open ${post.author.username} profile`}
             className={s.authorInfo}
             href={ROUTES.profileById(post.author.authorId)}
+            prefetch={false}
           >
             <span aria-hidden="true" className={s.avatar}>
               {getUserInitials(post.author.username)}

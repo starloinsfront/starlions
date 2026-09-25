@@ -37,6 +37,13 @@
 .description {
   color: var(--light-900);
   line-height: var(--line-height-m);
-  margin: 16px 0 24px;
+  margin: 16px 0 12px;
   max-width: 400px;
+}
+
+.reference {
+  color: var(--light-900);
+  font-size: var(--font-size-xs);
+  margin: 0 0 24px;
+  overflow-wrap: anywhere;
 }

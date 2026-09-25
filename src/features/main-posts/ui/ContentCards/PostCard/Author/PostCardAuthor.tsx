@@ -16,6 +16,7 @@ export const PostCardAuthor = ({ authorId, username }: Props) => {
       aria-label={`Open ${username} profile`}
       className={s.user}
       href={ROUTES.profileById(authorId)}
+      prefetch={false}
     >
       <span aria-hidden="true" className={s.avatar}>
         {getUserInitials(username)}

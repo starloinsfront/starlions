@@ -1,6 +1,7 @@
 import createClient from "openapi-fetch"
 
 import type { paths } from "./schema"
+import { fetchWithRetry } from "./fetchWithRetry"
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
@@ -13,7 +14,5 @@ if (!apiUrl) {
 export const client = createClient<paths>({
   baseUrl: apiUrl.replace(/\/$/, ""),
   credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
+  fetch: fetchWithRetry,
 })

@@ -16,12 +16,40 @@ type Props = {
   searchParams: Promise<SearchParamsRecord>
 }
 
+type ProfileLoadStage = "profile" | "publications" | "selected-post"
+
+const loadProfileStage = async <T,>(
+  stage: ProfileLoadStage,
+  request: Promise<T>,
+  context: { postId?: string; userId: string },
+) => {
+  try {
+    return await request
+  } catch (error) {
+    if (!(isApiError(error) && error.status === 404)) {
+      console.error(`[profile-page] Failed to load ${stage}`, {
+        ...context,
+        error,
+      })
+    }
+
+    throw error
+  }
+}
+
 const loadProfilePageData = async (userId: string, postId?: string) => {
   try {
+    const context = { postId, userId }
     const [profile, initialPosts, selectedPost] = await Promise.all([
-      fetchPublicProfile(userId),
-      userPostsApi.getUserPosts(userId, { limit: USER_POSTS_PAGE_SIZE }),
-      postId ? getPostDetailData(postId) : Promise.resolve(null),
+      loadProfileStage("profile", fetchPublicProfile(userId), context),
+      loadProfileStage(
+        "publications",
+        userPostsApi.getUserPosts(userId, { limit: USER_POSTS_PAGE_SIZE }),
+        context,
+      ),
+      postId
+        ? loadProfileStage("selected-post", getPostDetailData(postId), context)
+        : Promise.resolve(null),
     ])
 
     if (postId && !selectedPost) {

@@ -34,6 +34,7 @@ export const Carousel = (props: CarouselProps) => {
                 className={classNames.slide}
                 href={props.getHref(activeSlide)}
                 onClick={(event) => props.onNavigate?.(event, activeSlide)}
+                prefetch={false}
                 scroll={false}
                 style={getImageStyle(activeSlide.src)}
               >
@@ -56,6 +57,7 @@ export const Carousel = (props: CarouselProps) => {
                 aria-label="Open post"
                 className={classNames.slide}
                 href={props.getHref(activeSlide)}
+                prefetch={false}
                 role="img"
                 scroll={false}
                 style={getImageStyle(activeSlide.src)}

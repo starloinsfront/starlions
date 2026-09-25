@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useTransition } from "react"
+
 import { Button } from "@/common/components/Button/Button"
 
 import s from "./error.module.css"
@@ -9,7 +11,20 @@ type Props = {
   reset: () => void
 }
 
-export default function MainError({ reset }: Props) {
+export default function MainError({ error, reset }: Props) {
+  const [isRetrying, startRetry] = useTransition()
+
+  useEffect(() => {
+    console.error("[main-route-error]", {
+      digest: error.digest,
+      message: error.message,
+    })
+  }, [error])
+
+  const handleRetry = () => {
+    startRetry(() => reset())
+  }
+
   return (
     <section aria-live="assertive" className={s.wrapper} role="alert">
       <div className={s.card}>
@@ -18,7 +33,10 @@ export default function MainError({ reset }: Props) {
         <p className={s.description}>
           The server is temporarily unavailable. Try loading the page again.
         </p>
-        <Button onClick={reset}>Try again</Button>
+        {error.digest ? <p className={s.reference}>Error reference: {error.digest}</p> : null}
+        <Button disabled={isRetrying} isLoading={isRetrying} onClick={handleRetry} type="button">
+          Try again
+        </Button>
       </div>
     </section>
   )

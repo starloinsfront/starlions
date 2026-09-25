@@ -19,7 +19,7 @@ export const UserPostTile = ({ id, coverUrl, imagesCount }: Props) => {
   const postModalHref = ROUTES.postModalById(pathname, id)
 
   return (
-    <Link className={s.tile} href={postModalHref} scroll={false}>
+    <Link className={s.tile} href={postModalHref} prefetch={false} scroll={false}>
       {coverUrl ? (
         <Image
           alt=""

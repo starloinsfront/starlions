@@ -76,7 +76,9 @@ export const ProfileHeader = ({ isAuthorized, isAuthLoading, isOwner, profile }:
               <Skeleton className={s.actionsSkeleton} />
             ) : isOwner ? (
               <Button asChild className={s.settingsButton} variant="secondary">
-                <Link href={ROUTES.settings(profile.id)}>Profile Settings</Link>
+                <Link href={ROUTES.settings(profile.id)} prefetch={false}>
+                  Profile Settings
+                </Link>
               </Button>
             ) : null}
 
