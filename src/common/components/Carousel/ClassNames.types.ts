@@ -21,6 +21,7 @@ export type DetailCarouselSlide = {
 
 type SharedProps = {
   classNames: ClassNames
+  sizes: string
 }
 
 export type CardCarouselProps = SharedProps & {

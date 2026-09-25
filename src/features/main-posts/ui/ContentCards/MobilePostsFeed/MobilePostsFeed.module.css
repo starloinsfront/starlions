@@ -1,33 +1,38 @@
 .feed {
   display: grid;
-  gap: 0;
-  margin: 0 auto;
-  max-width: 480px;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   min-width: 0;
   width: 100%;
 }
 
 .post {
-  background: var(--dark-700);
-  border-bottom: 1px solid var(--dark-100);
+  align-self: start;
   display: grid;
+  grid-template-areas:
+    "media"
+    "header"
+    "desktop-meta";
   min-width: 0;
   overflow: hidden;
-  padding-bottom: 14px;
   width: 100%;
 }
 
-.post + .post {
-  padding-top: 6px;
+.postMedia {
+  grid-area: media;
+}
+
+.postExpanded .postMedia {
+  aspect-ratio: 234 / 104;
 }
 
 .postHeader {
   align-items: center;
-  background: var(--dark-700);
   display: flex;
+  grid-area: header;
   justify-content: space-between;
-  min-height: 52px;
-  padding: 8px 4px;
+  min-height: 44px;
+  padding-top: 12px;
 }
 
 .authorInfo {
@@ -68,11 +73,15 @@
   color: var(--accent-300);
 }
 
-.postBody {
+.desktopMeta {
   display: grid;
-  gap: 8px;
+  grid-area: desktop-meta;
   min-width: 0;
-  padding: 10px 2px 0;
+}
+
+.mobileActionsMenu,
+.mobileBody {
+  display: none;
 }
 
 .actionsRow {
@@ -194,5 +203,60 @@
 @media (width <= 480px) {
   .feed {
     max-width: none;
+  }
+}
+
+@media (width <= 1100px) {
+  .feed {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 768px) {
+  .feed {
+    gap: 0;
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0 auto;
+    max-width: 480px;
+  }
+
+  .post {
+    background: var(--dark-700);
+    border-bottom: 1px solid var(--dark-100);
+    grid-template-areas:
+      "header"
+      "media"
+      "mobile-body";
+    padding-bottom: 14px;
+  }
+
+  .post + .post {
+    padding-top: 6px;
+  }
+
+  .postExpanded .postMedia {
+    aspect-ratio: 1 / 1;
+  }
+
+  .postHeader {
+    background: var(--dark-700);
+    min-height: 52px;
+    padding: 8px 4px;
+  }
+
+  .mobileActionsMenu {
+    display: block;
+  }
+
+  .desktopMeta {
+    display: none;
+  }
+
+  .mobileBody {
+    display: grid;
+    gap: 8px;
+    grid-area: mobile-body;
+    min-width: 0;
+    padding: 10px 2px 0;
   }
 }

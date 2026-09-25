@@ -124,6 +124,35 @@
   padding: 12px 0 0;
 }
 
+.responsive .mobileOnly {
+  display: none;
+}
+
+@media (width <= 768px) {
+  .responsive {
+    border-top: none;
+    gap: 8px;
+    padding: 12px 0 0;
+  }
+
+  .responsive .mobileOnly {
+    display: inline-flex;
+  }
+
+  .responsive .date,
+  .responsive .commentForm {
+    display: none;
+  }
+
+  .responsive .actionsRow {
+    margin-bottom: 2px;
+  }
+
+  .responsive .viewCommentsButton {
+    margin-inline: 16px;
+  }
+}
+
 .mobile .actionsRow {
   margin-bottom: 2px;
 }

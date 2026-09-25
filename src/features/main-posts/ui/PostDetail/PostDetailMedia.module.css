@@ -19,9 +19,6 @@
 }
 
 .mediaSlide {
-  background-image: var(--carousel-image);
-  background-position: center;
-  background-size: cover;
   inset: 0;
   position: absolute;
 }

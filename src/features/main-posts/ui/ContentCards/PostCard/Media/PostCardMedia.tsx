@@ -38,6 +38,7 @@ export const PostCardMedia = ({
       }}
       getHref={() => postModalHref}
       labelClassName={s.slideLabel}
+      sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
       slides={visibleImages.map((image) => ({
         postId,
         src: image.url,

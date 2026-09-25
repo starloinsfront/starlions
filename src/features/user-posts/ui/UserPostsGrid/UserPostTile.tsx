@@ -27,7 +27,6 @@ export const UserPostTile = ({ id, coverUrl, imagesCount }: Props) => {
           fill
           sizes="(max-width: 768px) 33vw, (max-width: 900px) 33vw, 25vw"
           src={coverUrl}
-          unoptimized
         />
       ) : (
         <div className={s.placeholder} />

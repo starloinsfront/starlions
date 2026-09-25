@@ -1,16 +1,12 @@
 "use client"
 
 import clsx from "clsx"
+import Image from "next/image"
 import Link from "next/link"
-import { type CSSProperties } from "react"
 import { Icon } from "@/common/components/Icon/Icon"
 import s from "./Carousel.module.css"
 import { useCarousel } from "./useCarousel"
 import { CarouselProps } from "@/common/components/Carousel/ClassNames.types"
-
-const getImageStyle = (src: string) => {
-  return { "--carousel-image": `url("${src}")` } as CSSProperties
-}
 
 export const Carousel = (props: CarouselProps) => {
   const { classNames, slides } = props
@@ -36,8 +32,14 @@ export const Carousel = (props: CarouselProps) => {
                 onClick={(event) => props.onNavigate?.(event, activeSlide)}
                 prefetch={false}
                 scroll={false}
-                style={getImageStyle(activeSlide.src)}
               >
+                <Image
+                  alt=""
+                  className={s.image}
+                  fill
+                  sizes={props.sizes}
+                  src={activeSlide.src}
+                />
                 {props.labelClassName && (
                   <span className={props.labelClassName}>{activeSlide.postId}</span>
                 )}
@@ -47,10 +49,19 @@ export const Carousel = (props: CarouselProps) => {
         : (() => {
             const activeSlide = props.slides[activeIndex]
             const slideProps = {
-              "aria-label": activeSlide.src,
+              "aria-label": "Post image",
               className: classNames.slide,
-              style: getImageStyle(activeSlide.src),
             }
+
+            const image = (
+              <Image
+                alt=""
+                className={s.image}
+                fill
+                sizes={props.sizes}
+                src={activeSlide.src}
+              />
+            )
 
             return props.getHref ? (
               <Link
@@ -60,10 +71,13 @@ export const Carousel = (props: CarouselProps) => {
                 prefetch={false}
                 role="img"
                 scroll={false}
-                style={getImageStyle(activeSlide.src)}
-              />
+              >
+                {image}
+              </Link>
             ) : (
-              <div {...slideProps} role="img" />
+              <div {...slideProps} role="img">
+                {image}
+              </div>
             )
           })()}
 

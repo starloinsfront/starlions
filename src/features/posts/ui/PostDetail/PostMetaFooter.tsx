@@ -16,7 +16,7 @@ type Props = {
   likesCount: number
   onCommentsClick?: () => void
   onLikesClick?: () => void
-  variant?: "desktop" | "mobile"
+  variant?: "desktop" | "mobile" | "responsive"
 }
 
 const formatMetric = (value: number) => new Intl.NumberFormat("ru-RU").format(value)
@@ -34,9 +34,12 @@ export const PostMetaFooter = ({
   variant = "desktop",
 }: Props) => {
   const isMobile = variant === "mobile"
+  const isResponsive = variant === "responsive"
 
   return (
-    <footer className={clsx(s.footer, isMobile && s.mobile, className)}>
+    <footer
+      className={clsx(s.footer, isMobile && s.mobile, isResponsive && s.responsive, className)}
+    >
       {isAuthorized && (
         <div aria-label="Post actions" className={s.actionsRow}>
           <div className={s.actionGroup}>
@@ -48,10 +51,10 @@ export const PostMetaFooter = ({
             >
               <Icon height={24} name="heartOutline" width={24} />
             </button>
-            {isMobile && (
+            {(isMobile || isResponsive) && (
               <button
                 aria-label="Open comments"
-                className={s.actionButton}
+                className={clsx(s.actionButton, isResponsive && s.mobileOnly)}
                 onClick={onCommentsClick}
                 type="button"
               >
@@ -95,8 +98,12 @@ export const PostMetaFooter = ({
         ) : null}
       </div>
 
-      {isMobile && commentsCount > 0 ? (
-        <button className={s.viewCommentsButton} onClick={onCommentsClick} type="button">
+      {(isMobile || isResponsive) && commentsCount > 0 ? (
+        <button
+          className={clsx(s.viewCommentsButton, isResponsive && s.mobileOnly)}
+          onClick={onCommentsClick}
+          type="button"
+        >
           View all Comments ({commentsCount + 1})
         </button>
       ) : null}

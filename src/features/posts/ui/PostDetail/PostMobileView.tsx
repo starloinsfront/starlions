@@ -120,10 +120,25 @@ export const PostMobileView = ({
           />
         </header>
 
-        <PostDetailMedia images={post.images} variant="mobile-detail" />
+        <PostDetailMedia
+          className={s.media}
+          images={post.images}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          variant="mobile-detail"
+        />
 
         <div className={s.body}>
+          <PostCommentsList
+            author={post.author}
+            className={s.desktopComments}
+            comments={post.comments}
+            createdAt={post.createdAt}
+            description={post.description}
+            isAuthorized={isAuthorized}
+          />
+
           <PostMetaFooter
+            className={s.metaFooter}
             commentsCount={post.comments.length}
             createdAt={post.createdAt}
             interactionsAvailable={post.interactionsAvailable}
@@ -132,17 +147,17 @@ export const PostMobileView = ({
             likesCount={post.likesCount}
             onCommentsClick={onOpenCommentsAction}
             onLikesClick={onOpenLikesAction}
-            variant="mobile"
+            variant="responsive"
           />
 
           {post.description && (
-            <p className={s.description}>
+            <p className={clsx(s.description, s.mobileOnly)}>
               <strong>{post.author.username}</strong>
               {post.description}
             </p>
           )}
 
-          <div className={s.previewComments}>
+          <div className={clsx(s.previewComments, s.mobileOnly)}>
             {previewComments.map((comment) => (
               <div className={s.previewComment} key={comment.id}>
                 <p>
@@ -167,7 +182,7 @@ export const PostMobileView = ({
             ))}
           </div>
 
-          <time className={s.date} dateTime={post.createdAt}>
+          <time className={clsx(s.date, s.mobileOnly)} dateTime={post.createdAt}>
             {formatPostDate(post.createdAt)}
           </time>
         </div>

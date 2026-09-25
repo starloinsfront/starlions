@@ -11,8 +11,10 @@ type Props = {
 }
 
 export const PostDetailMedia = ({ className, images, variant = "desktop" }: Props) => {
+  const isMobile = variant === "mobile"
+
   return (
-    <div className={clsx(s.mediaSection, variant === "mobile" && s.mobile, className)}>
+    <div className={clsx(s.mediaSection, isMobile && s.mobile, className)}>
       <Carousel
         classNames={{
           dot: s.dot,
@@ -26,6 +28,7 @@ export const PostDetailMedia = ({ className, images, variant = "desktop" }: Prop
         slides={images.map((image) => ({
           src: image.url,
         }))}
+        sizes={isMobile ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
         variant="detail"
       />
     </div>

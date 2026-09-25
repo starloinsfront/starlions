@@ -36,9 +36,6 @@
 }
 
 .slide {
-  background-image: var(--carousel-image);
-  background-position: center;
-  background-size: cover;
   display: block;
   inset: 0;
   overflow: hidden;

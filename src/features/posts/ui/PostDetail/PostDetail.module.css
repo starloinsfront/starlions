@@ -12,39 +12,10 @@
   width: 100%;
 }
 
-.mobileView {
-  display: none;
-}
-
-.desktopLayout {
-  display: grid;
-  grid-template-columns: minmax(0, 564px) minmax(0, 408px);
-  height: 100%;
-  min-height: 0;
-  min-width: 0;
-  width: 100%;
-}
-
 @media (width <= 1024px) and (width >= 769px) {
   .root {
     height: min(540px, calc(100dvh - 64px));
     max-width: 860px;
-  }
-
-  .desktopLayout {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (width <= 768px) {
-  .desktopView {
-    display: none;
-  }
-
-  .mobileView {
-    display: block;
-    min-width: 0;
-    width: 100%;
   }
 }
 
@@ -59,9 +30,5 @@
     min-height: 100%;
     overflow: visible;
     width: 100%;
-  }
-
-  .desktopLayout {
-    display: none;
   }
 }
