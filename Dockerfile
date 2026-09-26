@@ -18,6 +18,8 @@ FROM node:20.11-alpine as runner
 USER node
 WORKDIR /app
 ENV NODE_ENV production
-COPY --from=builder /app/ ./
+# Next.js updates the fetch/ISR cache at runtime. Keep the production files
+# owned by the same non-root user that runs the application.
+COPY --chown=node:node --from=builder /app/ ./
 EXPOSE 3000
 CMD ["npm", "start"]

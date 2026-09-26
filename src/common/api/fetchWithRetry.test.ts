@@ -8,7 +8,7 @@ describe("fetchWithRetry", () => {
     vi.unstubAllGlobals()
   })
 
-  it("retries a safe request once after a transient response", async () => {
+  it("retries a safe request after a transient response", async () => {
     vi.useFakeTimers()
     const fetchMock = vi
       .fn<typeof fetch>()
@@ -17,11 +17,26 @@ describe("fetchWithRetry", () => {
     vi.stubGlobal("fetch", fetchMock)
 
     const responsePromise = fetchWithRetry("https://example.com/profile")
-    await vi.advanceTimersByTimeAsync(200)
+    await vi.advanceTimersByTimeAsync(250)
     const response = await responsePromise
 
     expect(response.status).toBe(200)
     expect(fetchMock).toHaveBeenCalledTimes(2)
+  })
+
+  it("makes up to three attempts for a safe request", async () => {
+    vi.useFakeTimers()
+    const fetchMock = vi.fn<typeof fetch>().mockRejectedValue(new TypeError("fetch failed"))
+    vi.stubGlobal("fetch", fetchMock)
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined)
+
+    const responsePromise = fetchWithRetry("https://example.com/profile")
+    const rejection = expect(responsePromise).rejects.toThrow("fetch failed")
+    await vi.advanceTimersByTimeAsync(1000)
+
+    await rejection
+    expect(fetchMock).toHaveBeenCalledTimes(3)
+    expect(consoleError).toHaveBeenCalledOnce()
   })
 
   it("does not retry a mutation", async () => {

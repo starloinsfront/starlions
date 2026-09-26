@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useTransition } from "react"
+import { useEffect, useState } from "react"
 
 import { Button } from "@/common/components/Button/Button"
 
@@ -11,8 +11,8 @@ type Props = {
   reset: () => void
 }
 
-export default function MainError({ error, reset }: Props) {
-  const [isRetrying, startRetry] = useTransition()
+export default function MainError({ error }: Props) {
+  const [isRetrying, setIsRetrying] = useState(false)
 
   useEffect(() => {
     console.error("[main-route-error]", {
@@ -22,7 +22,12 @@ export default function MainError({ error, reset }: Props) {
   }, [error])
 
   const handleRetry = () => {
-    startRetry(() => reset())
+    setIsRetrying(true)
+
+    // A full reload guarantees a new document/RSC request after a server
+    // render failure. Calling reset() alone may only retry the cached client
+    // boundary and therefore never reach the server again.
+    window.location.reload()
   }
 
   return (
