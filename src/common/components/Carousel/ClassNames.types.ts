@@ -21,6 +21,7 @@ export type DetailCarouselSlide = {
 
 type SharedProps = {
   classNames: ClassNames
+  preload?: boolean
   sizes: string
 }
 

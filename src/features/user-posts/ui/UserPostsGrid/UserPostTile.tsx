@@ -12,9 +12,10 @@ type Props = {
   id: string
   coverUrl?: string
   imagesCount?: number
+  preload?: boolean
 }
 
-export const UserPostTile = ({ id, coverUrl, imagesCount }: Props) => {
+export const UserPostTile = ({ id, coverUrl, imagesCount, preload = false }: Props) => {
   const pathname = usePathname()
   const postModalHref = ROUTES.postModalById(pathname, id)
 
@@ -24,9 +25,13 @@ export const UserPostTile = ({ id, coverUrl, imagesCount }: Props) => {
         <Image
           alt=""
           className={s.image}
+          fetchPriority={preload ? "high" : "auto"}
           fill
+          loading={preload ? undefined : "lazy"}
+          preload={preload}
           sizes="(max-width: 768px) 33vw, (max-width: 900px) 33vw, 25vw"
           src={coverUrl}
+          unoptimized
         />
       ) : (
         <div className={s.placeholder} />

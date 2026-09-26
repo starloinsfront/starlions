@@ -123,6 +123,7 @@ export const PostMobileView = ({
         <PostDetailMedia
           className={s.media}
           images={post.images}
+          preload
           sizes="(max-width: 768px) 100vw, 50vw"
           variant="mobile-detail"
         />

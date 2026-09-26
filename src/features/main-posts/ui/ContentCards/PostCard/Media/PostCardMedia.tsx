@@ -12,6 +12,7 @@ import s from "./PostCardMedia.module.css"
 type Props = {
   hideControls?: boolean
   images: PublicPostImage[]
+  preload?: boolean
   postHrefBase?: string
   postId: string
 }
@@ -19,11 +20,15 @@ type Props = {
 export const PostCardMedia = ({
   hideControls = false,
   images,
+  preload = false,
   postHrefBase = "/",
   postId,
 }: Props) => {
   const visibleImages = hideControls ? images.slice(0, 1) : images
-  const postModalHref = ROUTES.postModalById(postHrefBase, postId)
+  const postModalHref =
+    postHrefBase === ROUTES.home
+      ? ROUTES.postModalPageById(postId)
+      : ROUTES.postModalById(postHrefBase, postId)
 
   return (
     <Carousel
@@ -38,6 +43,7 @@ export const PostCardMedia = ({
       }}
       getHref={() => postModalHref}
       labelClassName={s.slideLabel}
+      preload={preload}
       sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
       slides={visibleImages.map((image) => ({
         postId,

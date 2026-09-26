@@ -69,12 +69,13 @@ export const UserPostsGrid = ({ isOwner = false, initialPage, userId }: Props) =
   return (
     <section aria-label="User publications" className={s.section}>
       <div className={s.grid}>
-        {posts.map((post) => (
+        {posts.map((post, index) => (
           <UserPostTile
             key={post.id}
             coverUrl={post.coverUrl}
             id={post.id}
             imagesCount={post.imagesCount}
+            preload={index === 0}
           />
         ))}
       </div>

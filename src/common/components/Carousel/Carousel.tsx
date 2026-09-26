@@ -36,9 +36,13 @@ export const Carousel = (props: CarouselProps) => {
                 <Image
                   alt=""
                   className={s.image}
+                  fetchPriority={props.preload ? "high" : "auto"}
                   fill
+                  loading={props.preload ? undefined : "lazy"}
+                  preload={props.preload}
                   sizes={props.sizes}
                   src={activeSlide.src}
+                  unoptimized
                 />
                 {props.labelClassName && (
                   <span className={props.labelClassName}>{activeSlide.postId}</span>
@@ -57,9 +61,13 @@ export const Carousel = (props: CarouselProps) => {
               <Image
                 alt=""
                 className={s.image}
+                fetchPriority={props.preload ? "high" : "auto"}
                 fill
+                loading={props.preload ? undefined : "lazy"}
+                preload={props.preload}
                 sizes={props.sizes}
                 src={activeSlide.src}
+                unoptimized
               />
             )
 

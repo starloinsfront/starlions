@@ -52,6 +52,7 @@ const getPreviewDescription = (description: string) => {
 
 type ResponsivePostProps = {
   isAuthorized: boolean
+  isPriority: boolean
   meId?: string
   onOpenPanel: (post: PostDetailData, type: "comments" | "likes") => void
   post: PublicPost
@@ -60,6 +61,7 @@ type ResponsivePostProps = {
 
 const ResponsivePost = ({
   isAuthorized,
+  isPriority,
   meId,
   onOpenPanel,
   post,
@@ -101,8 +103,13 @@ const ResponsivePost = ({
 
       <PostDetailMedia
         className={s.postMedia}
-        href={ROUTES.postModalById(postHrefBase, post.id)}
+        href={
+          postHrefBase === ROUTES.home
+            ? ROUTES.postModalPageById(post.id)
+            : ROUTES.postModalById(postHrefBase, post.id)
+        }
         images={post.images}
+        preload={isPriority}
         sizes="(max-width: 768px) 100vw, (max-width: 1100px) 50vw, 25vw"
         variant="mobile"
       />
@@ -217,9 +224,10 @@ export const MobilePostsFeed = ({ postHrefBase = "/", posts }: Props) => {
   return (
     <>
       <section aria-label="Latest public posts" className={s.feed}>
-        {posts.map((post) => (
+        {posts.map((post, index) => (
           <ResponsivePost
             isAuthorized={isAuthorized}
+            isPriority={index === 0}
             key={post.id}
             meId={me?.id}
             onOpenPanel={(selectedPost, type) => setActivePanel({ post: selectedPost, type })}

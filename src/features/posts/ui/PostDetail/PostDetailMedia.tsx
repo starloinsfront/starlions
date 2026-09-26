@@ -8,11 +8,19 @@ type Props = {
   className?: string
   href?: string
   images: PostDetailImage[]
+  preload?: boolean
   sizes?: string
   variant?: "desktop" | "mobile" | "mobile-detail"
 }
 
-export const PostDetailMedia = ({ className, href, images, sizes, variant = "desktop" }: Props) => {
+export const PostDetailMedia = ({
+  className,
+  href,
+  images,
+  preload = false,
+  sizes,
+  variant = "desktop",
+}: Props) => {
   const isMobile = variant !== "desktop"
   const isMobileDetail = variant === "mobile-detail"
 
@@ -38,6 +46,7 @@ export const PostDetailMedia = ({ className, href, images, sizes, variant = "des
         slides={images.map((image) => ({
           src: image.url,
         }))}
+        preload={preload}
         sizes={sizes ?? (isMobile ? "100vw" : "(max-width: 768px) 100vw, 50vw")}
         getHref={href ? () => href : undefined}
         variant="detail"
