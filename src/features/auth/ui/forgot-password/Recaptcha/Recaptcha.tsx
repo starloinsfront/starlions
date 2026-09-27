@@ -10,7 +10,7 @@ type RecaptchaStatus = "default" | "error" | "expired"
 
 type RecaptchaProps = {
   value: string | null
-  onChange: (token: string | null) => void
+  onChangeAction: (token: string | null) => void
   error?: string
   resetKey?: number
 }
@@ -37,7 +37,7 @@ const getRecaptchaErrorMessage = (error?: string) => {
   return error
 }
 
-export const Recaptcha = ({ value, onChange, error, resetKey }: RecaptchaProps) => {
+export const Recaptcha = ({ value, onChangeAction, error, resetKey }: RecaptchaProps) => {
   const [status, setStatus] = useState<RecaptchaStatus>("default")
   const recaptchaRef = useRef<ReCAPTCHAInstance>(null)
   const previousResetKeyRef = useRef(resetKey)
@@ -58,8 +58,8 @@ export const Recaptcha = ({ value, onChange, error, resetKey }: RecaptchaProps) 
     previousResetKeyRef.current = resetKey
     recaptchaRef.current?.reset()
     setStatus("default")
-    onChange(null)
-  }, [resetKey, onChange])
+    onChangeAction(null)
+  }, [resetKey, onChangeAction])
 
   if (!siteKey) {
     return null
@@ -67,17 +67,17 @@ export const Recaptcha = ({ value, onChange, error, resetKey }: RecaptchaProps) 
 
   const handleChange = (token: string | null) => {
     setStatus("default")
-    onChange(token)
+    onChangeAction(token)
   }
 
   const handleExpired = () => {
     setStatus("expired")
-    onChange(null)
+    onChangeAction(null)
   }
 
   const handleErrored = () => {
     setStatus("error")
-    onChange(null)
+    onChangeAction(null)
   }
 
   const isExpired = status === "expired"

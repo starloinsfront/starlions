@@ -19,6 +19,7 @@ export const TextField = ({
   containerClassName,
   type,
   id,
+  required,
   ...rest
 }: Props) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -36,13 +37,24 @@ export const TextField = ({
       {label && (
         <label htmlFor={finalId} className={s.label}>
           {label}
+          {required ? (
+            <span aria-hidden="true" className={s.requiredMark}>
+              *
+            </span>
+          ) : null}
         </label>
       )}
 
       <div className={s.inputWrapper}>
         {iconStart && <span className={s.iconStart}>{iconStart}</span>}
 
-        <input id={finalId} type={inputType} className={inputClasses} {...rest} />
+        <input
+          id={finalId}
+          type={inputType}
+          className={inputClasses}
+          required={required}
+          {...rest}
+        />
 
         {isPassword ? (
           <button

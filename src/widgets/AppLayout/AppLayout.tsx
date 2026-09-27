@@ -1,9 +1,9 @@
 import clsx from "clsx"
-import type { ReactNode } from "react"
+import { type ReactNode } from "react"
 
+import { ToastLayoutSync } from "@/app/providers/ToastProvider/ToastLayoutSync"
 import { Header } from "@/widgets/Header/Header"
 import { Sidebar } from "@/widgets/Sidebar/Sidebar"
-import { ToastLayoutSync } from "@/app/providers/ToastProvider/ToastLayoutSync"
 
 type AppLayoutProps = {
   children: ReactNode

@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { apiAuth } from "@/features/auth/api/apiAuth"
-import { setAccessToken } from "@/common/utils/auth/accessToken"
 import { useRouter } from "next/navigation"
+
+import { ROUTES } from "@/common/constants/route"
+import { setAccessToken } from "@/common/utils/auth/accessToken"
+import { apiAuth } from "@/features/auth/api/apiAuth"
 
 export const useLoginMutation = () => {
   const router = useRouter()
@@ -10,21 +12,18 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: apiAuth.SignIn,
 
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       if (response?.accessToken) {
         setAccessToken(response.accessToken)
       }
 
-      queryClient.invalidateQueries({ queryKey: ["me"] })
-      router.push("/profile")
-    },
+      await queryClient.invalidateQueries({
+        exact: true,
+        queryKey: ["me"],
+        refetchType: "all",
+      })
 
-    onError: (error: any) => {
-      const extensions = error?.response?.data?.extensions || error?.data?.extensions
-
-      if (extensions) {
-        return
-      }
+      router.replace(ROUTES.profile)
     },
   })
 }

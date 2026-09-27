@@ -16,12 +16,14 @@ export const useLogoutMutation = () => {
       })
       return response.data
     },
-    onSettled: () => {
-      clearAccessToken()
-      queryClient.resetQueries({
+    onSettled: async () => {
+      await queryClient.cancelQueries({
         queryKey: ["me"],
       })
-      router.push(ROUTES.signIn)
+
+      clearAccessToken()
+      queryClient.setQueryData(["me"], null)
+      router.replace(ROUTES.signIn)
     },
   })
 

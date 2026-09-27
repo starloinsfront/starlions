@@ -17,7 +17,7 @@ import { AuthPageSection } from "@/features/auth/ui/AuthPageSection/AuthPageSect
 
 function LoginPageContent() {
   const searchParams = useSearchParams()
-  const oauthError = searchParams.get("error")
+  const oauthError = searchParams?.get("error")
 
   const {
     register,
@@ -79,6 +79,7 @@ function LoginPageContent() {
           <Button
             disabled={!isValid || mutation.status === "pending"}
             className={s.submitButton}
+            isLoading={mutation.status === "pending"}
             type={"submit"}
           >
             Sign In

@@ -89,9 +89,13 @@ export const Trigger = forwardRef<HTMLButtonElement, CompoundSelectTriggerProps>
 )
 Trigger.displayName = "CompoundSelect.Trigger"
 
-export const Value = ({ placeholder, className }: CompoundSelectValueProps) => (
-  <RadixSelect.Value className={clsx(styles.value, className)} placeholder={placeholder} />
-)
+export const Value = ({ placeholder, className, children }: CompoundSelectValueProps) => {
+  if (children) {
+    return <span className={clsx(styles.value, className)}>{children}</span>
+  }
+
+  return <RadixSelect.Value className={clsx(styles.value, className)} placeholder={placeholder} />
+}
 
 export const Icon = ({ className }: CompoundSelectIconProps) => (
   <RadixSelect.Icon className={clsx(styles.icon, className)}>

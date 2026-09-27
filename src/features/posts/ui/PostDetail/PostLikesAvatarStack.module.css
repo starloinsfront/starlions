@@ -1,0 +1,13 @@
+.stack {
+  display: inline-flex;
+  flex-shrink: 0;
+  isolation: isolate;
+}
+
+.avatar {
+  box-shadow: 0 0 0 1px var(--dark-300);
+}
+
+.avatar + .avatar {
+  margin-left: -8px;
+}

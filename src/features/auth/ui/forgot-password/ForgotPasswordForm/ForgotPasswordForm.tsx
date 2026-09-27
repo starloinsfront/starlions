@@ -107,7 +107,7 @@ export const ForgotPasswordForm = () => {
             render={({ field, fieldState }) => (
               <Recaptcha
                 value={field.value}
-                onChange={field.onChange}
+                onChangeAction={field.onChange}
                 error={fieldState.error?.message}
                 resetKey={recaptchaResetKey}
               />

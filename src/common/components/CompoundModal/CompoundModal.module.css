@@ -44,6 +44,10 @@
   max-width: 644px;
 }
 
+.xlg {
+  max-width: 972px;
+}
+
 .header {
   align-items: center;
   border-bottom: 1px solid var(--dark-100);

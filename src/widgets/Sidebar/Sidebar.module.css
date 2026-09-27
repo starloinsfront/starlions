@@ -36,10 +36,60 @@
   padding-top: 60px;
 }
 
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skeletonItem {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  height: 24px;
+}
+
+.skeletonIcon {
+  flex: 0 0 24px;
+  height: 24px;
+  width: 24px;
+}
+
+.skeletonLabel {
+  height: 14px;
+}
+
+.skeletonLabelShort {
+  width: 40px;
+}
+
+.skeletonLabelMedium {
+  width: 64px;
+}
+
+.skeletonLabelLong {
+  width: 80px;
+}
+
+.skeletonSecondary {
+  margin-top: 60px;
+}
+
+.skeletonLogout {
+  margin-top: auto;
+  padding-top: 60px;
+}
+
 @media (width <= 992px) {
   .sidebar {
-    /* max-width: 220px;
-    min-width: 220px; */
     padding: 72px 0 36px 30px;
     width: 190px;
   }
@@ -64,7 +114,7 @@
     position: fixed;
     right: 0;
     width: 100%;
-    z-index: 2;
+    z-index: 99;
   }
 
   .sidebarSection {
@@ -91,6 +141,36 @@
   }
 
   .desktopOnly {
+    display: none;
+  }
+
+  .sidebarSkeleton {
+    display: flex;
+  }
+
+  .skeletonList {
+    align-items: center;
+    flex-direction: row;
+    gap: 36px;
+    justify-content: center;
+    max-width: 360px;
+    width: 100%;
+  }
+
+  .skeletonItem {
+    display: block;
+  }
+
+  .skeletonIcon {
+    border-radius: 50%;
+  }
+
+  .skeletonLabel {
+    display: none;
+  }
+
+  .skeletonLogout,
+  .skeletonSecondary {
     display: none;
   }
 }

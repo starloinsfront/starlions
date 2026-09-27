@@ -11,6 +11,8 @@ import { RegisterFormData } from "@/features/auth/model/register.schema"
 
 import { SignInFormData } from "@/features/auth/model/auth-schemas"
 
+const AUTH_BOOTSTRAP_TIMEOUT_MS = 4_000
+
 export  const getAuthHeaders = () => {
   const accessToken = getAccessToken()
 
@@ -23,16 +25,17 @@ export  const getAuthHeaders = () => {
   }
 }
 
-const requestAuthMe = async () => {
+const requestAuthMe = async (signal?: AbortSignal) => {
   const result = await client.GET("/api/v1/auth/me", {
     headers: getAuthHeaders(),
+    signal,
   })
 
   return handleApiResponse(result, "Auth me request failed")
 }
 
-const refreshAccessToken = async () => {
-  const result = await client.POST("/api/v1/auth/refresh-token")
+const refreshAccessToken = async (signal?: AbortSignal) => {
+  const result = await client.POST("/api/v1/auth/refresh-token", { signal })
   const data = handleApiResponse(result, "Refresh token request failed")
 
   if (data?.accessToken) {
@@ -100,32 +103,39 @@ export const apiAuth = {
     return refreshAccessToken()
   },
   authMe: async () => {
-    if (!getAccessToken()) {
-      try {
-        await refreshAccessToken()
-      } catch {
-        clearAccessToken()
-
-        return null
-      }
-    }
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), AUTH_BOOTSTRAP_TIMEOUT_MS)
 
     try {
-      return await requestAuthMe()
-    } catch (error) {
-      if (!isApiErrorMatching(error, { status: 401 })) {
-        throw error
+      if (!getAccessToken()) {
+        try {
+          await refreshAccessToken(controller.signal)
+        } catch {
+          clearAccessToken()
+
+          return null
+        }
       }
 
       try {
-        await refreshAccessToken()
+        return await requestAuthMe(controller.signal)
+      } catch (error) {
+        if (!isApiErrorMatching(error, { status: 401 })) {
+          throw error
+        }
 
-        return await requestAuthMe()
-      } catch {
-        clearAccessToken()
+        try {
+          await refreshAccessToken(controller.signal)
 
-        return null
+          return await requestAuthMe(controller.signal)
+        } catch {
+          clearAccessToken()
+
+          return null
+        }
       }
+    } finally {
+      clearTimeout(timeoutId)
     }
   },
 }

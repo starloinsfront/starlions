@@ -1,0 +1,104 @@
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 192px;
+}
+
+.avatarWrapper {
+  height: 192px;
+  position: relative;
+  width: 192px;
+}
+
+.avatar {
+  background-color: var(--dark-300);
+  border-radius: 50%;
+  height: 192px;
+  overflow: hidden;
+  position: relative;
+  width: 192px;
+}
+
+.avatarImage {
+  object-fit: cover;
+}
+
+.avatarFallback {
+  align-items: center;
+  color: var(--light-100);
+  display: flex;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 48px;
+  font-weight: var(--font-weight-bold);
+  height: 100%;
+  justify-content: center;
+  user-select: none;
+}
+
+.deleteButton {
+  align-items: center;
+  background: var(--danger-500);
+  border: none;
+  border-radius: 50%;
+  color: var(--light-100);
+  cursor: pointer;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 28px;
+  z-index: 1;
+}
+
+.selectButton {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--accent-500);
+  border-radius: 2px;
+  color: var(--accent-500);
+  cursor: pointer;
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-m);
+  min-height: 36px;
+  padding: 6px 12px;
+  text-align: center;
+  width: 100%;
+}
+
+.selectButton:disabled,
+.deleteButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.selectButton:focus-visible,
+.deleteButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+.deleteButton:not(:disabled):hover {
+  background-color: var(--danger-300);
+}
+
+.selectButton:not(:disabled):hover {
+  border-color: var(--accent-300);
+  color: var(--accent-300);
+}
+
+@media (width <= 768px) {
+  .container {
+    width: 100%;
+  }
+
+  .selectButton {
+    margin-top: 12px;
+  }
+}

@@ -1,0 +1,42 @@
+.step {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.content {
+  background-color: var(--dark-900);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.imageArea {
+  background-color: var(--dark-900);
+  flex: 1 1 0;
+  max-height: 410px;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.sliderContainer {
+  height: 80%;
+  width: 100%;
+}
+
+.cropperContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.filters {
+  flex: 0 0 auto;
+  min-height: 0;
+}

@@ -15,7 +15,7 @@ export function GuestActions() {
       <div className={styles.linkBox}>
         <div className={styles.desktop}>
           <Button variant="link" className={styles.linkBtn} asChild>
-            <Link href={ROUTES.signIn}>Sign in</Link>
+            <Link href={ROUTES.signIn}>Log in</Link>
           </Button>
           <Button className={styles.linkBtn} asChild>
             <Link href={ROUTES.signUp}>Sign up</Link>
@@ -25,7 +25,7 @@ export function GuestActions() {
           <MoreActionsDropdown>
             <DropdownMenuItem key={ROUTES.signIn} asChild unstyled>
               <Button variant="link" asChild>
-                <Link href={ROUTES.signIn}>Sign in</Link>
+                <Link href={ROUTES.signIn}>Log in</Link>
               </Button>
             </DropdownMenuItem>
             <DropdownMenuItem key={ROUTES.signUp} asChild unstyled>

@@ -1,0 +1,144 @@
+/* ── Step wrapper ── */
+
+.step {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Two-column content area ── */
+
+.content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Left: preview area (≈ 65%) ── */
+
+.previewArea {
+  background-color: var(--dark-900);
+  display: flex;
+  flex: 50;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.previewImage {
+  display: block;
+  flex: 1;
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+/* ── Right: scrollable filters panel (≈ 35%) ── */
+
+.filtersPanel {
+  background-color: var(--dark-300);
+  border-left: 1px solid var(--dark-100);
+  display: flex;
+  flex: 50;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 12px 10px;
+}
+
+.filtersPanel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.filtersPanel::-webkit-scrollbar-thumb {
+  background-color: var(--dark-100);
+  border-radius: 2px;
+}
+
+/* ── 3-column filter grid ── */
+
+.filterGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* ── Individual filter card ── */
+
+.filterItem {
+  align-items: center;
+  appearance: none;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 4px;
+  transition: border-color 0.15s ease;
+}
+
+.filterItem:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+.filterItem:hover {
+  border-color: var(--light-900);
+}
+
+.filterItemSelected {
+  border-color: var(--accent-500);
+}
+
+.filterItemSelected:hover {
+  border-color: var(--accent-500);
+}
+
+/* ── Thumbnail inside filter card ── */
+
+.thumbnailImage {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* ── Filter label ── */
+
+.filterLabel {
+  color: var(--light-300);
+  font-size: 11px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.filterItemSelected .filterLabel {
+  color: var(--accent-500);
+}
+
+/* ── Responsive: mobile stacking ── */
+
+@media (width < 768px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .previewArea {
+    flex: 1;
+  }
+
+  .filtersPanel {
+    border-left: none;
+    border-top: 1px solid var(--dark-100);
+    flex: none;
+    max-height: 200px;
+  }
+}

@@ -1,5 +1,6 @@
 .header {
   align-items: center;
+  background: var(--dark-700);
   border-bottom: 1px solid var(--dark-100);
   display: flex;
   grid-area: header;
@@ -8,12 +9,15 @@
   padding: 0 60px;
   position: sticky;
   top: 0;
+  z-index: 20;
 }
 
 .logo {
   color: var(--light-100);
-  font-size: 32px;
-  font-weight: 700;
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: 1;
+  text-decoration: none;
 }
 
 .inner {
@@ -31,6 +35,25 @@
   justify-content: space-between;
 }
 
+.actionsSkeleton {
+  align-items: center;
+  display: flex;
+  gap: 36px;
+  min-height: 36px;
+}
+
+.notificationSkeleton,
+.menuSkeleton {
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+}
+
+.languageSkeleton {
+  height: 36px;
+  width: 163px;
+}
+
 @media (width <= 992px) {
   .header {
     padding: 0 30px;
@@ -44,5 +67,13 @@
 
   .right {
     gap: 24px;
+  }
+
+  .actionsSkeleton {
+    gap: 24px;
+  }
+
+  .languageSkeleton {
+    width: 42px;
   }
 }

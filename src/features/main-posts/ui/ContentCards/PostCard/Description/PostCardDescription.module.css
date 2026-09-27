@@ -1,0 +1,33 @@
+.cardMeta {
+  display: grid;
+  gap: 6px;
+}
+
+.time {
+  color: var(--light-900);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-s);
+}
+
+.descriptionViewport {
+  display: block;
+}
+
+.showMore {
+  background: none;
+  border: none;
+  color: var(--accent-500);
+  cursor: pointer;
+  display: inline;
+  font: inherit;
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.showMore:hover {
+  color: var(--accent-300);
+}

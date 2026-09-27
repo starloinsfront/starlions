@@ -12,6 +12,7 @@ export type SelectOption = {
 export type CustomSelectProps = {
   options: SelectOption[]
   value?: string
+  selectedLabel?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
   onBlur?: FocusEventHandler<HTMLButtonElement>

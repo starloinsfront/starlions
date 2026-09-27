@@ -10,6 +10,7 @@ export const Select = forwardRef<HTMLButtonElement, CustomSelectProps>(
     {
       options,
       value,
+      selectedLabel,
       defaultValue,
       onValueChange,
       onBlur,
@@ -53,7 +54,13 @@ export const Select = forwardRef<HTMLButtonElement, CustomSelectProps>(
           aria-label={label ? undefined : ariaLabel}
           aria-required={required}
         >
-          <CompoundSelect.Value className={valueClassName} placeholder={placeholder} />
+          {selectedLabel ? (
+            <CompoundSelect.Value className={valueClassName} placeholder={placeholder}>
+              {selectedLabel}
+            </CompoundSelect.Value>
+          ) : (
+            <CompoundSelect.Value className={valueClassName} placeholder={placeholder} />
+          )}
           <CompoundSelect.Icon className={chevronClassName} />
         </CompoundSelect.Trigger>
         <CompoundSelect.Content className={contentClassName}>

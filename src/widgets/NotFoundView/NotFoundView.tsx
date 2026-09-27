@@ -5,7 +5,25 @@ import { ROUTES } from "@/common/constants/route"
 
 import styles from "./NotFoundView.module.css"
 
-export const NotFoundView = () => {
+import { NotFoundBackButton } from "./NotFoundBackButton"
+
+type Props = {
+  description?: string
+  label?: string
+  primaryHref?: string
+  primaryLabel?: string
+  showBackButton?: boolean
+  title?: string
+}
+
+export const NotFoundView = ({
+  description = "The page you are looking for may have been moved, deleted, or the link may be incorrect.",
+  label = "Page not found",
+  primaryHref = ROUTES.home,
+  primaryLabel = "Back to Home",
+  showBackButton = false,
+  title = "Oops! This page does not exist",
+}: Props) => {
   return (
     <section className={styles.wrapper}>
       <div className={styles.content}>
@@ -14,17 +32,19 @@ export const NotFoundView = () => {
         </span>
 
         <div className={styles.card}>
-          <p className={styles.label}>Page not found</p>
+          <p className={styles.label}>{label}</p>
 
-          <h1 className={styles.title}>Oops! This page does not exist</h1>
+          <h1 className={styles.title}>{title}</h1>
 
-          <p className={styles.description}>
-            The page you are looking for may have been moved, deleted, or the link may be incorrect.
-          </p>
+          <p className={styles.description}>{description}</p>
 
-          <Button className={styles.button} asChild>
-            <Link href={ROUTES.home}>Back to Home</Link>
-          </Button>
+          <div className={styles.actions}>
+            {showBackButton ? <NotFoundBackButton /> : null}
+
+            <Button className={styles.button} asChild>
+              <Link href={primaryHref}>{primaryLabel}</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

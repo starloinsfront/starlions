@@ -1,0 +1,14 @@
+.page {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100dvh - 160px);
+  width: 100%;
+}
+
+@media (width <= 768px) {
+  .page {
+    align-items: stretch;
+    min-height: calc(100dvh - 60px - 76px);
+  }
+}

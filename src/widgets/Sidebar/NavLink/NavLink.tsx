@@ -16,6 +16,7 @@ export const NavLink = ({
   href,
   disabled = false,
   exact = false,
+  prefetch = false,
   children,
   className,
   ...linkProps
@@ -52,6 +53,7 @@ export const NavLink = ({
       href={href}
       className={linkClassName}
       aria-current={isActive ? "page" : undefined}
+      prefetch={prefetch}
       {...linkProps}
     >
       {children}

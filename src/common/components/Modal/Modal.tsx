@@ -58,6 +58,8 @@ type Props = {
    * md — 492px
    *
    * lg — 644px
+   *
+   * xlg — 972px
    */
   size?: ModalSize
 
@@ -67,6 +69,14 @@ type Props = {
    * Useful when a specific modal needs custom spacing or layout.
    */
   contentClassName?: string
+
+  /**
+   * Additional className for the modal header.
+   *
+   * Useful when a specific modal needs to override the default header style
+   * (e.g. removing the bottom border).
+   */
+  headerClassName?: string
 } & Omit<
   ComponentPropsWithoutRef<typeof CompoundModal.Content>,
   "children" | "title" | "aria-describedby" | "size" | "contentClassName"
@@ -100,6 +110,7 @@ export const Modal = ({
   children,
   className,
   contentClassName,
+  headerClassName,
   open,
   ...contentProps
 }: Props) => {
@@ -125,7 +136,7 @@ export const Modal = ({
           aria-describedby={descriptionId}
           {...contentProps}
         >
-          <CompoundModal.Header>
+          <CompoundModal.Header className={headerClassName}>
             <CompoundModal.Title>{modalTitle}</CompoundModal.Title>
             <CompoundModal.Close />
           </CompoundModal.Header>

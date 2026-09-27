@@ -73,6 +73,13 @@
   min-width: 180px;
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
 @media (width <= 768px) {
   .wrapper {
     min-height: calc(100dvh - 60px - env(safe-area-inset-bottom));
@@ -91,5 +98,10 @@
     font-size: 14px;
     line-height: 22px;
     margin: 16px 0 28px;
+  }
+
+  .actions,
+  .button {
+    width: 100%;
   }
 }
