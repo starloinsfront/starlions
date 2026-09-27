@@ -9,6 +9,7 @@ import { ROUTES } from "@/common/constants/route"
 import { formatPostDate } from "@/features/posts/lib/formatPostDate"
 import { getUserInitials } from "@/features/posts/lib/userInitials"
 import { PostActionsMenu } from "./PostActionsMenu"
+import { PostAvatar } from "./PostAvatar"
 import { PostCommentsList } from "./PostCommentsList"
 import { PostDetailMedia } from "./PostDetailMedia"
 import { PostLikesList } from "./PostLikesList"
@@ -103,9 +104,12 @@ export const PostMobileView = ({
             href={ROUTES.profileById(post.author.authorId)}
             prefetch={false}
           >
-            <span aria-hidden="true" className={s.avatar}>
-              {getUserInitials(post.author.username)}
-            </span>
+            <PostAvatar
+              className={s.avatar}
+              imageUrl={post.author.avatarUrl}
+              label={getUserInitials(post.author.username)}
+              size="md"
+            />
             <span className={s.username}>{post.author.username}</span>
           </Link>
 

@@ -33,6 +33,7 @@ export const PostCommentsList = ({
       {description && (
         <CommentRow
           avatarLabel={getUserInitials(author.username)}
+          avatarUrl={author.avatarUrl}
           isDescription
           text={description}
           time={createdAt ? formatRelativeTime(createdAt) : ""}
@@ -54,6 +55,7 @@ export const PostCommentsList = ({
 
 type CommentRowProps = {
   avatarLabel?: string
+  avatarUrl?: string | null
   comment?: PostDetailComment
   isDescription?: boolean
   showMetaActions?: boolean
@@ -65,6 +67,7 @@ type CommentRowProps = {
 
 const CommentRow = ({
   avatarLabel,
+  avatarUrl,
   comment,
   isDescription = false,
   showMetaActions = false,
@@ -88,7 +91,7 @@ const CommentRow = ({
       <div
         className={clsx(s.comment, isDescription && s.descriptionRow, hasLikeAction && s.withLike)}
       >
-        <PostAvatar label={rowAvatarLabel} size="md" />
+        <PostAvatar imageUrl={avatarUrl} label={rowAvatarLabel} size="md" />
 
         <div className={s.commentBody}>
           <p className={s.commentText}>

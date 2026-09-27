@@ -40,7 +40,11 @@ export const PostAuthorHeader = ({
         href={ROUTES.profileById(author.authorId)}
         prefetch={false}
       >
-        <PostAvatar label={getUserInitials(author.username)} size="md" />
+        <PostAvatar
+          imageUrl={author.avatarUrl}
+          label={getUserInitials(author.username)}
+          size="md"
+        />
         <span className={s.username}>{author.username}</span>
       </Link>
 

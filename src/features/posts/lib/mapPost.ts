@@ -6,6 +6,7 @@ type PostDto = {
   createdAt?: string
   author?: {
     authorId?: string
+    avatarUrl?: unknown
     username?: string
   }
   images?: {
@@ -22,6 +23,10 @@ export const mapPostDtoToPublicPost = (post: PostDto): PublicPost | null => {
     id: post.id,
     author: {
       authorId: post.author.authorId ?? "",
+      avatarUrl:
+        typeof post.author.avatarUrl === "string" && post.author.avatarUrl.trim()
+          ? post.author.avatarUrl.trim()
+          : null,
       username: post.author.username ?? "Unknown user",
     },
     createdAt: post.createdAt,

@@ -41,7 +41,11 @@ export const PostCard = ({
       />
 
       <div className={s.content}>
-        <PostCardAuthor authorId={author.authorId} username={author.username} />
+        <PostCardAuthor
+          authorId={author.authorId}
+          avatarUrl={author.avatarUrl}
+          username={author.username}
+        />
         <PostCardDescription
           canExpand={canExpand}
           description={description}

@@ -16,6 +16,7 @@ import { PostDetailMedia } from "@/features/posts/ui/PostDetail/PostDetailMedia"
 import { PostLikesAvatarStack } from "@/features/posts/ui/PostDetail/PostLikesAvatarStack"
 import { PostLikesList } from "@/features/posts/ui/PostDetail/PostLikesList"
 import { PostMobilePanelModal } from "@/features/posts/ui/PostDetail/PostMobilePanelModal"
+import { PostAvatar } from "@/features/posts/ui/PostDetail/PostAvatar"
 import { PostCardDescription } from "../PostCard/Description/PostCardDescription"
 import s from "./MobilePostsFeed.module.css"
 
@@ -85,9 +86,12 @@ const ResponsivePost = ({
           href={ROUTES.profileById(post.author.authorId)}
           prefetch={false}
         >
-          <span aria-hidden="true" className={s.avatar}>
-            {getUserInitials(post.author.username)}
-          </span>
+          <PostAvatar
+            className={s.avatar}
+            imageUrl={post.author.avatarUrl}
+            label={getUserInitials(post.author.username)}
+            size="md"
+          />
           <span className={s.username}>{post.author.username}</span>
         </Link>
 

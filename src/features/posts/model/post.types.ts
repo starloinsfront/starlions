@@ -1,5 +1,6 @@
 export type PublicPostAuthor = {
   authorId: string
+  avatarUrl: string | null
   username: string
 }
 
