@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 
 import { isApiError } from "@/common/utils/api/error/apiError"
 import { buildPostModalCloseHref, POST_ID_SEARCH_PARAM } from "@/common/utils/modalSearchParams"
@@ -52,10 +52,6 @@ const loadProfilePageData = async (userId: string, postId?: string) => {
         : Promise.resolve(null),
     ])
 
-    if (postId && !selectedPost) {
-      notFound()
-    }
-
     return { initialPosts, profile, selectedPost }
   } catch (error) {
     if (isApiError(error) && error.status === 404) {
@@ -74,6 +70,10 @@ export default async function ProfilePage({ params, searchParams }: Props) {
     `/profile/${encodeURIComponent(userId)}`,
     resolvedSearchParams,
   )
+
+  if (postId && !selectedPost) {
+    redirect(closeHref)
+  }
 
   return (
     <>
