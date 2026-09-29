@@ -1,0 +1,122 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+  width: 100%;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sectionTitle {
+  color: var(--light-100);
+  font-family: var(--font-inter), sans-serif;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--line-height-m);
+  margin: 0;
+}
+
+.panel {
+  background-color: var(--dark-500);
+  border: 1px solid var(--dark-300);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+}
+
+.panelAccountType {
+  min-height: 96px;
+}
+
+.panelSubscription {
+  min-height: 144px;
+}
+
+.radioOption {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+}
+
+.radioInput {
+  border: 0;
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.radioIcon {
+  flex-shrink: 0;
+}
+
+.radioLabel {
+  color: var(--light-100);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.payments {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: flex-end;
+  margin-top: -18px;
+}
+
+.paymentsDivider {
+  color: var(--light-100);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.paymentProviderButton {
+  align-items: center;
+  appearance: none;
+  background-color: var(--dark-500);
+  border: 1px solid var(--dark-300);
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  height: 64px;
+  justify-content: center;
+  padding: 0;
+  transition: border-color 0.1s ease-in-out;
+  width: 96px;
+}
+
+.paymentProviderButton:hover {
+  border-color: var(--dark-100);
+}
+
+.paymentProviderButton:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+.paymentProviderIcon {
+  color: var(--light-100);
+}
+
+@media (width <= 768px) {
+  .payments {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0;
+  }
+}

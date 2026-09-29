@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { Icon } from "@/common/components/Icon/Icon"
+import { AccountManagementForm } from "../AccountManagementForm"
 import { GeneralInformationForm } from "../GeneralInformationForm"
 import s from "./SettingsView.module.css"
 
@@ -45,7 +46,10 @@ export const SettingsView = () => {
       </nav>
       <div className={s.content} id="settings-tab-panel" role="tabpanel">
         {activeTab === "General information" && <GeneralInformationForm />}
-        {activeTab !== "General information" && <p className={s.placeholder}>Coming soon</p>}
+        {activeTab === "Account Management" && <AccountManagementForm />}
+        {activeTab !== "General information" && activeTab !== "Account Management" && (
+          <p className={s.placeholder}>Coming soon</p>
+        )}
       </div>
     </div>
   )
