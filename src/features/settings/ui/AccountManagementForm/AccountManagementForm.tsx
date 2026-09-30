@@ -2,8 +2,6 @@
 
 import { useState } from "react"
 
-import { Icon } from "@/common/components/Icon/Icon"
-
 import { SettingsRadioOption } from "./SettingsRadioOption"
 import s from "./AccountManagementForm.module.css"
 
@@ -31,7 +29,7 @@ export const AccountManagementForm = () => {
         <h2 className={s.sectionTitle} id="account-type-heading">
           Account type:
         </h2>
-        <div className={`${s.panel} ${s.panelAccountType}`} role="radiogroup" aria-labelledby="account-type-heading">
+        <div className={s.panel} role="radiogroup" aria-labelledby="account-type-heading">
           {ACCOUNT_TYPES.map((option) => (
             <SettingsRadioOption
               checked={accountType === option.value}
@@ -45,45 +43,59 @@ export const AccountManagementForm = () => {
         </div>
       </section>
 
-      <section aria-labelledby="subscription-costs-heading" className={s.section}>
-        <h2 className={s.sectionTitle} id="subscription-costs-heading">
-          Your subscription costs:
-        </h2>
-        <div
-          className={`${s.panel} ${s.panelSubscription}`}
-          role="radiogroup"
-          aria-labelledby="subscription-costs-heading"
-        >
-          {SUBSCRIPTION_PLANS.map((option) => (
-            <SettingsRadioOption
-              checked={subscriptionPlan === option.value}
-              key={option.value}
-              label={option.label}
-              name="subscriptionPlan"
-              onChange={() => setSubscriptionPlan(option.value)}
-              value={option.value}
-            />
-          ))}
-        </div>
+      {accountType === "business" ? (
+        <section aria-labelledby="subscription-costs-heading" className={s.section}>
+          <h2 className={s.sectionTitle} id="subscription-costs-heading">
+            Your subscription costs:
+          </h2>
+          <div
+            className={s.panel}
+            role="radiogroup"
+            aria-labelledby="subscription-costs-heading"
+          >
+            {SUBSCRIPTION_PLANS.map((option) => (
+              <SettingsRadioOption
+                checked={subscriptionPlan === option.value}
+                key={option.value}
+                label={option.label}
+                name="subscriptionPlan"
+                onChange={() => setSubscriptionPlan(option.value)}
+                value={option.value}
+              />
+            ))}
+          </div>
 
-        <div className={s.payments}>
-          <button
-            aria-label="Pay with PayPal"
-            className={s.paymentProviderButton}
-            type="button"
-          >
-            <Icon className={s.paymentProviderIcon} height={16} name="paypalFilled" width={72} />
-          </button>
-          <span className={s.paymentsDivider}>Or</span>
-          <button
-            aria-label="Pay with Stripe"
-            className={s.paymentProviderButton}
-            type="button"
-          >
-            <Icon className={s.paymentProviderIcon} height={16} name="stripeFilled" width={72} />
-          </button>
-        </div>
-      </section>
+          <div className={s.payments}>
+            <button
+              aria-label="Pay with PayPal"
+              className={s.paymentProviderButton}
+              type="button"
+            >
+              <img
+                alt=""
+                className={s.paymentProviderImage}
+                height={64}
+                src="/images/settings/paypal-payment.svg"
+                width={96}
+              />
+            </button>
+            <span className={s.paymentsDivider}>Or</span>
+            <button
+              aria-label="Pay with Stripe"
+              className={s.paymentProviderButton}
+              type="button"
+            >
+              <img
+                alt=""
+                className={s.paymentProviderImage}
+                height={64}
+                src="/images/settings/stripe-payment.svg"
+                width={96}
+              />
+            </button>
+          </div>
+        </section>
+      ) : null}
     </div>
   )
 }
