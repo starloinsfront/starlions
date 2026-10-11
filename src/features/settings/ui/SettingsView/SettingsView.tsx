@@ -1,19 +1,40 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { Suspense } from "react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 import { Icon } from "@/common/components/Icon/Icon"
+import { buildSettingsSearchParams } from "../../model/buildSettingsSearchParams"
+import {
+  parseSettingsAccountType,
+  parseSettingsTab,
+  SETTINGS_ACCOUNT_TYPE_QUERY_KEY,
+  SETTINGS_TAB_QUERY_KEY,
+  SETTINGS_TABS,
+  type SettingsTab,
+} from "../../model/settingsSearchParams"
 import { AccountManagementForm } from "../AccountManagementForm"
 import { GeneralInformationForm } from "../GeneralInformationForm"
 import s from "./SettingsView.module.css"
 
-const TABS = ["General information", "Devices", "Account Management", "My payments"] as const
-type Tab = (typeof TABS)[number]
-
-export const SettingsView = () => {
+const SettingsViewContent = () => {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<Tab>("General information")
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const activeTab = parseSettingsTab(searchParams.get(SETTINGS_TAB_QUERY_KEY))
+
+  const replaceSettingsUrl = (tab: SettingsTab) => {
+    const accountType = parseSettingsAccountType(searchParams.get(SETTINGS_ACCOUNT_TYPE_QUERY_KEY))
+    const next = buildSettingsSearchParams({
+      accountType,
+      current: searchParams,
+      tab,
+    })
+    const query = next.toString()
+
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false })
+  }
 
   return (
     <div className={s.container}>
@@ -30,14 +51,14 @@ export const SettingsView = () => {
       </div>
 
       <nav className={s.tabs} aria-label="Settings sections" role="tablist">
-        {TABS.map((tab) => (
+        {SETTINGS_TABS.map((tab) => (
           <button
             aria-controls="settings-tab-panel"
             aria-selected={activeTab === tab}
             key={tab}
             type="button"
             className={`${s.tab} ${activeTab === tab ? s.tabActive : ""}`}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => replaceSettingsUrl(tab)}
             role="tab"
           >
             {tab}
@@ -52,5 +73,21 @@ export const SettingsView = () => {
         )}
       </div>
     </div>
+  )
+}
+
+const SettingsViewFallback = () => {
+  return (
+    <div className={s.container}>
+      <h1 className={s.title}>Profile Settings</h1>
+    </div>
+  )
+}
+
+export const SettingsView = () => {
+  return (
+    <Suspense fallback={<SettingsViewFallback />}>
+      <SettingsViewContent />
+    </Suspense>
   )
 }
