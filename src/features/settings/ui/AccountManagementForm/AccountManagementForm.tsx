@@ -1,24 +1,30 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
+import { Button } from "@/common/components/Button/Button"
 import { getApiErrorMessage } from "@/common/utils/api/error/getApiErrorMessage"
-import { showErrorToast } from "@/common/utils/toast/showToast"
 import {
-  createSubscriptionPayment,
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from "@/common/utils/toast/showToast"
+import {
+  CHECKOUT_SESSION_STORAGE_KEY,
+  PAYMENT_PROVIDER_API,
+  pollCheckoutUntilSettled,
   type PaymentProvider,
 } from "../../api/apiPayments"
+import { useCreateCheckoutMutation } from "../../api/useCreateCheckoutMutation"
+import { usePaymentPlansQuery } from "../../api/usePaymentPlansQuery"
 import { buildSettingsSearchParams } from "../../model/buildSettingsSearchParams"
+import { formatPlanLabel } from "../../model/formatPlanLabel"
 import {
   parseSettingsAccountType,
   SETTINGS_ACCOUNT_TYPE_QUERY_KEY,
   type SettingsAccountType,
 } from "../../model/settingsSearchParams"
-import {
-  SUBSCRIPTION_PLANS,
-  type SubscriptionPlanId,
-} from "../../model/subscriptionPlans"
 import { PaymentAutoRenewalModal } from "./PaymentAutoRenewalModal"
 import { SettingsRadioOption } from "./SettingsRadioOption"
 import s from "./AccountManagementForm.module.css"
@@ -33,13 +39,72 @@ export const AccountManagementForm = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const accountType = parseSettingsAccountType(
+  const accountTypeFromUrl = parseSettingsAccountType(
     searchParams.get(SETTINGS_ACCOUNT_TYPE_QUERY_KEY),
   )
-  const [subscriptionPlan, setSubscriptionPlan] = useState<SubscriptionPlanId>("day")
+  const [pendingAccountType, setPendingAccountType] = useState<SettingsAccountType | null>(null)
+  const accountType = pendingAccountType ?? accountTypeFromUrl
+
+  useEffect(() => {
+    if (pendingAccountType !== null && pendingAccountType === accountTypeFromUrl) {
+      setPendingAccountType(null)
+    }
+  }, [accountTypeFromUrl, pendingAccountType])
+
+  const {
+    data: plansData,
+    error: plansError,
+    isError: isPlansError,
+    isFetching: isPlansFetching,
+    isLoading: isPlansLoading,
+    refetch: refetchPlans,
+  } = usePaymentPlansQuery(accountType === "business")
+  const plans = plansData?.items ?? []
+
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null)
   const [isAutoRenewalModalOpen, setIsAutoRenewalModalOpen] = useState(false)
   const [paymentProvider, setPaymentProvider] = useState<PaymentProvider | null>(null)
   const [isPaymentRedirecting, setIsPaymentRedirecting] = useState(false)
+
+  const createCheckoutMutation = useCreateCheckoutMutation()
+
+  useEffect(() => {
+    if (selectedPlanId || plans.length === 0) {
+      return
+    }
+
+    setSelectedPlanId(plans[0].id)
+  }, [plans, selectedPlanId])
+
+  useEffect(() => {
+    const checkoutSessionId = sessionStorage.getItem(CHECKOUT_SESSION_STORAGE_KEY)
+
+    if (!checkoutSessionId) {
+      return
+    }
+
+    sessionStorage.removeItem(CHECKOUT_SESSION_STORAGE_KEY)
+
+    void (async () => {
+      try {
+        const result = await pollCheckoutUntilSettled(checkoutSessionId)
+
+        if (result === "COMPLETED") {
+          showSuccessToast("Payment was successful!")
+          return
+        }
+
+        if (result === "EXPIRED") {
+          showErrorToast("Transaction failed")
+          return
+        }
+
+        showInfoToast("The payment is being processed.")
+      } catch (error) {
+        showErrorToast(getApiErrorMessage(error))
+      }
+    })()
+  }, [])
 
   const openPaymentModal = (provider: PaymentProvider) => {
     setPaymentProvider(provider)
@@ -56,28 +121,20 @@ export const AccountManagementForm = () => {
   }
 
   const confirmPayment = async () => {
-    if (!paymentProvider) {
+    if (!paymentProvider || !selectedPlanId) {
       return
     }
 
     setIsPaymentRedirecting(true)
 
     try {
-      const returnParams = buildSettingsSearchParams({
-        accountType: "business",
-        current: searchParams,
-        tab: "Account Management",
-      })
-      const returnUrl = `${window.location.origin}${pathname}?${returnParams.toString()}`
-
-      const paymentUrl = await createSubscriptionPayment({
-        autoRenewal: true,
-        plan: subscriptionPlan,
-        provider: paymentProvider,
-        returnUrl,
+      const checkout = await createCheckoutMutation.mutateAsync({
+        planId: selectedPlanId,
+        provider: PAYMENT_PROVIDER_API[paymentProvider],
       })
 
-      window.location.assign(paymentUrl)
+      sessionStorage.setItem(CHECKOUT_SESSION_STORAGE_KEY, checkout.checkoutSessionId)
+      window.location.assign(checkout.redirectUrl)
     } catch (error) {
       setIsPaymentRedirecting(false)
       showErrorToast(getApiErrorMessage(error))
@@ -85,6 +142,8 @@ export const AccountManagementForm = () => {
   }
 
   const setAccountType = (value: SettingsAccountType) => {
+    setPendingAccountType(value)
+
     const next = buildSettingsSearchParams({
       accountType: value,
       current: searchParams,
@@ -94,6 +153,14 @@ export const AccountManagementForm = () => {
 
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false })
   }
+
+  const plansErrorMessage = plansError ? getApiErrorMessage(plansError) : null
+  const plansErrorText = Array.isArray(plansErrorMessage)
+    ? plansErrorMessage.join(" ")
+    : plansErrorMessage
+
+  const isPaymentDisabled =
+    isPaymentRedirecting || isPlansLoading || !selectedPlanId || plans.length === 0
 
   return (
     <div className={s.form}>
@@ -125,23 +192,43 @@ export const AccountManagementForm = () => {
             role="radiogroup"
             aria-labelledby="subscription-costs-heading"
           >
-            {SUBSCRIPTION_PLANS.map((option) => (
-              <SettingsRadioOption
-                checked={subscriptionPlan === option.value}
-                key={option.value}
-                label={option.label}
-                name="subscriptionPlan"
-                onChange={() => setSubscriptionPlan(option.value)}
-                value={option.value}
-              />
-            ))}
+            {isPlansLoading ? (
+              <p className={s.planStatus}>Loading plans…</p>
+            ) : null}
+            {isPlansError ? (
+              <div className={s.planError}>
+                <p className={s.planStatus}>
+                  {plansErrorText || "Could not load subscription plans."}
+                </p>
+                <Button
+                  disabled={isPlansFetching}
+                  onClick={() => void refetchPlans()}
+                  type="button"
+                  variant="secondary"
+                >
+                  Try again
+                </Button>
+              </div>
+            ) : null}
+            {!isPlansLoading && !isPlansError
+              ? plans.map((plan) => (
+                  <SettingsRadioOption
+                    checked={selectedPlanId === plan.id}
+                    key={plan.id}
+                    label={formatPlanLabel(plan)}
+                    name="subscriptionPlan"
+                    onChange={() => setSelectedPlanId(plan.id)}
+                    value={plan.id}
+                  />
+                ))
+              : null}
           </div>
 
           <div className={s.payments}>
             <button
               aria-label="Pay with PayPal"
               className={s.paymentProviderButton}
-              disabled={isPaymentRedirecting}
+              disabled={isPaymentDisabled}
               onClick={() => openPaymentModal("paypal")}
               type="button"
             >
@@ -157,7 +244,7 @@ export const AccountManagementForm = () => {
             <button
               aria-label="Pay with Stripe"
               className={s.paymentProviderButton}
-              disabled={isPaymentRedirecting}
+              disabled={isPaymentDisabled}
               onClick={() => openPaymentModal("stripe")}
               type="button"
             >

@@ -3,10 +3,10 @@
 import { DropdownMenuItem } from "@/common/components/DropdownMenu/DropdownMenu"
 import { Icon } from "@/common/components/Icon/Icon"
 import { MoreActionsDropdown } from "@/common/components/MoreActionsDropdown/MoreActionsDropdown"
-import { ROUTES } from "@/common/constants/route"
 import { useMe } from "@/features/auth/api/useMe"
 import { Logout } from "@/features/auth/ui/Logout/Logout"
 import { NavLink } from "@/widgets/Sidebar/NavLink/NavLink"
+import { resolveSidebarHref } from "@/widgets/Sidebar/resolveSidebarHref"
 import { sidebarSections } from "@/widgets/Sidebar/sidebar.data"
 import styles from "./DropdownMenuNavItem.module.css"
 
@@ -17,12 +17,7 @@ export const DropdownMenuNavItem = () => {
     <div className={styles.mobileHeaderLink}>
       <MoreActionsDropdown>
         {sidebarSections.secondary?.map((link) => {
-          const href =
-            link.title === "Profile Settings"
-              ? me?.id
-                ? ROUTES.settings(me.id)
-                : null
-              : link.href
+          const href = resolveSidebarHref(link, me?.id)
 
           if (!href) {
             return null

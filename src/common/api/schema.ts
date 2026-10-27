@@ -385,6 +385,146 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * My payments table (UC-4)
+         * @description Payments of the current user, newest first. Page-number pagination: totalCount is the number of all user payments, so the client can render page numbers. Amounts are in minor currency units (10000 = $100); formatting is done on the client.
+         */
+        get: operations["PaymentsController_getPaymentHistory"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/payments/plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Plans available for purchase (S1.1)
+         * @description Active plans in display order; the first one is selected by default. Labels like "$10 per 1 Day" are built on the client from priceAmount + intervalUnit + intervalCount.
+         */
+        get: operations["PaymentsController_getPlans"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/payments/subscription": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Current subscription state (S1.1, S3, S4)
+         * @description expireAt = null means no paid access: show the Personal/Business screen, otherwise the Current Subscription screen. canEnableAutoRenewal tells whether the Auto-Renewal checkbox is active.
+         */
+        get: operations["PaymentsController_getCurrent"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/payments/subscription/auto-renewal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Turn auto-renewal on or off (UC-2, S4)
+         * @description Sends the desired state, not a toggle: repeating the request is safe and does not call the provider again. Turning it off keeps the paid period — Business stays until it ends. Turning it back on is allowed only while the access is still paid and the contract is alive at the provider. Returns the new state in the same shape as GET /payments/subscription.
+         */
+        patch: operations["PaymentsController_setAutoRenewal"];
+        trace?: never;
+    };
+    "/api/v1/payments/checkout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Start a purchase (UC-1, S1.2, S3)
+         * @description Creates a payment page at the provider and returns its URL — redirect the user there. A previous unfinished attempt is cancelled. The payment is confirmed only by the provider webhook: after the user returns, poll GET /payments/checkout/{checkoutSessionId}.
+         */
+        post: operations["PaymentsController_createCheckout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/payments/checkout/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Purchase status after returning from the provider (S1.4)
+         * @description Poll every 2 s for up to 30 s. COMPLETED — show "Payment was successful!", EXPIRED — "Transaction failed", still CREATED after 30 s — the payment is being processed.
+         */
+        get: operations["PaymentsController_getCheckoutStatus"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/payments/webhooks/stripe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Stripe webhook
+         * @description Called by Stripe, not by the client. No JWT: authenticity is checked by the stripe-signature header against the raw request body.
+         */
+        post: operations["PaymentWebhooksController_stripe"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/posts/images/presign": {
         parameters: {
             query?: never;
@@ -814,6 +954,96 @@ export interface components {
              */
             aboutMe: string | null;
         };
+        PaymentHistoryItemOutputDto: {
+            /** Format: date-time */
+            paidAt: string;
+            /** Format: date-time */
+            periodEnd: string;
+            /**
+             * @description Amount actually charged, in minor currency units
+             * @example 10000
+             */
+            amount: number;
+            /** @example USD */
+            currency: string;
+            /** @enum {string} */
+            intervalUnit: "DAY" | "MONTH";
+            /** @example 1 */
+            intervalCount: number;
+            /** @enum {string} */
+            provider: "STRIPE" | "PAYPAL";
+            /** @enum {string} */
+            status: "SUCCEEDED" | "REFUNDED";
+        };
+        PaymentHistoryOutputDto: {
+            items: components["schemas"]["PaymentHistoryItemOutputDto"][];
+            /** @example 1 */
+            page: number;
+            /** @example 100 */
+            pageSize: number;
+            /** @example 5432 */
+            totalCount: number;
+        };
+        PlanOutputDto: {
+            /** Format: uuid */
+            id: string;
+            /** @example MONTH_1 */
+            code: string;
+            /**
+             * @description Price in minor currency units ($100 = 10000)
+             * @example 10000
+             */
+            priceAmount: number;
+            /** @example USD */
+            currency: string;
+            /** @enum {string} */
+            intervalUnit: "DAY" | "MONTH";
+            /** @example 1 */
+            intervalCount: number;
+        };
+        PlansOutputDto: {
+            items: components["schemas"]["PlanOutputDto"][];
+        };
+        CurrentSubscriptionOutputDto: {
+            /** Format: date-time */
+            expireAt: string | null;
+            /** Format: date-time */
+            nextPaymentAt: string | null;
+            autoRenewal: boolean;
+            canEnableAutoRenewal: boolean;
+        };
+        SetAutoRenewalInputDto: {
+            /** @description Desired state of the Auto-Renewal checkbox (not a toggle): repeating the request is safe */
+            enabled: boolean;
+        };
+        CreateCheckoutInputDto: {
+            /**
+             * Format: uuid
+             * @description Plan id from GET /payments/plans
+             */
+            planId: string;
+            /**
+             * @description PAYPAL is not connected yet and returns 400
+             * @enum {string}
+             */
+            provider: "STRIPE" | "PAYPAL";
+        };
+        CreateCheckoutOutputDto: {
+            /**
+             * Format: uuid
+             * @description Poll GET /payments/checkout/{id} with it after returning from the provider
+             */
+            checkoutSessionId: string;
+            /**
+             * @description Provider payment page — redirect the user here
+             * @example https://checkout.stripe.com/c/pay/cs_test_…
+             */
+            redirectUrl: string;
+        };
+        CheckoutStatusOutputDto: {
+            /** @enum {string} */
+            status: "CREATED" | "COMPLETED" | "EXPIRED";
+        };
         PresignFileInputDto: {
             /**
              * @description Original file name
@@ -961,6 +1191,15 @@ export type SchemaSetAvatarResponseDto = components['schemas']['SetAvatarRespons
 export type SchemaCountryResponseDto = components['schemas']['CountryResponseDto'];
 export type SchemaCityResponseDto = components['schemas']['CityResponseDto'];
 export type SchemaPublicProfileOutputDto = components['schemas']['PublicProfileOutputDto'];
+export type SchemaPaymentHistoryItemOutputDto = components['schemas']['PaymentHistoryItemOutputDto'];
+export type SchemaPaymentHistoryOutputDto = components['schemas']['PaymentHistoryOutputDto'];
+export type SchemaPlanOutputDto = components['schemas']['PlanOutputDto'];
+export type SchemaPlansOutputDto = components['schemas']['PlansOutputDto'];
+export type SchemaCurrentSubscriptionOutputDto = components['schemas']['CurrentSubscriptionOutputDto'];
+export type SchemaSetAutoRenewalInputDto = components['schemas']['SetAutoRenewalInputDto'];
+export type SchemaCreateCheckoutInputDto = components['schemas']['CreateCheckoutInputDto'];
+export type SchemaCreateCheckoutOutputDto = components['schemas']['CreateCheckoutOutputDto'];
+export type SchemaCheckoutStatusOutputDto = components['schemas']['CheckoutStatusOutputDto'];
 export type SchemaPresignFileInputDto = components['schemas']['PresignFileInputDto'];
 export type SchemaPresignInputDto = components['schemas']['PresignInputDto'];
 export type SchemaCreatePostInputDto = components['schemas']['CreatePostInputDto'];
@@ -1764,6 +2003,294 @@ export interface operations {
             };
             /** @description User not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_getPaymentHistory: {
+        parameters: {
+            query?: {
+                page?: number;
+                /** @description 1–100 */
+                pageSize?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Page of payments */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentHistoryOutputDto"];
+                };
+            };
+            /** @description Invalid page or pageSize */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_getPlans: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Active plans */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlansOutputDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_getCurrent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Subscription state */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurrentSubscriptionOutputDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_setAutoRenewal: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetAutoRenewalInputDto"];
+            };
+        };
+        responses: {
+            /** @description State after the change */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CurrentSubscriptionOutputDto"];
+                };
+            };
+            /** @description Invalid body */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description No purchases yet (SUBSCRIPTION_NOT_FOUND) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Cannot be turned on: contract ended or access expired — a new purchase is required (CANNOT_RESUME) */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Payment provider did not respond (PROVIDER_UNAVAILABLE) */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_createCheckout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateCheckoutInputDto"];
+            };
+        };
+        responses: {
+            /** @description Payment page created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateCheckoutOutputDto"];
+                };
+            };
+            /** @description Invalid body or provider not supported yet */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Plan not found (PLAN_NOT_FOUND) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Plan is no longer on sale — the price changed, reload the plans (PLAN_CHANGED) */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Payment provider did not respond (PROVIDER_UNAVAILABLE) */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentsController_getCheckoutStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description checkoutSessionId from POST /payments/checkout */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Purchase status */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckoutStatusOutputDto"];
+                };
+            };
+            /** @description id is not a UUID */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Checkout not found or belongs to another user (CHECKOUT_NOT_FOUND) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PaymentWebhooksController_stripe: {
+        parameters: {
+            query?: never;
+            header: {
+                "stripe-signature": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Event processed, already received or not used */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Missing or invalid signature */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Event not processed; the provider must retry delivery */
+            500: {
                 headers: {
                     [name: string]: unknown;
                 };

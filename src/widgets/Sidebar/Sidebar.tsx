@@ -12,6 +12,7 @@ import { CreatePostModal } from "@/features/create-post/ui/CreatePostModal"
 
 import { NavLink } from "./NavLink/NavLink"
 import navLinkStyles from "./NavLink/NavLink.module.css"
+import { resolveSidebarHref } from "./resolveSidebarHref"
 import { sidebarSections } from "./sidebar.data"
 import styles from "./Sidebar.module.css"
 
@@ -24,6 +25,7 @@ const SIDEBAR_MAIN_SKELETON_ITEMS = [
 ] as const
 
 const SIDEBAR_SECONDARY_SKELETON_ITEMS = [
+  { id: "settings", labelClassName: styles.skeletonLabelLong },
   { id: "statistics", labelClassName: styles.skeletonLabelLong },
   { id: "favorites", labelClassName: styles.skeletonLabelMedium },
 ] as const
@@ -114,14 +116,22 @@ export const Sidebar = () => {
         className={clsx(styles.sidebarSection, styles.desktopOnly)}
       >
         <ul className={styles.navList}>
-          {secondary?.slice(1).map((link) => (
-            <li key={link.href}>
-              <NavLink href={link.href}>
-                <Icon name={link.icon} />
-                <span>{link.title}</span>
-              </NavLink>
-            </li>
-          ))}
+          {secondary?.map((link) => {
+            const href = resolveSidebarHref(link, me?.id)
+
+            if (!href) {
+              return null
+            }
+
+            return (
+              <li key={`${link.title}-${href}`}>
+                <NavLink href={href}>
+                  <Icon name={link.icon} />
+                  <span>{link.title}</span>
+                </NavLink>
+              </li>
+            )
+          })}
         </ul>
       </nav>
 

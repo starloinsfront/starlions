@@ -1,71 +1,100 @@
-import { getAuthHeaders } from "@/features/auth/api/apiAuth"
-import { ApiError } from "@/common/utils/api/error/apiError"
-import { getPublicApiBaseUrl } from "@/common/utils/auth/startGoogleOAuth"
+import { client } from "@/common/api/client"
+import type {
+  SchemaCheckoutStatusOutputDto,
+  SchemaCreateCheckoutInputDto,
+  SchemaCreateCheckoutOutputDto,
+  SchemaPlansOutputDto,
+} from "@/common/api/schema"
+import { handleApiResponse } from "@/common/utils/api/error/handleApiResponse"
+import { isApiErrorMatching } from "@/common/utils/api/error/serverError"
+import { apiAuth, getAuthHeaders } from "@/features/auth/api/apiAuth"
 
-import type { SubscriptionPlanId } from "../model/subscriptionPlans"
-import { getSubscriptionPlanDetails } from "../model/subscriptionPlans"
+export const CHECKOUT_SESSION_STORAGE_KEY = "starlions:checkoutSessionId"
 
 export type PaymentProvider = "paypal" | "stripe"
 
-type CreateSubscriptionPaymentInput = {
-  autoRenewal: boolean
-  plan: SubscriptionPlanId
-  provider: PaymentProvider
-  returnUrl: string
-}
-
-type CreateSubscriptionPaymentResponse = {
-  paymentUrl?: string
-  url?: string
-}
-
-const PAYMENT_PROVIDER_API: Record<PaymentProvider, "PAYPAL" | "STRIPE"> = {
+export const PAYMENT_PROVIDER_API: Record<
+  PaymentProvider,
+  SchemaCreateCheckoutInputDto["provider"]
+> = {
   paypal: "PAYPAL",
   stripe: "STRIPE",
 }
 
-export const createSubscriptionPayment = async ({
-  autoRenewal,
-  plan,
-  provider,
-  returnUrl,
-}: CreateSubscriptionPaymentInput): Promise<string> => {
-  const apiBase = getPublicApiBaseUrl()
-  const planDetails = getSubscriptionPlanDetails(plan)
-  const paymentProvider = PAYMENT_PROVIDER_API[provider]
-
-  const response = await fetch(`${apiBase}/api/v1/payments/subscription`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      ...getAuthHeaders(),
-    },
-    body: JSON.stringify({
-      amount: planDetails.amount,
-      autoRenewal,
-      baseUrl: returnUrl,
-      paymentProvider,
-      paymentType: paymentProvider,
-      plan,
-      provider,
-      returnUrl,
-      typeSubscription: planDetails.typeSubscription,
-    }),
+const requestPaymentPlans = async (): Promise<SchemaPlansOutputDto> => {
+  const result = await client.GET("/api/v1/payments/plans", {
+    headers: getAuthHeaders(),
   })
 
-  const payload = (await response.json().catch(() => ({}))) as CreateSubscriptionPaymentResponse
+  return handleApiResponse(result, "Failed to load subscription plans") as SchemaPlansOutputDto
+}
 
-  if (!response.ok) {
-    throw new ApiError(response.status, payload, "Payment request failed", response)
+export const fetchPaymentPlans = async (): Promise<SchemaPlansOutputDto> => {
+  try {
+    return await requestPaymentPlans()
+  } catch (error) {
+    if (!isApiErrorMatching(error, { status: 401 })) {
+      throw error
+    }
+
+    await apiAuth.refreshToken()
+
+    return await requestPaymentPlans()
+  }
+}
+
+export const createPaymentCheckout = async (
+  body: SchemaCreateCheckoutInputDto,
+): Promise<SchemaCreateCheckoutOutputDto> => {
+  const result = await client.POST("/api/v1/payments/checkout", {
+    body,
+    headers: getAuthHeaders(),
+  })
+
+  return handleApiResponse(result, "Failed to start payment checkout") as SchemaCreateCheckoutOutputDto
+}
+
+export const fetchCheckoutStatus = async (
+  checkoutSessionId: string,
+): Promise<SchemaCheckoutStatusOutputDto> => {
+  const result = await client.GET("/api/v1/payments/checkout/{id}", {
+    headers: getAuthHeaders(),
+    params: {
+      path: { id: checkoutSessionId },
+    },
+  })
+
+  return handleApiResponse(
+    result,
+    "Failed to load checkout status",
+  ) as SchemaCheckoutStatusOutputDto
+}
+
+const CHECKOUT_POLL_INTERVAL_MS = 2000
+const CHECKOUT_POLL_MAX_ATTEMPTS = 15
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export type CheckoutPollResult = "COMPLETED" | "EXPIRED" | "PENDING"
+
+export const pollCheckoutUntilSettled = async (
+  checkoutSessionId: string,
+): Promise<CheckoutPollResult> => {
+  for (let attempt = 0; attempt < CHECKOUT_POLL_MAX_ATTEMPTS; attempt += 1) {
+    const status = await fetchCheckoutStatus(checkoutSessionId)
+
+    if (status?.status === "COMPLETED") {
+      return "COMPLETED"
+    }
+
+    if (status?.status === "EXPIRED") {
+      return "EXPIRED"
+    }
+
+    if (attempt < CHECKOUT_POLL_MAX_ATTEMPTS - 1) {
+      await wait(CHECKOUT_POLL_INTERVAL_MS)
+    }
   }
 
-  const paymentUrl = payload.paymentUrl ?? payload.url
-
-  if (!paymentUrl) {
-    throw new Error("Payment URL is missing in the response")
-  }
-
-  return paymentUrl
+  return "PENDING"
 }
